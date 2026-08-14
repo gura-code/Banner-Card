@@ -121,7 +121,7 @@
       width: 100%; 
       height: 100%; 
       flex-direction: column; 
-      padding: 20px; 
+      padding: 15px; 
       justify-content: space-between; 
       align-items: center; 
       background-color: #ffffff;
@@ -134,14 +134,15 @@
       flex-direction: column; 
       align-items: center; 
       justify-content: center; 
-      gap: 15px; 
+      gap: 12px; 
       position: relative;
+      min-height: 0;
     }
 
     /* PROFILO CARD CONTAINER */
     .profile-card { 
       width: 320px; 
-      height: 440px; 
+      height: 420px; 
       background-color: #ffffff; 
       border: 3px solid #000000; 
       border-radius: 24px; 
@@ -150,22 +151,40 @@
       flex-direction: column; 
       box-sizing: border-box;
       position: relative;
+      flex-shrink: 0;
     }
 
     /* RETTANGOLO SUPERIORE (BANNER) */
     .profile-banner {
       width: 100%;
-      height: 130px;
+      height: 120px;
       background-color: #f0f0f0;
       border-bottom: 3px solid inherit;
       position: relative;
       cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .banner-placeholder {
+      font-size: 11px;
+      font-weight: 700;
+      color: #666666;
+    }
+
+    .profile-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
     }
 
     /* FOTO PROFILO CIRCOLARE */
     .profile-avatar-container {
       position: relative;
-      margin-top: -45px;
+      margin-top: -40px;
       padding: 0 20px;
       display: flex;
       width: 100%;
@@ -177,11 +196,11 @@
     .profile-avatar-container.align-right { justify-content: flex-end; }
 
     .avatar-circle {
-      width: 90px;
-      height: 90px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       border: 3px solid #000000;
-      background-color: rgba(0,0,0,0.05);
+      background-color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -198,31 +217,32 @@
     }
 
     .avatar-placeholder {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       text-align: center;
+      color: #666666;
     }
 
     /* SEZIONE INFORMAZIONI TESTUALI */
     .profile-info-box {
       flex: 1;
-      padding: 12px 20px 20px 20px;
+      padding: 10px 20px 15px 20px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       overflow: hidden;
     }
 
     .editable { outline: none; -webkit-tap-highlight-color: transparent; }
     .editable.placeholder-active { opacity: 0.6; }
 
-    .profile-name { font-size: 20px; font-weight: 800; line-height: 24px; word-break: break-word; }
-    .profile-bio { font-size: 13px; font-weight: 600; line-height: 18px; word-break: break-word; }
+    .profile-name { font-size: 18px; font-weight: 800; line-height: 22px; word-break: break-word; color: #000000; }
+    .profile-bio { font-size: 12px; font-weight: 600; line-height: 16px; word-break: break-word; color: #333333; }
 
     /* MENU SUB-OPTIONS */
     .color-sub-menu {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       background: #111111;
       padding: 6px;
       border-radius: 14px;
@@ -235,19 +255,19 @@
       background: #222222;
       color: #ffffff;
       border: 1px solid #333333;
-      padding: 8px 10px;
+      padding: 7px 8px;
       border-radius: 10px;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
     }
 
     .menu-btn svg {
-      width: 14px;
-      height: 14px;
+      width: 13px;
+      height: 13px;
       fill: none;
       stroke: #ffffff;
       stroke-width: 2.5;
@@ -258,12 +278,12 @@
       width: 100%; 
       background-color: #000000; 
       color: #ffffff; 
-      padding: 14px; 
+      padding: 12px; 
       border-radius: 12px; 
       font-weight: 800; 
       text-align: center; 
-      margin-bottom: 10px; 
       cursor: pointer; 
+      flex-shrink: 0;
     }
 
     /* MODALE SELETTORE COLORE */
@@ -390,15 +410,18 @@
 
     <!-- UI PRINCIPALE -->
     <div class="main-ui" id="main-ui">
-      <div style="font-weight:800; margin-top:10px; font-size: 1.2rem;">Create Profile</div>
+      <div style="font-weight:800; margin-top:5px; font-size: 1.1rem;">Create Profile</div>
       
       <div class="profile-canvas-area">
         <!-- PAGINA PROFILO -->
         <div class="profile-card" id="main-profile">
-          <div class="profile-banner" id="banner-box"></div>
+          <div class="profile-banner" id="banner-box" onclick="document.getElementById('banner-file-input').click()">
+            <div id="banner-placeholder" class="banner-placeholder">+ Banner Photo</div>
+            <img id="banner-img" alt="Banner">
+          </div>
           
           <div class="profile-avatar-container align-center" id="avatar-align-container">
-            <div class="avatar-circle" onclick="document.getElementById('avatar-file-input').click()">
+            <div class="avatar-circle" onclick="event.stopPropagation(); document.getElementById('avatar-file-input').click()">
               <div id="avatar-placeholder" class="avatar-placeholder">+ Photo</div>
               <img id="avatar-img" alt="Avatar">
             </div>
@@ -418,7 +441,11 @@
           </button>
           <button class="menu-btn" onclick="openCustomPicker('line')">
             <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
-            Borders & Text
+            Borders
+          </button>
+          <button class="menu-btn" onclick="openCustomPicker('text')">
+            <svg viewBox="0 0 24 24"><path d="M4 7V5h16v2M12 5v14M9 19h6"></path></svg>
+            Text Color
           </button>
           <button class="menu-btn" onclick="cycleAvatarAlignment()">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle></svg>
@@ -427,6 +454,7 @@
         </div>
       </div>
 
+      <input type="file" id="banner-file-input" style="display:none;" accept="image/*" onchange="loadBanner(event)">
       <input type="file" id="avatar-file-input" style="display:none;" accept="image/*" onchange="loadAvatar(event)">
       <div class="btn-download" onclick="downloadProfile()">Download Profile</div>
     </div>
@@ -470,9 +498,8 @@
     let currentTarget = 'bg';
     let selectedColor = '#FFFFFF';
     let avatarAlignments = ['align-left', 'align-center', 'align-right'];
-    let currentAlignIndex = 1; // Parte centrato
+    let currentAlignIndex = 1;
 
-    // Gestione dei campi modificabili (Placeholder)
     document.querySelectorAll('.editable').forEach(el => {
       el.addEventListener('focus', function() {
         const ph = this.getAttribute('data-placeholder');
@@ -535,6 +562,19 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
+    function loadBanner(e) {
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = document.getElementById('banner-img');
+        img.src = event.target.result;
+        img.style.display = 'block';
+        document.getElementById('banner-placeholder').style.display = 'none';
+      }
+      reader.readAsDataURL(file);
+    }
+
     function loadAvatar(e) {
       const file = e.target.files[0];
       if(!file) return;
@@ -554,7 +594,6 @@
       container.className = 'profile-avatar-container ' + avatarAlignments[currentAlignIndex];
     }
 
-    // Griglia Colori 13x13
     function initGridColors() {
       const grid = document.getElementById('picker-grid');
       grid.innerHTML = '';
@@ -595,11 +634,12 @@
       let currentHex = '#FFFFFF';
       
       if (target === 'bg') {
-        let bg = window.getComputedStyle(profileCard).backgroundColor;
-        currentHex = rgbToHex(bg);
+        currentHex = rgbToHex(window.getComputedStyle(profileCard).backgroundColor);
       } else if (target === 'line') {
-        let borderCol = window.getComputedStyle(profileCard).borderColor;
-        currentHex = rgbToHex(borderCol);
+        currentHex = rgbToHex(window.getComputedStyle(profileCard).borderColor);
+      } else if (target === 'text') {
+        const nameEl = profileCard.querySelector('.profile-name');
+        currentHex = rgbToHex(window.getComputedStyle(nameEl).color);
       }
       
       selectColor(currentHex);
@@ -666,8 +706,10 @@
       } else if (currentTarget === 'line') {
         profileCard.style.borderColor = selectedColor;
         document.getElementById('banner-box').style.borderColor = selectedColor;
-        document.querySelectorAll('.profile-name, .profile-bio').forEach(el => el.style.color = selectedColor);
         document.querySelector('.avatar-circle').style.borderColor = selectedColor;
+      } else if (currentTarget === 'text') {
+        document.querySelectorAll('.profile-name, .profile-bio').forEach(el => el.style.color = selectedColor);
+        document.getElementById('banner-placeholder').style.color = selectedColor;
         document.getElementById('avatar-placeholder').style.color = selectedColor;
       }
       closePicker();
