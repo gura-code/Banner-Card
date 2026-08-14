@@ -168,9 +168,14 @@
       background-color: rgba(0,0,0,0.03);
       position: relative;
       overflow: hidden;
-      background-size: cover !important;
-      background-position: center !important;
-      background-repeat: no-repeat !important;
+    }
+
+    .banner-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: none;
     }
 
     .banner-placeholder {
@@ -204,9 +209,14 @@
       left: 10px;
       z-index: 5;
       overflow: hidden;
-      background-size: cover !important;
-      background-position: center !important;
-      background-repeat: no-repeat !important;
+    }
+
+    .avatar-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: none;
     }
 
     .avatar-box.square {
@@ -514,12 +524,14 @@
           
           <!-- BANNER IMMAGINE IN ALTO -->
           <div class="banner-box" id="banner-box" onclick="document.getElementById('banner-input').click()">
+            <img id="banner-img" src="" alt="banner">
             <div id="banner-placeholder" class="banner-placeholder">+ Add Banner Photo</div>
           </div>
 
           <!-- CONTENITORE AVATAR STABILE -->
           <div class="avatar-wrapper">
             <div class="avatar-box" id="avatar-box" onclick="document.getElementById('avatar-input').click()">
+              <img id="avatar-img" src="" alt="avatar">
               <div id="avatar-placeholder" class="avatar-placeholder">+ Photo</div>
             </div>
           </div>
@@ -670,19 +682,21 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    // Carica Immagini tramite BACKGROUND CSS (Senza distorsioni)
+    // Carica Immagini tramite tag IMG
     function loadPhoto(e, type) {
       const file = e.target.files[0];
       if(!file) return;
       const reader = new FileReader();
       reader.onload = function(event) {
         if(type === 'banner') {
-          const bannerBox = document.getElementById('banner-box');
-          bannerBox.style.backgroundImage = `url('${event.target.result}')`;
+          const bannerImg = document.getElementById('banner-img');
+          bannerImg.src = event.target.result;
+          bannerImg.style.display = 'block';
           document.getElementById('banner-placeholder').style.display = 'none';
         } else if(type === 'avatar') {
-          const avatarBox = document.getElementById('avatar-box');
-          avatarBox.style.backgroundImage = `url('${event.target.result}')`;
+          const avatarImg = document.getElementById('avatar-img');
+          avatarImg.src = event.target.result;
+          avatarImg.style.display = 'block';
           document.getElementById('avatar-placeholder').style.display = 'none';
         }
       }
@@ -816,7 +830,8 @@
       let b = parseInt(document.getElementById('b-input').value) || 0;
 
       r = Math.min(255, Math.max(0, r));
-      g = Math.min(255, Math.max(0, b));
+      g = Math.min(255, Math.max(0, g));
+      b = Math.min(255, Math.max(0, b));
 
       let hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
       selectedColor = hex;
@@ -838,12 +853,50 @@
       closePicker();
     }
 
-    // DOWNLOAD CARD PERFETTO SENZA IMMAGINI SCHIACCIATE
-    function downloadCard() {
+    // Funzione helper per pre-ritagliare l'immagine in proporzione HD
+    function cropImageToTargetAspect(imgElement, targetWidth, targetHeight) {
+      return new Promise((resolve) => {
+        if (!imgElement || !imgElement.src || imgElement.style.display === 'none') {
+          resolve(null);
+          return;
+        }
+
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          // Usa la risoluzione nativa dell'immagine sorgente per la massima nitidezza
+          const targetAspect = targetWidth / targetHeight;
+          let sourceX = 0, sourceY = 0, sourceWidth = img.width, sourceHeight = img.height;
+          const imgAspect = img.width / img.height;
+
+          if (imgAspect > targetAspect) {
+            sourceWidth = img.height * targetAspect;
+            sourceX = (img.width - sourceWidth) / 2;
+          } else {
+            sourceHeight = img.width / targetAspect;
+            sourceY = (img.height - sourceHeight) / 2;
+          }
+
+          canvas.width = sourceWidth;
+          canvas.height = sourceHeight;
+
+          ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, sourceWidth, sourceHeight);
+          resolve(canvas.toDataURL('image/png', 1.0));
+        };
+        img.onerror = () => resolve(null);
+        img.src = imgElement.src;
+      });
+    }
+
+    // DOWNLOAD CARD DEFINITIVO: NITIDO + NON SCHIACCIATO
+    async function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
       
-      // Nasconde i testi se vuoti o non modificati
+      // Nasconde i testi vuoti o placeholder
       editables.forEach(el => {
         const ph = el.getAttribute('data-placeholder');
         const content = el.innerText.trim();
@@ -853,6 +906,22 @@
         }
       });
 
+      const bannerImg = document.getElementById('banner-img');
+      const avatarImg = document.getElementById('avatar-img');
+
+      // Salva le sorgenti originali
+      const origBannerSrc = bannerImg.src;
+      const origAvatarSrc = avatarImg.src;
+
+      // Pre-ritaglia le immagini per adattarsi perfettamente ai contenitori senza distorsioni
+      const [croppedBanner, croppedAvatar] = await Promise.all([
+        cropImageToTargetAspect(bannerImg, 296, 100),
+        cropImageToTargetAspect(avatarImg, 75, 75)
+      ]);
+
+      if (croppedBanner) bannerImg.src = croppedBanner;
+      if (croppedAvatar) avatarImg.src = croppedAvatar;
+
       html2canvas(card, { 
         scale: 4,
         backgroundColor: null, 
@@ -860,6 +929,10 @@
         allowTaint: true,
         logging: false
       }).then(canvas => {
+        // Ripristina sorgenti originali
+        if (origBannerSrc) bannerImg.src = origBannerSrc;
+        if (origAvatarSrc) avatarImg.src = origAvatarSrc;
+
         // Ripristina la visibilità dei testi
         editables.forEach(el => {
           if (el.dataset.hiddenForDownload) {
