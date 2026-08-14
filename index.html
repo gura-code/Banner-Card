@@ -927,7 +927,17 @@
     function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
+      const bannerPlaceholder = document.getElementById('banner-placeholder');
+      const avatarPlaceholder = document.getElementById('avatar-placeholder');
       
+      // Nascondi i testi segnaposto non compilati dei box se presenti
+      if (bannerPlaceholder && bannerPlaceholder.style.display !== 'none') {
+        bannerPlaceholder.style.visibility = 'hidden';
+      }
+      if (avatarPlaceholder && avatarPlaceholder.style.display !== 'none') {
+        avatarPlaceholder.style.visibility = 'hidden';
+      }
+
       editables.forEach(el => {
         const ph = el.getAttribute('data-placeholder');
         const content = el.innerText.trim();
@@ -944,6 +954,10 @@
         allowTaint: true,
         logging: false
       }).then(canvas => {
+        // Ripristina la visibilità dei placeholder del banner e dell'avatar
+        if (bannerPlaceholder) bannerPlaceholder.style.visibility = 'visible';
+        if (avatarPlaceholder) avatarPlaceholder.style.visibility = 'visible';
+
         editables.forEach(el => {
           if (el.dataset.hiddenForDownload) {
             el.style.visibility = 'visible';
@@ -960,3 +974,4 @@
   </script>
 </body>
 </html>
+
