@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
-  <title>Pocket Profile</title>
+  <title>Pocket Card</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
@@ -127,7 +127,6 @@
       justify-content: space-between; 
       align-items: center; 
       background-color: #ffffff;
-      overflow-y: auto;
     }
 
     .card-canvas-area { 
@@ -141,148 +140,115 @@
       position: relative;
     }
 
-    /* SCHEDA PROFILO - DIMENSIONI E STRUTTURA FISSE */
+    /* CARD BASE */
     .card { 
       width: 320px; 
-      height: 420px; 
+      height: 180px; 
       background-color: #ffffff; 
       border: 3px solid #000000; 
-      border-radius: 24px; 
-      padding: 0; 
-      display: block; 
+      border-radius: 20px; 
+      padding: 12px; 
+      display: flex; 
+      gap: 12px; 
+      align-items: center;
       box-sizing: border-box;
-      position: relative;
-      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    /* CONTENITORE FOTO - CORRETTO PER EVITARE SCHIACCIAMENTI E SGRANATURE */
+    .card-photo-box { 
+      height: 100%; 
+      max-height: 156px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      cursor: pointer; 
       flex-shrink: 0;
     }
-
-    /* RETTANGOLO COPERTINA (SOTTO, Z-INDEX 1) */
-    .profile-banner {
-      width: 100%;
-      height: 130px;
-      background-color: rgba(0,0,0,0.05);
-      border-bottom: 2px dashed #000000;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      overflow: hidden;
+    
+    .placeholder-box { 
+      width: 100px; 
+      height: 156px; 
+      border: 2px dashed inherit; 
+      border-radius: 12px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      background-color: rgba(0,0,0,0.05); 
+      font-size: 12px; 
+      font-weight: 700; 
     }
-
-    .profile-banner img {
-      width: 100%;
+    
+    /* GESTIONE FOTO OTTIMIZZATA */
+    .card-photo-box img { 
+      max-height: 156px; 
+      max-width: 140px;
+      width: auto;
       height: 100%;
-      object-fit: cover !important; /* Mantiene le proporzioni senza deformare */
-      object-position: center;
+      object-fit: contain; /* Impedisce che la foto venga schiacciata */
+      image-rendering: -webkit-optimize-contrast; /* Mantiene la nitidezza */
+      border: 2px dashed inherit; 
+      border-radius: 12px; 
       display: block;
     }
-
-    .banner-placeholder {
-      font-size: 12px;
-      font-weight: 700;
-      color: #666;
-    }
-
-    /* CONTENITORE FOTO PROFILO (SOPRA, Z-INDEX 10) */
-    .avatar-wrapper {
-      width: 100%;
-      position: absolute;
-      top: 85px; /* Sovrapposto esattamente sul bordo del banner */
-      left: 0;
-      padding: 0 20px;
-      display: flex;
-      justify-content: center;
-      z-index: 10; /* Garantisce che la foto profil stia SOPRA */
-      pointer-events: none; /* Lascia cliccabile la foto sotto */
-    }
-
-    .avatar-wrapper.align-left { justify-content: flex-start; }
-    .avatar-wrapper.align-center { justify-content: center; }
-    .avatar-wrapper.align-right { justify-content: flex-end; }
-
-    .profile-avatar-box {
-      width: 85px;
-      height: 85px;
-      border: 3px solid #000000;
-      border-radius: 50%;
-      background-color: #ffffff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      pointer-events: auto;
-      flex-shrink: 0;
-    }
-
-    .profile-avatar-box.square {
-      border-radius: 18px;
-    }
-
-    .profile-avatar-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover !important; /* Impedisce deformazioni dell'immagine */
-      object-position: center;
-      display: block;
-    }
-
-    .avatar-placeholder {
-      font-size: 10px;
-      font-weight: 700;
-      color: #666;
-      text-align: center;
-    }
-
-    /* INFO E TESTI PROFILO */
+    
     .card-info-box { 
-      width: 100%;
-      position: absolute;
-      top: 180px;
-      left: 0;
-      bottom: 0;
-      padding: 10px 20px 20px 20px; 
+      flex: 1; 
+      height: 156px; 
       display: flex; 
       flex-direction: column; 
-      gap: 6px; 
-      text-align: center;
-      z-index: 5;
+      justify-content: center; 
+      overflow: hidden; 
+      gap: 4px; 
+      margin-left: 4px;
     }
-
-    .card-info-box.align-left { text-align: left; }
-    .card-info-box.align-center { text-align: center; }
-    .card-info-box.align-right { text-align: right; }
 
     .editable { outline: none; -webkit-tap-highlight-color: transparent; }
-    .editable.placeholder-active { opacity: 0.6; }
 
-    .card-title { font-size: 18px; line-height: 22px; font-weight: 800; word-break: break-word; }
-    .card-voto { font-size: 13px; line-height: 16px; font-weight: 700; opacity: 0.8; }
-    .card-review { font-size: 11px; line-height: 15px; margin-top: 4px; word-break: break-word; }
+    .editable.placeholder-active {
+      opacity: 0.6;
+    }
 
-    /* TEMI BASE */
+    .card-title { font-size: 16px; line-height: 20px; font-weight: 800; word-break: break-word; }
+    .card-voto { font-size: 13px; line-height: 16px; font-weight: 800; }
+    .card-review { font-size: 11px; line-height: 14px; word-break: break-word; }
+
+    /* TEMI CARTA */
     .card.light-card {
       background-color: #ffffff;
-      border-color: #000000;
+      border: 3px solid #000000;
     }
-    .card.light-card .card-title,
-    .card.light-card .card-voto,
-    .card.light-card .card-review { color: #000000; }
+    .card.light-card .card-title { color: #000000; }
+    .card.light-card .card-voto { color: #555555; }
+    .card.light-card .card-review { color: #333333; }
+    .card.light-card .placeholder-box { border-color: #000000; color: #666666; background-color: #f0f0f0; }
+    .card.light-card img { border-color: #000000; }
+
+    .dark-mode-env .card.light-card {
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    .light-mode-env .card.light-card {
+      box-shadow: none;
+    }
 
     .card.dark-card {
       background-color: #000000;
-      border-color: #ffffff;
+      border: 3px solid #ffffff;
     }
-    .card.dark-card .card-title,
-    .card.dark-card .card-voto,
-    .card.dark-card .card-review { color: #ffffff; }
+    .card.dark-card .card-title { color: #ffffff; }
+    .card.dark-card .card-voto { color: #aaaaaa; }
+    .card.dark-card .card-review { color: #dddddd; }
+    .card.dark-card .placeholder-box { border-color: #ffffff; color: #cccccc; background-color: #222222; }
+    .card.dark-card img { border-color: #ffffff; }
 
-    /* PALLINE BIANCO / NERO */
+    .light-mode-env .card.dark-card {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .dark-mode-env .card.dark-card {
+      box-shadow: none;
+    }
+
+    /* CONTROLLI BIANCO / NERO */
     .color-picker {
       display: flex;
       gap: 12px;
@@ -307,33 +273,36 @@
     /* MENU SUB-OPTIONS */
     .color-sub-menu {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 6px;
+      gap: 8px;
       background: #111111;
-      padding: 8px;
-      border-radius: 16px;
+      padding: 6px;
+      border-radius: 14px;
       box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-      width: 100%;
-      max-width: 330px;
     }
 
     .menu-btn {
       background: #222222;
       color: #ffffff;
       border: 1px solid #333333;
-      padding: 7px 10px;
-      border-radius: 8px;
-      font-size: 10px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
     }
 
-    .menu-btn:active { background: #333333; }
-
+    .menu-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+    }
+    
     .btn-download { 
       width: 100%; 
       background-color: #000000; 
@@ -342,7 +311,6 @@
       border-radius: 12px; 
       font-weight: 800; 
       text-align: center; 
-      margin-top: 10px;
       margin-bottom: 10px; 
       cursor: pointer; 
     }
@@ -487,7 +455,7 @@
       <div class="content-overlay">
         <div class="logo-main">
           <div>Pocket</div>
-          <div>Profile</div>
+          <div>Card</div>
         </div>
         <button class="btn-start" onclick="startApp()">Start Creating</button>
       </div>
@@ -495,65 +463,40 @@
 
     <!-- UI PRINCIPALE -->
     <div class="main-ui" id="main-ui">
-      <div style="font-weight:800; margin-top:10px; font-size: 1.2rem;">Create Profile</div>
+      <div style="font-weight:800; margin-top:10px; font-size: 1.2rem;">Create Card</div>
       
       <div class="card-canvas-area">
-        <!-- SCHEDA PROFILO -->
         <div class="card light-card" id="main-card">
-          
-          <!-- RETTANGOLO COPERTINA (SOTTO - Z-INDEX 1) -->
-          <div class="profile-banner" id="banner-box" onclick="document.getElementById('banner-input').click()">
-            <span id="banner-placeholder" class="banner-placeholder">+ Add Cover Photo</span>
-            <img id="banner-img" style="display:none;" alt="Cover">
+          <div class="card-photo-box" onclick="document.getElementById('file-input').click()">
+            <div id="placeholder" class="placeholder-box">+ Photo</div>
+            <img id="card-photo-img" style="display:none;" alt="Photo">
           </div>
-
-          <!-- FOTO PROFILO (SOPRA - Z-INDEX 10) -->
-          <div class="avatar-wrapper align-center" id="avatar-wrapper">
-            <div class="profile-avatar-box" id="avatar-box" onclick="document.getElementById('avatar-input').click()">
-              <span id="avatar-placeholder" class="avatar-placeholder">+ Photo</span>
-              <img id="avatar-img" style="display:none;" alt="Profile">
-            </div>
-          </div>
-
-          <!-- TESTI DEL PROFILO -->
-          <div class="card-info-box align-center" id="info-box">
-            <div class="card-title editable placeholder-active" contenteditable="true" data-placeholder="Name / Username...">Name / Username...</div>
-            <div class="card-voto editable placeholder-active" contenteditable="true" data-placeholder="Bio / Role / Tagline...">Bio / Role / Tagline...</div>
-            <div class="card-review editable placeholder-active" contenteditable="true" data-placeholder="More details / Description...">More details / Description...</div>
+          <div class="card-info-box">
+            <div class="card-title editable placeholder-active" contenteditable="true" data-placeholder="Title / Name...">Title / Name...</div>
+            <div class="card-voto editable placeholder-active" contenteditable="true" data-placeholder="Rating / Genre / Role...">Rating / Genre / Role...</div>
+            <div class="card-review editable placeholder-active" contenteditable="true" data-placeholder="Review / Plot / Notes...">Review / Plot / Notes...</div>
           </div>
         </div>
 
-        <!-- PALLINE BIANCO / NERO -->
         <div class="color-picker">
           <div class="color-dot dot-white active" onclick="setCardTheme('light')"></div>
           <div class="color-dot dot-black" onclick="setCardTheme('dark')"></div>
         </div>
 
-        <!-- MENU OPZIONI -->
         <div class="color-sub-menu" id="color-sub-menu">
           <button class="menu-btn" onclick="openCustomPicker('bg')">
-            🎨 Background
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
+            Card Color
           </button>
-          <button class="menu-btn" onclick="openCustomPicker('border')">
-            🖼️ Borders
-          </button>
-          <button class="menu-btn" onclick="openCustomPicker('text')">
-            ✍️ Text Color
-          </button>
-          <button class="menu-btn" onclick="toggleAvatarShape()">
-            🔄 Shape
-          </button>
-          <button class="menu-btn" onclick="toggleAlignment()">
-            📐 Align
+          <button class="menu-btn" onclick="openCustomPicker('line')">
+            <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
+            Borders & Text
           </button>
         </div>
       </div>
 
-      <!-- INPUT NASCOSTI -->
-      <input type="file" id="banner-input" style="display:none;" accept="image/*" onchange="loadBanner(event)">
-      <input type="file" id="avatar-input" style="display:none;" accept="image/*" onchange="loadAvatar(event)">
-
-      <div class="btn-download" onclick="downloadCard()">Download Profile</div>
+      <input type="file" id="file-input" style="display:none;" accept="image/*" onchange="loadPhoto(event)">
+      <div class="btn-download" onclick="downloadCard()">Download Card</div>
     </div>
 
     <!-- MODALE SELETTORE COLORE -->
@@ -601,8 +544,6 @@
 
     let currentTarget = 'bg';
     let selectedColor = '#FFFFFF';
-    let currentAlignIndex = 1;
-    const alignments = ['left', 'center', 'right'];
 
     document.querySelectorAll('.editable').forEach(el => {
       el.addEventListener('focus', function() {
@@ -665,47 +606,18 @@
       document.getElementById('splash').style.display = 'none'; 
       document.getElementById('main-ui').style.display = 'flex'; 
     }
-
-    function loadBanner(e) {
+    
+    function loadPhoto(e) {
       const file = e.target.files[0];
       if(!file) return;
       const reader = new FileReader();
       reader.onload = function(event) {
-        const img = document.getElementById('banner-img');
+        const img = document.getElementById('card-photo-img');
         img.src = event.target.result;
         img.style.display = 'block';
-        document.getElementById('banner-placeholder').style.display = 'none';
+        document.getElementById('placeholder').style.display = 'none';
       }
       reader.readAsDataURL(file);
-    }
-
-    function loadAvatar(e) {
-      const file = e.target.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const img = document.getElementById('avatar-img');
-        img.src = event.target.result;
-        img.style.display = 'block';
-        document.getElementById('avatar-placeholder').style.display = 'none';
-      }
-      reader.readAsDataURL(file);
-    }
-
-    function toggleAvatarShape() {
-      const avatarBox = document.getElementById('avatar-box');
-      avatarBox.classList.toggle('square');
-    }
-
-    function toggleAlignment() {
-      currentAlignIndex = (currentAlignIndex + 1) % alignments.length;
-      const align = alignments[currentAlignIndex];
-
-      const avatarWrap = document.getElementById('avatar-wrapper');
-      const infoBox = document.getElementById('info-box');
-
-      avatarWrap.className = `avatar-wrapper align-${align}`;
-      infoBox.className = `card-info-box align-${align}`;
     }
 
     function setCardTheme(theme) {
@@ -715,8 +627,10 @@
       card.style.backgroundColor = '';
       card.style.borderColor = '';
       document.querySelectorAll('.card-title, .card-voto, .card-review').forEach(el => el.style.color = '');
-      document.getElementById('avatar-box').style.borderColor = '';
-      document.getElementById('banner-box').style.borderColor = '';
+      document.getElementById('placeholder').style.borderColor = '';
+      document.getElementById('placeholder').style.color = '';
+      const photoImg = document.getElementById('card-photo-img');
+      if (photoImg) photoImg.style.borderColor = '';
 
       if (theme === 'dark') {
         card.className = 'card dark-card';
@@ -771,12 +685,9 @@
       if (target === 'bg') {
         let bg = window.getComputedStyle(card).backgroundColor;
         currentHex = rgbToHex(bg);
-      } else if (target === 'border') {
+      } else if (target === 'line') {
         let borderCol = window.getComputedStyle(card).borderColor;
         currentHex = rgbToHex(borderCol);
-      } else if (target === 'text') {
-        let titleCol = window.getComputedStyle(card.querySelector('.card-title')).color;
-        currentHex = rgbToHex(titleCol);
       }
       
       selectColor(currentHex);
@@ -838,22 +749,21 @@
 
     function applyPickerColor() {
       const card = document.getElementById('main-card');
-      
       if (currentTarget === 'bg') {
         card.classList.remove('light-card', 'dark-card');
         card.style.backgroundColor = selectedColor;
-      } else if (currentTarget === 'border') {
+      } else if (currentTarget === 'line') {
         card.style.setProperty('border-color', selectedColor, 'important');
-        document.getElementById('avatar-box').style.borderColor = selectedColor;
-        document.getElementById('banner-box').style.borderBottomColor = selectedColor;
-      } else if (currentTarget === 'text') {
         card.querySelectorAll('.card-title, .card-voto, .card-review').forEach(el => el.style.color = selectedColor);
+        document.getElementById('placeholder').style.borderColor = selectedColor;
+        document.getElementById('placeholder').style.color = selectedColor;
+        const photoImg = document.getElementById('card-photo-img');
+        if (photoImg) photoImg.style.borderColor = selectedColor;
       }
-      
       closePicker();
     }
 
-    /* DOWNLOAD SENZA SCHIACCIAMENTI */
+    /* ESPORTAZIONE FOTO AD ALTA RISOLUZIONE */
     function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
@@ -870,12 +780,8 @@
         scale: 3, 
         backgroundColor: null, 
         useCORS: true,
-        width: 320,
-        height: 420,
-        scrollX: 0,
-        scrollY: 0,
-        windowWidth: 320,
-        windowHeight: 420
+        allowTaint: true,
+        imageTimeout: 0
       }).then(canvas => {
         editables.forEach(el => {
           if (el.dataset.wasPlaceholder) {
@@ -886,12 +792,11 @@
         });
 
         const link = document.createElement('a');
-        link.download = 'profile.png';
-        link.href = canvas.toDataURL('image/png');
+        link.download = 'card.png';
+        link.href = canvas.toDataURL('image/png', 1.0);
         link.click();
       });
     }
   </script>
 </body>
 </html>
-
