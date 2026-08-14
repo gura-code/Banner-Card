@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
-  <title>YouTube Profile Maker</title>
+  <title>Banner Card</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
@@ -96,7 +96,7 @@
     }
 
     .logo-main { 
-      font-size: 3.5rem; 
+      font-size: 3.2rem; 
       line-height: 0.95; 
       font-weight: 800; 
       color: #000000; 
@@ -495,16 +495,16 @@
       </div>
       <div class="content-overlay">
         <div class="logo-main">
-          <div>Profile</div>
+          <div>Banner</div>
           <div>Card</div>
         </div>
-        <button class="btn-start" onclick="startApp()">Start Creating</button>
+        <button class="btn-start" onclick="startApp()">Create New Card</button>
       </div>
     </div>
 
     <!-- UI PRINCIPALE -->
     <div class="main-ui" id="main-ui">
-      <div style="font-weight:800; margin-top:8px; font-size: 1.1rem;">Create Profile</div>
+      <div style="font-weight:800; margin-top:8px; font-size: 1.1rem;">Card Studio</div>
       
       <div class="card-canvas-area">
         <!-- BASE CARD PROFILO -->
@@ -526,9 +526,9 @@
 
           <!-- BIO & TESTI PROFILO CON ALLINEAMENTO -->
           <div class="profile-info-box align-left" id="profile-info-box">
-            <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Nome / Titolo...">Nome / Titolo...</div>
-            <div class="profile-tag editable placeholder-active" contenteditable="true" data-placeholder="@username • info / status">@username • info / status</div>
-            <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="☆°• scrivi la tua bio o descrizione qui... •°☆">☆°• scrivi la tua bio o descrizione qui... •°☆</div>
+            <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Title / Name...">Title / Name...</div>
+            <div class="profile-tag editable placeholder-active" contenteditable="true" data-placeholder="Rating / Genre / Role...">Rating / Genre / Role...</div>
+            <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="Review / Plot / Notes...">Review / Plot / Notes...</div>
           </div>
         </div>
 
@@ -571,7 +571,7 @@
       <input type="file" id="banner-input" style="display:none;" accept="image/*" onchange="loadPhoto(event, 'banner')">
       <input type="file" id="avatar-input" style="display:none;" accept="image/*" onchange="loadPhoto(event, 'avatar')">
 
-      <div class="btn-download" onclick="downloadCard()">Download Profile Card</div>
+      <div class="btn-download" onclick="downloadCard()">Download Card</div>
     </div>
 
     <!-- MODALE SELETTORE COLORE COLOUR-GRID -->
@@ -952,7 +952,7 @@
         });
 
         const link = document.createElement('a');
-        link.download = 'profile-card.png';
+        link.download = 'banner-card.png';
         link.href = canvas.toDataURL('image/png', 1.0);
         link.click();
       });
