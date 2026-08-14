@@ -141,14 +141,14 @@
       position: relative;
     }
 
-    /* PROFILE BASE */
+    /* PROFILE BASE - DIMENSIONI FISSE PER EVITARE SCHIACCIAMENTI */
     .card { 
       width: 320px; 
-      min-height: 380px; 
+      height: 420px; 
       background-color: #ffffff; 
       border: 3px solid #000000; 
       border-radius: 24px; 
-      padding: 0 0 16px 0; 
+      padding: 0; 
       display: flex; 
       flex-direction: column;
       box-sizing: border-box;
@@ -156,12 +156,13 @@
       position: relative;
       overflow: hidden;
       align-items: center;
+      flex-shrink: 0;
     }
 
     /* BANNER / RETTANGOLO COPERTINA */
     .profile-banner {
       width: 100%;
-      height: 110px;
+      height: 120px;
       background-color: rgba(0,0,0,0.05);
       border-bottom: 2px dashed #000000;
       cursor: pointer;
@@ -170,12 +171,13 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     .profile-banner img {
       width: 100%;
       height: 100%;
-      object-fit: cover; /* Garantisce la resa perfetta non schiacciata */
+      object-fit: cover;
       display: block;
     }
 
@@ -191,8 +193,9 @@
       padding: 0 20px;
       margin-top: -45px;
       display: flex;
-      justify-content: center; /* Default centro */
+      justify-content: center;
       z-index: 2;
+      flex-shrink: 0;
     }
 
     .avatar-wrapper.align-left { justify-content: flex-start; }
@@ -203,7 +206,7 @@
       width: 85px;
       height: 85px;
       border: 3px solid #000000;
-      border-radius: 50%; /* Default Cerchio */
+      border-radius: 50%;
       background-color: #ffffff;
       cursor: pointer;
       display: flex;
@@ -212,16 +215,17 @@
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       transition: border-radius 0.2s ease;
+      flex-shrink: 0;
     }
 
     .profile-avatar-box.square {
-      border-radius: 18px; /* Quadrato con angoli arrotondati */
+      border-radius: 18px;
     }
 
     .profile-avatar-box img {
       width: 100%;
       height: 100%;
-      object-fit: cover; /* Foto perfetta e nitida */
+      object-fit: cover;
       display: block;
     }
 
@@ -239,7 +243,8 @@
       display: flex; 
       flex-direction: column; 
       gap: 6px; 
-      text-align: center; /* Default centro */
+      text-align: center;
+      flex: 1;
     }
 
     .card-info-box.align-left { text-align: left; }
@@ -251,7 +256,7 @@
 
     .card-title { font-size: 18px; line-height: 22px; font-weight: 800; word-break: break-word; }
     .card-voto { font-size: 13px; line-height: 16px; font-weight: 700; opacity: 0.8; }
-    .card-review { font-size: 11px; line-height: 15px; margin-top: 6px; word-break: break-word; }
+    .card-review { font-size: 11px; line-height: 15px; margin-top: 4px; word-break: break-word; }
 
     /* TEMI BASE */
     .card.light-card {
@@ -292,7 +297,7 @@
     .dot-black { background-color: #000000; border-color: #000000; }
     .color-dot.active { box-shadow: 0 0 0 3px #000000; }
 
-    /* SUB-MENU CON 4 OPZIONI */
+    /* MENU SUB-OPTIONS */
     .color-sub-menu {
       display: flex;
       flex-wrap: wrap;
@@ -545,7 +550,7 @@
       <div class="btn-download" onclick="downloadCard()">Download Profile</div>
     </div>
 
-    <!-- MODALE SELETTORE COLORE (CONSERVA TUTTE LE PROPRIETÀ ORIGINALI) -->
+    <!-- MODALE SELETTORE COLORE -->
     <div class="picker-modal-overlay" id="picker-modal">
       <div class="picker-container">
         <div class="grid-view" id="picker-grid"></div>
@@ -590,7 +595,7 @@
 
     let currentTarget = 'bg';
     let selectedColor = '#FFFFFF';
-    let currentAlignIndex = 1; // 0: left, 1: center, 2: right
+    let currentAlignIndex = 1;
     const alignments = ['left', 'center', 'right'];
 
     document.querySelectorAll('.editable').forEach(el => {
@@ -655,7 +660,6 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
 
-    /* CARICAMENTO FOTO COPERTINA */
     function loadBanner(e) {
       const file = e.target.files[0];
       if(!file) return;
@@ -669,7 +673,6 @@
       reader.readAsDataURL(file);
     }
 
-    /* CARICAMENTO FOTO PROFILO */
     function loadAvatar(e) {
       const file = e.target.files[0];
       if(!file) return;
@@ -683,13 +686,11 @@
       reader.readAsDataURL(file);
     }
 
-    /* FORMA FOTO PROFILO (CERCHIO / SQUADRATO) */
     function toggleAvatarShape() {
       const avatarBox = document.getElementById('avatar-box');
       avatarBox.classList.toggle('square');
     }
 
-    /* ALLINAMENTO FOTO E TESTO (SINISTRA, CENTRO, DESTRA) */
     function toggleAlignment() {
       currentAlignIndex = (currentAlignIndex + 1) % alignments.length;
       const align = alignments[currentAlignIndex];
@@ -722,7 +723,6 @@
       }
     }
 
-    /* INIZIALIZZAZIONE GRIGLIA COLORI 13x13 ESATTA */
     function initGridColors() {
       const grid = document.getElementById('picker-grid');
       grid.innerHTML = '';
@@ -847,11 +847,12 @@
       closePicker();
     }
 
+    /* DOWNLOAD OTTIMIZZATO PER EVITARE SCHIACCIAMENTO */
     function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
       
-      // Nasconde i testi segnaposto prima dello scatto
+      // Nasconde i testi segnaposto vuoti
       editables.forEach(el => {
         if (el.classList.contains('placeholder-active')) {
           el.dataset.wasPlaceholder = "true";
@@ -860,7 +861,16 @@
         }
       });
 
-      html2canvas(card, { scale: 3, backgroundColor: null, useCORS: true }).then(canvas => {
+      // Opzioni html2canvas ad alta definizione senza deformazioni
+      html2canvas(card, { 
+        scale: 3, 
+        backgroundColor: null, 
+        useCORS: true,
+        width: 320,
+        height: 420,
+        windowWidth: 320,
+        windowHeight: 420
+      }).then(canvas => {
         // Ripristina i testi segnaposto
         editables.forEach(el => {
           if (el.dataset.wasPlaceholder) {
