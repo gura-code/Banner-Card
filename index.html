@@ -141,7 +141,7 @@
       position: relative;
     }
 
-    /* PROFILE BASE - DIMENSIONI FISSE PER EVITARE SCHIACCIAMENTI */
+    /* SCHEDA PROFILO - DIMENSIONI E STRUTTURA FISSE */
     .card { 
       width: 320px; 
       height: 420px; 
@@ -149,35 +149,35 @@
       border: 3px solid #000000; 
       border-radius: 24px; 
       padding: 0; 
-      display: flex; 
-      flex-direction: column;
+      display: block; 
       box-sizing: border-box;
-      transition: all 0.2s ease;
       position: relative;
       overflow: hidden;
-      align-items: center;
       flex-shrink: 0;
     }
 
-    /* BANNER / RETTANGOLO COPERTINA */
+    /* RETTANGOLO COPERTINA (SOTTO, Z-INDEX 1) */
     .profile-banner {
       width: 100%;
-      height: 120px;
+      height: 130px;
       background-color: rgba(0,0,0,0.05);
       border-bottom: 2px dashed #000000;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
       overflow: hidden;
-      flex-shrink: 0;
     }
 
     .profile-banner img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: cover !important; /* Mantiene le proporzioni senza deformare */
+      object-position: center;
       display: block;
     }
 
@@ -187,15 +187,17 @@
       color: #666;
     }
 
-    /* CONTENITORE FOTO PROFILO AL CENTRO/SX/DX */
+    /* CONTENITORE FOTO PROFILO (SOPRA, Z-INDEX 10) */
     .avatar-wrapper {
       width: 100%;
+      position: absolute;
+      top: 85px; /* Sovrapposto esattamente sul bordo del banner */
+      left: 0;
       padding: 0 20px;
-      margin-top: -45px;
       display: flex;
       justify-content: center;
-      z-index: 2;
-      flex-shrink: 0;
+      z-index: 10; /* Garantisce che la foto profil stia SOPRA */
+      pointer-events: none; /* Lascia cliccabile la foto sotto */
     }
 
     .avatar-wrapper.align-left { justify-content: flex-start; }
@@ -213,8 +215,8 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: border-radius 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      pointer-events: auto;
       flex-shrink: 0;
     }
 
@@ -225,7 +227,8 @@
     .profile-avatar-box img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: cover !important; /* Impedisce deformazioni dell'immagine */
+      object-position: center;
       display: block;
     }
 
@@ -239,12 +242,16 @@
     /* INFO E TESTI PROFILO */
     .card-info-box { 
       width: 100%;
-      padding: 12px 20px; 
+      position: absolute;
+      top: 180px;
+      left: 0;
+      bottom: 0;
+      padding: 10px 20px 20px 20px; 
       display: flex; 
       flex-direction: column; 
       gap: 6px; 
       text-align: center;
-      flex: 1;
+      z-index: 5;
     }
 
     .card-info-box.align-left { text-align: left; }
@@ -442,7 +449,6 @@
     .btn-action.cancel { color: #8e8e93; }
     .btn-action.done { color: #ffffff; }
 
-    /* ADATTAMENTO DARK/LIGHT MODE GLOBALE */
     @media (prefers-color-scheme: dark) {
       html, body, .phone-wrapper, #splash, .main-ui {
         background-color: #000000 !important;
@@ -495,13 +501,13 @@
         <!-- SCHEDA PROFILO -->
         <div class="card light-card" id="main-card">
           
-          <!-- RETTANGOLO COPERTINA -->
+          <!-- RETTANGOLO COPERTINA (SOTTO - Z-INDEX 1) -->
           <div class="profile-banner" id="banner-box" onclick="document.getElementById('banner-input').click()">
             <span id="banner-placeholder" class="banner-placeholder">+ Add Cover Photo</span>
             <img id="banner-img" style="display:none;" alt="Cover">
           </div>
 
-          <!-- FOTO PROFILO CIRCOLARE / QUADRATA -->
+          <!-- FOTO PROFILO (SOPRA - Z-INDEX 10) -->
           <div class="avatar-wrapper align-center" id="avatar-wrapper">
             <div class="profile-avatar-box" id="avatar-box" onclick="document.getElementById('avatar-input').click()">
               <span id="avatar-placeholder" class="avatar-placeholder">+ Photo</span>
@@ -523,7 +529,7 @@
           <div class="color-dot dot-black" onclick="setCardTheme('dark')"></div>
         </div>
 
-        <!-- MENU CON LE 4 OPZIONI -->
+        <!-- MENU OPZIONI -->
         <div class="color-sub-menu" id="color-sub-menu">
           <button class="menu-btn" onclick="openCustomPicker('bg')">
             🎨 Background
@@ -543,7 +549,7 @@
         </div>
       </div>
 
-      <!-- INPUT NASCOSTI PER IMMAGINI -->
+      <!-- INPUT NASCOSTI -->
       <input type="file" id="banner-input" style="display:none;" accept="image/*" onchange="loadBanner(event)">
       <input type="file" id="avatar-input" style="display:none;" accept="image/*" onchange="loadAvatar(event)">
 
@@ -847,12 +853,11 @@
       closePicker();
     }
 
-    /* DOWNLOAD OTTIMIZZATO PER EVITARE SCHIACCIAMENTO */
+    /* DOWNLOAD SENZA SCHIACCIAMENTI */
     function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
       
-      // Nasconde i testi segnaposto vuoti
       editables.forEach(el => {
         if (el.classList.contains('placeholder-active')) {
           el.dataset.wasPlaceholder = "true";
@@ -861,17 +866,17 @@
         }
       });
 
-      // Opzioni html2canvas ad alta definizione senza deformazioni
       html2canvas(card, { 
         scale: 3, 
         backgroundColor: null, 
         useCORS: true,
         width: 320,
         height: 420,
+        scrollX: 0,
+        scrollY: 0,
         windowWidth: 320,
         windowHeight: 420
       }).then(canvas => {
-        // Ripristina i testi segnaposto
         editables.forEach(el => {
           if (el.dataset.wasPlaceholder) {
             el.innerText = el.getAttribute('data-placeholder');
@@ -889,3 +894,4 @@
   </script>
 </body>
 </html>
+
