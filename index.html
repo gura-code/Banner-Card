@@ -155,7 +155,7 @@
       position: relative;
     }
 
-    /* BANNER SUPERIORE HD */
+    /* BANNER SUPERIORE (RETTANGOLARE) */
     .banner-box {
       width: 100%;
       height: 100px;
@@ -173,7 +173,8 @@
     .banner-box img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: cover !important;
+      object-position: center !important;
       display: none;
       image-rendering: -webkit-optimize-contrast;
     }
@@ -184,7 +185,7 @@
       color: #666666;
     }
 
-    /* AVATAR PROFILO HD */
+    /* AVATAR PROFILO (CIRCOLARE / SQUADRATO) */
     .avatar-wrapper {
       width: 100%;
       height: 35px;
@@ -214,7 +215,8 @@
     .avatar-box img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: cover !important;
+      object-position: center !important;
       display: none;
       image-rendering: -webkit-optimize-contrast;
     }
@@ -619,7 +621,7 @@
     let currentTarget = 'bg';
     let selectedColor = '#FFFFFF';
 
-    // Gestione campi modificabili e segnaposto (LOGICA ORIGINALE)
+    // Gestione campi modificabili e segnaposto
     document.querySelectorAll('.editable').forEach(el => {
       el.addEventListener('focus', function() {
         const ph = this.getAttribute('data-placeholder');
@@ -853,12 +855,12 @@
       closePicker();
     }
 
-    // DOWNLOAD CARD CON RENDERING HD ULTRA-NITIDO
+    // DOWNLOAD CARD CON IMMAGINI PROPORZIONALI SENZA SCHIACCIARE
     function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
       
-      // LOGICA ORIGINALE DEL TESTO: Nasconde i testi se vuoti o non modificati dall'utente
+      // Nasconde i testi vuoti o placeholder
       editables.forEach(el => {
         const ph = el.getAttribute('data-placeholder');
         const content = el.innerText.trim();
@@ -868,8 +870,7 @@
         }
       });
 
-      // Bypassa la compressione di html2canvas applicando scaling nativo al canvas
-      const scaleFactor = 4; // Qualità Ultra HD
+      const scaleFactor = 4; // HD Quality
       
       html2canvas(card, { 
         scale: scaleFactor,
@@ -879,14 +880,21 @@
         logging: false,
         imageTimeout: 0,
         onclone: (clonedDoc) => {
-          // Forza la massima nitidezza visiva degli elementi immagine nel clone prima dello scatto
-          const clonedImages = clonedDoc.querySelectorAll('img');
-          clonedImages.forEach(img => {
-            img.style.imageRendering = 'crisp-edges';
-          });
+          // Forza object-fit su entrambe le immagini nel DOM clonato
+          const clonedBanner = clonedDoc.getElementById('banner-img');
+          const clonedAvatar = clonedDoc.getElementById('avatar-img');
+
+          if (clonedBanner) {
+            clonedBanner.style.objectFit = 'cover';
+            clonedBanner.style.objectPosition = 'center';
+          }
+          if (clonedAvatar) {
+            clonedAvatar.style.objectFit = 'cover';
+            clonedAvatar.style.objectPosition = 'center';
+          }
         }
       }).then(canvas => {
-        // Ripristina la visibilità dei testi dopo il download
+        // Ripristina la visibilità dei testi
         editables.forEach(el => {
           if (el.dataset.hiddenForDownload) {
             el.style.visibility = 'visible';
