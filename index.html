@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -71,6 +71,7 @@
     }
 
     .col { flex: 1; display: flex; flex-direction: column; }
+    
     .up { animation: scrollUp 22s linear infinite; }
     .down { animation: scrollDown 22s linear infinite; }
     
@@ -102,6 +103,7 @@
       margin-bottom: 50px; 
       text-align: center;
       letter-spacing: -3px;
+      text-shadow: 0 4px 15px rgba(255, 255, 255, 0.9), 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .btn-start { 
@@ -115,142 +117,201 @@
       cursor: pointer;
     }
 
-    /* UI PRINCIPALE CON SCROLL */
+    /* UI PRINCIPALE */
     .main-ui { 
       display: none; 
       width: 100%; 
       height: 100%; 
       flex-direction: column; 
-      padding: 15px; 
-      justify-content: flex-start; 
+      padding: 20px; 
+      justify-content: space-between; 
       align-items: center; 
       background-color: #ffffff;
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      gap: 15px;
     }
 
-    .profile-canvas-area { 
+    .card-canvas-area { 
       width: 100%; 
+      flex: 1; 
       display: flex; 
       flex-direction: column; 
       align-items: center; 
       justify-content: center; 
-      padding-top: 5px;
-      gap: 12px; 
+      gap: 15px; 
       position: relative;
     }
 
-    /* PROFILO CARD CONTAINER */
-    .profile-card { 
+    /* PROFILE BASE */
+    .card { 
       width: 320px; 
-      height: 420px; 
+      min-height: 380px; 
       background-color: #ffffff; 
       border: 3px solid #000000; 
       border-radius: 24px; 
-      overflow: hidden;
+      padding: 0 0 16px 0; 
       display: flex; 
-      flex-direction: column; 
+      flex-direction: column;
       box-sizing: border-box;
+      transition: all 0.2s ease;
       position: relative;
-      flex-shrink: 0;
+      overflow: hidden;
+      align-items: center;
     }
 
-    /* BANNER SUPERIORE */
+    /* BANNER / RETTANGOLO COPERTINA */
     .profile-banner {
       width: 100%;
-      height: 120px;
-      background-color: #f0f0f0;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-      position: relative;
+      height: 110px;
+      background-color: rgba(0,0,0,0.05);
+      border-bottom: 2px dashed #000000;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Garantisce la resa perfetta non schiacciata */
+      display: block;
     }
 
     .banner-placeholder {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
-      color: #666666;
+      color: #666;
     }
 
-    /* FOTO PROFILO CIRCOLARE */
-    .profile-avatar-container {
-      position: relative;
-      margin-top: -40px;
-      padding: 0 20px;
-      display: flex;
+    /* CONTENITORE FOTO PROFILO AL CENTRO/SX/DX */
+    .avatar-wrapper {
       width: 100%;
-      z-index: 3;
+      padding: 0 20px;
+      margin-top: -45px;
+      display: flex;
+      justify-content: center; /* Default centro */
+      z-index: 2;
     }
 
-    .profile-avatar-container.align-left { justify-content: flex-start; }
-    .profile-avatar-container.align-center { justify-content: center; }
-    .profile-avatar-container.align-right { justify-content: flex-end; }
+    .avatar-wrapper.align-left { justify-content: flex-start; }
+    .avatar-wrapper.align-center { justify-content: center; }
+    .avatar-wrapper.align-right { justify-content: flex-end; }
 
-    .avatar-circle {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
+    .profile-avatar-box {
+      width: 85px;
+      height: 85px;
       border: 3px solid #000000;
+      border-radius: 50%; /* Default Cerchio */
       background-color: #ffffff;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      cursor: pointer;
-      flex-shrink: 0;
-      position: relative;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: border-radius 0.2s ease;
+    }
+
+    .profile-avatar-box.square {
+      border-radius: 18px; /* Quadrato con angoli arrotondati */
+    }
+
+    .profile-avatar-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Foto perfetta e nitida */
+      display: block;
     }
 
     .avatar-placeholder {
       font-size: 10px;
       font-weight: 700;
+      color: #666;
       text-align: center;
-      color: #666666;
     }
 
-    /* SEZIONE INFORMAZIONI TESTUALI */
-    .profile-info-box {
-      flex: 1;
-      padding: 10px 20px 15px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      overflow: hidden;
+    /* INFO E TESTI PROFILO */
+    .card-info-box { 
+      width: 100%;
+      padding: 12px 20px; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 6px; 
+      text-align: center; /* Default centro */
     }
+
+    .card-info-box.align-left { text-align: left; }
+    .card-info-box.align-center { text-align: center; }
+    .card-info-box.align-right { text-align: right; }
 
     .editable { outline: none; -webkit-tap-highlight-color: transparent; }
     .editable.placeholder-active { opacity: 0.6; }
 
-    .profile-name { font-size: 18px; font-weight: 800; line-height: 22px; word-break: break-word; color: #000000; }
-    .profile-bio { font-size: 12px; font-weight: 600; line-height: 16px; word-break: break-word; color: #333333; }
+    .card-title { font-size: 18px; line-height: 22px; font-weight: 800; word-break: break-word; }
+    .card-voto { font-size: 13px; line-height: 16px; font-weight: 700; opacity: 0.8; }
+    .card-review { font-size: 11px; line-height: 15px; margin-top: 6px; word-break: break-word; }
 
-    /* MENU SUB-OPTIONS */
+    /* TEMI BASE */
+    .card.light-card {
+      background-color: #ffffff;
+      border-color: #000000;
+    }
+    .card.light-card .card-title,
+    .card.light-card .card-voto,
+    .card.light-card .card-review { color: #000000; }
+
+    .card.dark-card {
+      background-color: #000000;
+      border-color: #ffffff;
+    }
+    .card.dark-card .card-title,
+    .card.dark-card .card-voto,
+    .card.dark-card .card-review { color: #ffffff; }
+
+    /* PALLINE BIANCO / NERO */
+    .color-picker {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .color-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #000000;
+      transition: transform 0.15s ease;
+    }
+
+    .color-dot:active { transform: scale(0.9); }
+    .dot-white { background-color: #ffffff; }
+    .dot-black { background-color: #000000; border-color: #000000; }
+    .color-dot.active { box-shadow: 0 0 0 3px #000000; }
+
+    /* SUB-MENU CON 4 OPZIONI */
     .color-sub-menu {
       display: flex;
-      gap: 5px;
-      background: #111111;
-      padding: 6px;
-      border-radius: 14px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
       flex-wrap: wrap;
       justify-content: center;
+      gap: 6px;
+      background: #111111;
+      padding: 8px;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 330px;
     }
 
     .menu-btn {
       background: #222222;
       color: #ffffff;
       border: 1px solid #333333;
-      padding: 7px 8px;
-      border-radius: 10px;
+      padding: 7px 10px;
+      border-radius: 8px;
       font-size: 10px;
       font-weight: 700;
       cursor: pointer;
@@ -259,26 +320,19 @@
       gap: 4px;
     }
 
-    .menu-btn svg {
-      width: 13px;
-      height: 13px;
-      fill: none;
-      stroke: #ffffff;
-      stroke-width: 2.5;
-      stroke-linecap: round;
-    }
-    
+    .menu-btn:active { background: #333333; }
+
     .btn-download { 
-      width: 320px; 
+      width: 100%; 
       background-color: #000000; 
       color: #ffffff; 
-      padding: 12px; 
+      padding: 14px; 
       border-radius: 12px; 
       font-weight: 800; 
       text-align: center; 
+      margin-top: 10px;
+      margin-bottom: 10px; 
       cursor: pointer; 
-      flex-shrink: 0;
-      margin-bottom: 10px;
     }
 
     /* MODALE SELETTORE COLORE */
@@ -382,9 +436,34 @@
     .btn-action { cursor: pointer; padding: 4px 10px; }
     .btn-action.cancel { color: #8e8e93; }
     .btn-action.done { color: #ffffff; }
+
+    /* ADATTAMENTO DARK/LIGHT MODE GLOBALE */
+    @media (prefers-color-scheme: dark) {
+      html, body, .phone-wrapper, #splash, .main-ui {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+      }
+      .content-overlay { background: rgba(0, 0, 0, 0.75) !important; }
+      .logo-main, div[style*="font-weight:800"] { color: #ffffff !important; }
+      .btn-start, .btn-download { background-color: #ffffff !important; color: #000000 !important; }
+      .sticker img { filter: invert(1); }
+      .color-dot { border-color: #ffffff; }
+      .color-dot.active { box-shadow: 0 0 0 3px #ffffff; }
+    }
+
+    @media (prefers-color-scheme: light) {
+      html, body, .phone-wrapper, #splash, .main-ui {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+      }
+      .content-overlay { background: rgba(255, 255, 255, 0.75) !important; }
+      .logo-main { color: #000000 !important; }
+      .btn-start, .btn-download { background-color: #000000 !important; color: #ffffff !important; }
+      .sticker img { filter: none; }
+    }
   </style>
 </head>
-<body>
+<body class="light-mode-env">
 
   <div class="phone-wrapper">
     <!-- SPLASH SCREEN -->
@@ -405,52 +484,68 @@
 
     <!-- UI PRINCIPALE -->
     <div class="main-ui" id="main-ui">
-      <div class="profile-canvas-area">
-        <!-- PAGINA PROFILO -->
-        <div class="profile-card" id="main-profile">
-          <div class="profile-banner" id="banner-box" onclick="document.getElementById('banner-file-input').click()">
-            <div id="banner-placeholder" class="banner-placeholder">+ Banner Photo</div>
-          </div>
+      <div style="font-weight:800; margin-top:10px; font-size: 1.2rem;">Create Profile</div>
+      
+      <div class="card-canvas-area">
+        <!-- SCHEDA PROFILO -->
+        <div class="card light-card" id="main-card">
           
-          <div class="profile-avatar-container align-center" id="avatar-align-container">
-            <div class="avatar-circle" id="avatar-box" onclick="event.stopPropagation(); document.getElementById('avatar-file-input').click()">
-              <div id="avatar-placeholder" class="avatar-placeholder">+ Photo</div>
+          <!-- RETTANGOLO COPERTINA -->
+          <div class="profile-banner" id="banner-box" onclick="document.getElementById('banner-input').click()">
+            <span id="banner-placeholder" class="banner-placeholder">+ Add Cover Photo</span>
+            <img id="banner-img" style="display:none;" alt="Cover">
+          </div>
+
+          <!-- FOTO PROFILO CIRCOLARE / QUADRATA -->
+          <div class="avatar-wrapper align-center" id="avatar-wrapper">
+            <div class="profile-avatar-box" id="avatar-box" onclick="document.getElementById('avatar-input').click()">
+              <span id="avatar-placeholder" class="avatar-placeholder">+ Photo</span>
+              <img id="avatar-img" style="display:none;" alt="Profile">
             </div>
           </div>
 
-          <div class="profile-info-box">
-            <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Your Name...">Your Name...</div>
-            <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="Write your bio, description, or status here...">Write your bio, description, or status here...</div>
+          <!-- TESTI DEL PROFILO -->
+          <div class="card-info-box align-center" id="info-box">
+            <div class="card-title editable placeholder-active" contenteditable="true" data-placeholder="Name / Username...">Name / Username...</div>
+            <div class="card-voto editable placeholder-active" contenteditable="true" data-placeholder="Bio / Role / Tagline...">Bio / Role / Tagline...</div>
+            <div class="card-review editable placeholder-active" contenteditable="true" data-placeholder="More details / Description...">More details / Description...</div>
           </div>
         </div>
 
-        <!-- MENU OPZIONI -->
-        <div class="color-sub-menu">
+        <!-- PALLINE BIANCO / NERO -->
+        <div class="color-picker">
+          <div class="color-dot dot-white active" onclick="setCardTheme('light')"></div>
+          <div class="color-dot dot-black" onclick="setCardTheme('dark')"></div>
+        </div>
+
+        <!-- MENU CON LE 4 OPZIONI -->
+        <div class="color-sub-menu" id="color-sub-menu">
           <button class="menu-btn" onclick="openCustomPicker('bg')">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
-            Card Color
+            🎨 Background
           </button>
-          <button class="menu-btn" onclick="openCustomPicker('line')">
-            <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
-            Borders
+          <button class="menu-btn" onclick="openCustomPicker('border')">
+            🖼️ Borders
           </button>
           <button class="menu-btn" onclick="openCustomPicker('text')">
-            <svg viewBox="0 0 24 24"><path d="M4 7V5h16v2M12 5v14M9 19h6"></path></svg>
-            Text Color
+            ✍️ Text Color
           </button>
-          <button class="menu-btn" onclick="cycleAvatarAlignment()">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle></svg>
-            Align Photo
+          <button class="menu-btn" onclick="toggleAvatarShape()">
+            🔄 Shape
+          </button>
+          <button class="menu-btn" onclick="toggleAlignment()">
+            📐 Align
           </button>
         </div>
       </div>
 
-      <input type="file" id="banner-file-input" style="display:none;" accept="image/*" onchange="loadBanner(event)">
-      <input type="file" id="avatar-file-input" style="display:none;" accept="image/*" onchange="loadAvatar(event)">
-      <div class="btn-download" onclick="downloadProfile()">Download Profile</div>
+      <!-- INPUT NASCOSTI PER IMMAGINI -->
+      <input type="file" id="banner-input" style="display:none;" accept="image/*" onchange="loadBanner(event)">
+      <input type="file" id="avatar-input" style="display:none;" accept="image/*" onchange="loadAvatar(event)">
+
+      <div class="btn-download" onclick="downloadCard()">Download Profile</div>
     </div>
 
-    <!-- MODALE SELETTORE COLORE -->
+    <!-- MODALE SELETTORE COLORE (CONSERVA TUTTE LE PROPRIETÀ ORIGINALI) -->
     <div class="picker-modal-overlay" id="picker-modal">
       <div class="picker-container">
         <div class="grid-view" id="picker-grid"></div>
@@ -475,6 +570,13 @@
   </div>
 
   <script>
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.className = 'dark-mode-env';
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      document.body.className = event.matches ? 'dark-mode-env' : 'light-mode-env';
+    });
+
     const images = [
       "1000072971-removebg-preview.png", "1000072972-removebg-preview.png",
       "1000072974-removebg-preview.png", "1000072977-removebg-preview.png",
@@ -488,8 +590,8 @@
 
     let currentTarget = 'bg';
     let selectedColor = '#FFFFFF';
-    let avatarAlignments = ['align-left', 'align-center', 'align-right'];
-    let currentAlignIndex = 1;
+    let currentAlignIndex = 1; // 0: left, 1: center, 2: right
+    const alignments = ['left', 'center', 'right'];
 
     document.querySelectorAll('.editable').forEach(el => {
       el.addEventListener('focus', function() {
@@ -552,70 +654,75 @@
       document.getElementById('splash').style.display = 'none'; 
       document.getElementById('main-ui').style.display = 'flex'; 
     }
-    
-    function processImage(file, targetWidth, targetHeight, callback) {
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const scale = 4;
-          canvas.width = targetWidth * scale;
-          canvas.height = targetHeight * scale;
-          
-          const ctx = canvas.getContext('2d');
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
 
-          const imgRatio = img.width / img.height;
-          const targetRatio = canvas.width / canvas.height;
-          let w = canvas.width;
-          let h = canvas.height;
-          let x = 0;
-          let y = 0;
-
-          if (imgRatio > targetRatio) {
-            w = canvas.height * imgRatio;
-            x = (canvas.width - w) / 2;
-          } else {
-            h = canvas.width / imgRatio;
-            y = (canvas.height - h) / 2;
-          }
-
-          ctx.drawImage(img, x, y, w, h);
-          callback(canvas.toDataURL('image/png', 1.0));
-        };
-        img.src = event.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
+    /* CARICAMENTO FOTO COPERTINA */
     function loadBanner(e) {
       const file = e.target.files[0];
       if(!file) return;
-      processImage(file, 320, 120, function(highResUrl) {
-        const bannerBox = document.getElementById('banner-box');
-        bannerBox.style.backgroundImage = `url('${highResUrl}')`;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = document.getElementById('banner-img');
+        img.src = event.target.result;
+        img.style.display = 'block';
         document.getElementById('banner-placeholder').style.display = 'none';
-      });
+      }
+      reader.readAsDataURL(file);
     }
 
+    /* CARICAMENTO FOTO PROFILO */
     function loadAvatar(e) {
       const file = e.target.files[0];
       if(!file) return;
-      processImage(file, 80, 80, function(highResUrl) {
-        const avatarBox = document.getElementById('avatar-box');
-        avatarBox.style.backgroundImage = `url('${highResUrl}')`;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = document.getElementById('avatar-img');
+        img.src = event.target.result;
+        img.style.display = 'block';
         document.getElementById('avatar-placeholder').style.display = 'none';
-      });
+      }
+      reader.readAsDataURL(file);
     }
 
-    function cycleAvatarAlignment() {
-      currentAlignIndex = (currentAlignIndex + 1) % avatarAlignments.length;
-      const container = document.getElementById('avatar-align-container');
-      container.className = 'profile-avatar-container ' + avatarAlignments[currentAlignIndex];
+    /* FORMA FOTO PROFILO (CERCHIO / SQUADRATO) */
+    function toggleAvatarShape() {
+      const avatarBox = document.getElementById('avatar-box');
+      avatarBox.classList.toggle('square');
     }
 
+    /* ALLINAMENTO FOTO E TESTO (SINISTRA, CENTRO, DESTRA) */
+    function toggleAlignment() {
+      currentAlignIndex = (currentAlignIndex + 1) % alignments.length;
+      const align = alignments[currentAlignIndex];
+
+      const avatarWrap = document.getElementById('avatar-wrapper');
+      const infoBox = document.getElementById('info-box');
+
+      avatarWrap.className = `avatar-wrapper align-${align}`;
+      infoBox.className = `card-info-box align-${align}`;
+    }
+
+    function setCardTheme(theme) {
+      const card = document.getElementById('main-card');
+      const dots = document.querySelectorAll('.color-dot');
+      
+      card.style.backgroundColor = '';
+      card.style.borderColor = '';
+      document.querySelectorAll('.card-title, .card-voto, .card-review').forEach(el => el.style.color = '');
+      document.getElementById('avatar-box').style.borderColor = '';
+      document.getElementById('banner-box').style.borderColor = '';
+
+      if (theme === 'dark') {
+        card.className = 'card dark-card';
+        dots[0].classList.remove('active');
+        dots[1].classList.add('active');
+      } else {
+        card.className = 'card light-card';
+        dots[0].classList.add('active');
+        dots[1].classList.remove('active');
+      }
+    }
+
+    /* INIZIALIZZAZIONE GRIGLIA COLORI 13x13 ESATTA */
     function initGridColors() {
       const grid = document.getElementById('picker-grid');
       grid.innerHTML = '';
@@ -652,16 +759,18 @@
       initGridColors();
       document.getElementById('picker-modal').style.display = 'flex';
       
-      const profileCard = document.getElementById('main-profile');
+      const card = document.getElementById('main-card');
       let currentHex = '#FFFFFF';
       
       if (target === 'bg') {
-        currentHex = rgbToHex(window.getComputedStyle(profileCard).backgroundColor);
-      } else if (target === 'line') {
-        currentHex = rgbToHex(window.getComputedStyle(profileCard).borderColor);
+        let bg = window.getComputedStyle(card).backgroundColor;
+        currentHex = rgbToHex(bg);
+      } else if (target === 'border') {
+        let borderCol = window.getComputedStyle(card).borderColor;
+        currentHex = rgbToHex(borderCol);
       } else if (target === 'text') {
-        const nameEl = profileCard.querySelector('.profile-name');
-        currentHex = rgbToHex(window.getComputedStyle(nameEl).color);
+        let titleCol = window.getComputedStyle(card.querySelector('.card-title')).color;
+        currentHex = rgbToHex(titleCol);
       }
       
       selectColor(currentHex);
@@ -722,25 +831,27 @@
     }
 
     function applyPickerColor() {
-      const profileCard = document.getElementById('main-profile');
+      const card = document.getElementById('main-card');
+      
       if (currentTarget === 'bg') {
-        profileCard.style.backgroundColor = selectedColor;
-      } else if (currentTarget === 'line') {
-        profileCard.style.borderColor = selectedColor;
-        document.getElementById('banner-box').style.borderColor = selectedColor;
+        card.classList.remove('light-card', 'dark-card');
+        card.style.backgroundColor = selectedColor;
+      } else if (currentTarget === 'border') {
+        card.style.setProperty('border-color', selectedColor, 'important');
         document.getElementById('avatar-box').style.borderColor = selectedColor;
+        document.getElementById('banner-box').style.borderBottomColor = selectedColor;
       } else if (currentTarget === 'text') {
-        document.querySelectorAll('.profile-name, .profile-bio').forEach(el => el.style.color = selectedColor);
-        document.getElementById('banner-placeholder').style.color = selectedColor;
-        document.getElementById('avatar-placeholder').style.color = selectedColor;
+        card.querySelectorAll('.card-title, .card-voto, .card-review').forEach(el => el.style.color = selectedColor);
       }
+      
       closePicker();
     }
 
-    function downloadProfile() {
-      const profileCard = document.getElementById('main-profile');
-      const editables = profileCard.querySelectorAll('.editable');
+    function downloadCard() {
+      const card = document.getElementById('main-card');
+      const editables = card.querySelectorAll('.editable');
       
+      // Nasconde i testi segnaposto prima dello scatto
       editables.forEach(el => {
         if (el.classList.contains('placeholder-active')) {
           el.dataset.wasPlaceholder = "true";
@@ -749,13 +860,8 @@
         }
       });
 
-      html2canvas(profileCard, { 
-        scale: 4, 
-        backgroundColor: null, 
-        useCORS: true,
-        allowTaint: true,
-        logging: false
-      }).then(canvas => {
+      html2canvas(card, { scale: 3, backgroundColor: null, useCORS: true }).then(canvas => {
+        // Ripristina i testi segnaposto
         editables.forEach(el => {
           if (el.dataset.wasPlaceholder) {
             el.innerText = el.getAttribute('data-placeholder');
@@ -766,7 +872,7 @@
 
         const link = document.createElement('a');
         link.download = 'profile.png';
-        link.href = canvas.toDataURL('image/png', 1.0);
+        link.href = canvas.toDataURL('image/png');
         link.click();
       });
     }
