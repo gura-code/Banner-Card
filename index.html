@@ -137,7 +137,7 @@
       flex-direction: column; 
       align-items: center; 
       justify-content: center; 
-      gap: 15px; 
+      gap: 12px; 
       position: relative;
     }
 
@@ -231,12 +231,16 @@
       color: #666666;
     }
 
-    /* TESTI PROFILO */
+    /* TESTI PROFILO & ALLINEAMENTO DINAMICO */
     .profile-info-box { 
       display: flex; 
       flex-direction: column; 
       gap: 6px; 
     }
+
+    .profile-info-box.align-left { text-align: left; }
+    .profile-info-box.align-center { text-align: center; }
+    .profile-info-box.align-right { text-align: right; }
 
     .editable { 
       outline: none; 
@@ -342,7 +346,7 @@
       border-radius: 16px; 
       font-weight: 800; 
       text-align: center; 
-      margin-top: 10px;
+      margin-top: 6px;
       margin-bottom: 5px; 
       cursor: pointer; 
     }
@@ -496,7 +500,7 @@
 
     <!-- UI PRINCIPALE -->
     <div class="main-ui" id="main-ui">
-      <div style="font-weight:800; margin-top:10px; font-size: 1.2rem;">Create Profile</div>
+      <div style="font-weight:800; margin-top:8px; font-size: 1.1rem;">Create Profile</div>
       
       <div class="card-canvas-area">
         <!-- BASE CARD PROFILO -->
@@ -516,8 +520,8 @@
             </div>
           </div>
 
-          <!-- BIO & TESTI PROFILO AGGIORNATI -->
-          <div class="profile-info-box">
+          <!-- BIO & TESTI PROFILO CON ALLINEAMENTO -->
+          <div class="profile-info-box align-left" id="profile-info-box">
             <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Nome / Titolo...">Nome / Titolo...</div>
             <div class="profile-tag editable placeholder-active" contenteditable="true" data-placeholder="@username • info / status">@username • info / status</div>
             <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="☆°• scrivi la tua bio o descrizione qui... •°☆">☆°• scrivi la tua bio o descrizione qui... •°☆</div>
@@ -530,7 +534,7 @@
           <div class="color-dot dot-black" onclick="setCardTheme('dark')"></div>
         </div>
 
-        <!-- MENU SUB-OPTIONS GRIGLIA OPTION BUTTONS -->
+        <!-- MENU SUB-OPTIONS GRIGLIA COMPATTA -->
         <div class="color-sub-menu" id="color-sub-menu">
           <button class="menu-btn" onclick="openCustomPicker('bg')">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
@@ -546,7 +550,11 @@
           </button>
           <button class="menu-btn" onclick="cycleAvatarPosition()">
             <svg viewBox="0 0 24 24"><path d="M17 10L12 15L7 10"></path></svg>
-            Position: <span id="pos-label">Left</span>
+            Avatar: <span id="pos-label">Left</span>
+          </button>
+          <button class="menu-btn" onclick="cycleTextAlign()" style="grid-column: span 2;">
+            <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="15" y2="12"></line><line x1="3" y1="18" x2="18" y2="18"></line></svg>
+            Text Align: <span id="align-label">Left</span>
           </button>
         </div>
       </div>
@@ -601,6 +609,9 @@
     let selectedColor = '#FFFFFF';
     let avatarPositions = ['left', 'center', 'right'];
     let currentPosIndex = 0;
+    
+    let textAlignments = ['left', 'center', 'right'];
+    let currentAlignIndex = 0;
 
     // Gestione campi modificabili e segnaposto
     document.querySelectorAll('.editable').forEach(el => {
@@ -735,6 +746,19 @@
       
       box.classList.add('pos-' + nextPos);
       label.innerText = nextPos.charAt(0).toUpperCase() + nextPos.slice(1);
+    }
+
+    // Alterna Allineamento Testo: Sinistra -> Centro -> Destra
+    function cycleTextAlign() {
+      const infoBox = document.getElementById('profile-info-box');
+      const label = document.getElementById('align-label');
+      infoBox.classList.remove('align-left', 'align-center', 'align-right');
+
+      currentAlignIndex = (currentAlignIndex + 1) % textAlignments.length;
+      const nextAlign = textAlignments[currentAlignIndex];
+
+      infoBox.classList.add('align-' + nextAlign);
+      label.innerText = nextAlign.charAt(0).toUpperCase() + nextAlign.slice(1);
     }
 
     function setCardTheme(theme) {
@@ -918,4 +942,3 @@
   </script>
 </body>
 </html>
-
