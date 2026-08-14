@@ -568,14 +568,14 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    // Funzione di elaborazione immagini ad altissima definizione per la card ingrandita (640x240 e 160x160)
+    // Funzione di elaborazione immagini potenziata a scala 8x per evitare qualsiasi sgranatura all'esportazione
     function processImage(file, targetWidth, targetHeight, callback) {
       const reader = new FileReader();
       reader.onload = function(event) {
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
-          const scale = 4; // Fattore di scala elevato per evitare qualsiasi sgranatura
+          const scale = 8; // Fattore di scala altissimo per massima nitidezza delle foto inserite
           canvas.width = targetWidth * scale;
           canvas.height = targetHeight * scale;
           
@@ -765,7 +765,7 @@
         }
       });
 
-      html2canvas(profileCard, { scale: 4, backgroundColor: null, useCORS: true }).then(canvas => {
+      html2canvas(profileCard, { scale: 6, backgroundColor: null, useCORS: true }).then(canvas => {
         editables.forEach(el => {
           if (el.dataset.wasPlaceholder) {
             el.innerText = el.getAttribute('data-placeholder');
@@ -783,4 +783,3 @@
   </script>
 </body>
 </html>
-
