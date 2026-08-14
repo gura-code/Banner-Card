@@ -153,7 +153,7 @@
       box-sizing: border-box;
       transition: all 0.2s ease;
       position: relative;
-      margin-top: 20px; /* Spazio extra per evitare che l'avatar spunti fuori sopra */
+      margin-top: 20px;
     }
 
     /* BANNER SUPERIORE CON LINEA CONTINUA */
@@ -185,7 +185,7 @@
       color: #666666;
     }
 
-    /* AVATAR PROFILO CON SPOSTAMENTO DINAMICO */
+    /* AVATAR PROFILO CON SPOSTAMENTO DINAMICO (SENZA BORDO NERO) */
     .avatar-wrapper {
       width: 100%;
       height: 40px;
@@ -196,7 +196,7 @@
     .avatar-box {
       width: 75px;
       height: 75px;
-      border: 3px solid #000000;
+      border: none; /* Rimosso il bordo nero */
       border-radius: 50%;
       cursor: pointer;
       background-color: #ffffff;
@@ -208,6 +208,7 @@
       position: absolute;
       top: -38px;
       z-index: 5;
+      overflow: hidden; /* Assicura che l'immagine segua perfettamente la forma */
     }
 
     /* POSIZIONI AVATAR */
@@ -221,7 +222,7 @@
       object-fit: cover;
       object-position: center;
       display: none;
-      border-radius: inherit; /* Segue il bordo tondo o quadrato del padre */
+      border-radius: inherit;
     }
 
     .avatar-box.square {
@@ -275,7 +276,7 @@
     .profile-card.dark-card .profile-tag,
     .profile-card.dark-card .profile-bio { color: #ffffff; }
     .profile-card.dark-card .banner-box { border-color: #ffffff; }
-    .profile-card.dark-card .avatar-box { border-color: #ffffff; background-color: #000000; }
+    .profile-card.dark-card .avatar-box { background-color: #000000; }
     .profile-card.dark-card .banner-placeholder, 
     .profile-card.dark-card .avatar-placeholder { color: #cccccc; }
 
@@ -766,7 +767,6 @@
       card.style.borderColor = '';
       document.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = '');
       document.querySelector('.banner-box').style.borderColor = '';
-      document.getElementById('avatar-box').style.borderColor = '';
 
       if (theme === 'dark') {
         card.className = 'profile-card dark-card';
@@ -895,7 +895,6 @@
       } else if (currentTarget === 'line') {
         card.style.setProperty('border-color', selectedColor, 'important');
         document.querySelector('.banner-box').style.borderColor = selectedColor;
-        document.getElementById('avatar-box').style.borderColor = selectedColor;
       } else if (currentTarget === 'text') {
         card.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = selectedColor);
       }
