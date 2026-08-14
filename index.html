@@ -153,6 +153,7 @@
       box-sizing: border-box;
       transition: all 0.2s ease;
       position: relative;
+      overflow: visible; /* Mantiene visibile l'avatar sopra il bordo */
     }
 
     /* BANNER SUPERIORE CON LINEA CONTINUA */
@@ -672,26 +673,63 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    // Caricamento diretto delle foto senza alterazioni o ritagli forzati JS
+    // Auto Crop delle immagini senza distorsione
+    function autoCropImageToContainer(imageFile, targetWidth, targetHeight, callback) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          const scale = 3;
+          canvas.width = targetWidth * scale;
+          canvas.height = targetHeight * scale;
+
+          const targetAspect = targetWidth / targetHeight;
+          const imgAspect = img.naturalWidth / img.naturalHeight;
+
+          let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+
+          if (imgAspect > targetAspect) {
+            sw = img.naturalHeight * targetAspect;
+            sx = (img.naturalWidth - sw) / 2;
+          } else {
+            sh = img.naturalWidth / targetAspect;
+            sy = (img.naturalHeight - sh) / 2;
+          }
+
+          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+          callback(canvas.toDataURL('image/png', 1.0));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(imageFile);
+    }
+
     function loadPhoto(e, type) {
       const file = e.target.files[0];
       if(!file) return;
 
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        if(type === 'banner') {
+      if(type === 'banner') {
+        const box = document.getElementById('banner-box');
+        const rect = box.getBoundingClientRect();
+        autoCropImageToContainer(file, rect.width, rect.height, function(croppedDataUrl) {
           const bannerImg = document.getElementById('banner-img');
-          bannerImg.src = event.target.result;
+          bannerImg.src = croppedDataUrl;
           bannerImg.style.display = 'block';
           document.getElementById('banner-placeholder').style.display = 'none';
-        } else if(type === 'avatar') {
+        });
+      } else if(type === 'avatar') {
+        const box = document.getElementById('avatar-box');
+        const rect = box.getBoundingClientRect();
+        autoCropImageToContainer(file, rect.width, rect.height, function(croppedDataUrl) {
           const avatarImg = document.getElementById('avatar-img');
-          avatarImg.src = event.target.result;
+          avatarImg.src = croppedDataUrl;
           avatarImg.style.display = 'block';
           document.getElementById('avatar-placeholder').style.display = 'none';
-        }
-      };
-      reader.readAsDataURL(file);
+        });
+      }
     }
 
     // Alterna tra Cerchio e Quadrato
@@ -901,4 +939,3 @@
   </script>
 </body>
 </html>
-
