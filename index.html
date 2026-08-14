@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
-  <title>Pocket Profile</title>
+  <title>Pocket Card</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
@@ -96,7 +96,7 @@
     }
 
     .logo-main { 
-      font-size: 4.2rem; 
+      font-size: 4.5rem; 
       line-height: 0.88; 
       font-weight: 800; 
       color: #000000; 
@@ -123,177 +123,131 @@
       width: 100%; 
       height: 100%; 
       flex-direction: column; 
-      padding: 15px; 
+      padding: 20px; 
       justify-content: space-between; 
       align-items: center; 
       background-color: #ffffff;
     }
 
-    .profile-canvas-area { 
+    .card-canvas-area { 
       width: 100%; 
       flex: 1; 
       display: flex; 
       flex-direction: column; 
       align-items: center; 
       justify-content: center; 
-      gap: 12px; 
+      gap: 15px; 
       position: relative;
     }
 
-    /* PROFILO BASE (Inizializzato bianco con bordo nero) */
-    .profile-card { 
-      width: 330px; 
-      height: 420px; 
+    /* CARD BASE */
+    .card { 
+      width: 320px; 
+      height: 180px; 
       background-color: #ffffff; 
       border: 3px solid #000000; 
       border-radius: 20px; 
-      position: relative; 
-      overflow: hidden;
+      padding: 12px; 
+      display: flex; 
+      gap: 12px; 
+      align-items: center;
       box-sizing: border-box;
       transition: all 0.2s ease;
     }
 
-    /* 1. HEADER RETTANGOLARE */
-    .profile-header-box {
-      width: 100%;
-      height: 150px;
-      background-color: #f0f0f0;
-      border-bottom: 3px solid #000000;
-      cursor: pointer;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .card-photo-box { 
+      height: 100%; 
+      max-height: 156px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      cursor: pointer; 
+      flex-shrink: 0;
     }
-
-    .header-placeholder {
-      font-size: 13px;
-      font-weight: 700;
-      color: #555555;
+    
+    .placeholder-box { 
+      width: 100px; 
+      height: 156px; 
+      border: 2px dashed inherit; 
+      border-radius: 12px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      background-color: rgba(0,0,0,0.05); 
+      font-size: 12px; 
+      font-weight: 700; 
     }
-
-    .profile-header-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
+    
+    .card-photo-box img { 
+      max-height: 156px; 
+      max-width: 140px;
+      width: auto;
+      height: auto;
+      border: 2px dashed inherit; 
+      border-radius: 12px; 
+      display: block;
     }
-
-    /* 2. AVATAR CIRCOLARE */
-    .profile-avatar-box {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background-color: #e5e5e5;
-      border: 3px solid #000000;
-      cursor: pointer;
-      position: absolute;
-      top: 105px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2;
-    }
-
-    .profile-card.avatar-center .profile-avatar-box {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .profile-card.avatar-left .profile-avatar-box {
-      left: 15px;
-    }
-
-    .avatar-placeholder {
-      font-size: 11px;
-      font-weight: 700;
-      color: #555555;
-      text-align: center;
-    }
-
-    .profile-avatar-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
-    }
-
-    /* 3. AREA TESTI E GALLERIA */
-    .profile-content {
-      padding: 12px;
-      margin-top: 35px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    
+    .card-info-box { 
+      flex: 1; 
+      height: 156px; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      overflow: hidden; 
+      gap: 4px; 
+      margin-left: 4px;
     }
 
     .editable { outline: none; -webkit-tap-highlight-color: transparent; }
-    .editable.placeholder-active { opacity: 0.5; }
+    .editable.placeholder-active { opacity: 0.6; }
 
-    .profile-name {
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 22px;
-      word-break: break-word;
-      color: #000000;
+    .card-title { font-size: 16px; line-height: 20px; font-weight: 800; word-break: break-word; }
+    .card-voto { font-size: 13px; line-height: 16px; font-weight: 800; }
+    .card-review { font-size: 11px; line-height: 14px; word-break: break-word; }
+
+    /* TEMI */
+    .card.light-card {
+      background-color: #ffffff;
+      border: 3px solid #000000;
     }
+    .card.light-card .card-title { color: #000000; }
+    .card.light-card .card-voto { color: #555555; }
+    .card.light-card .card-review { color: #333333; }
+    .card.light-card .placeholder-box { border-color: #000000; color: #666666; background-color: #f0f0f0; }
+    .card.light-card img { border-color: #000000; }
 
-    .profile-bio {
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 16px;
-      word-break: break-word;
-      color: #000000;
+    .card.dark-card {
+      background-color: #000000;
+      border: 3px solid #ffffff;
     }
+    .card.dark-card .card-title { color: #ffffff; }
+    .card.dark-card .card-voto { color: #aaaaaa; }
+    .card.dark-card .card-review { color: #dddddd; }
+    .card.dark-card .placeholder-box { border-color: #ffffff; color: #cccccc; background-color: #222222; }
+    .card.dark-card img { border-color: #ffffff; }
 
-    /* GALLERIA IMMAGINI */
-    .profile-gallery {
+    .color-picker {
       display: flex;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-    .gallery-item {
-      width: 55px;
-      height: 55px;
-      border-radius: 8px;
-      border: 2px dashed #000000;
-      background: rgba(0,0,0,0.04);
-      display: flex;
+      gap: 12px;
       align-items: center;
       justify-content: center;
+    }
+
+    .color-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
       cursor: pointer;
-      position: relative;
-      overflow: hidden;
+      border: 2px solid #000000;
+      transition: transform 0.15s ease;
     }
 
-    .gallery-placeholder {
-      font-size: 10px;
-      font-weight: 800;
-      color: #555555;
-    }
+    .color-dot:active { transform: scale(0.9); }
+    .dot-white { background-color: #ffffff; }
+    .dot-black { background-color: #000000; border-color: #000000; }
+    .color-dot.active { box-shadow: 0 0 0 3px #000000; }
 
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    /* CONTROLLI E MENU OPZIONI */
-    .controls-row {
-      display: flex;
-      gap: 8px;
-      width: 100%;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* MENU SUB-OPTIONS (Senza palline, solo menu esteso e centrato) */
     .color-sub-menu {
       display: flex;
       gap: 8px;
@@ -330,10 +284,11 @@
       width: 100%; 
       background-color: #000000; 
       color: #ffffff; 
-      padding: 13px; 
+      padding: 14px; 
       border-radius: 12px; 
       font-weight: 800; 
       text-align: center; 
+      margin-bottom: 10px; 
       cursor: pointer; 
     }
 
@@ -439,7 +394,6 @@
     .btn-action.cancel { color: #8e8e93; }
     .btn-action.done { color: #ffffff; }
 
-    /* ADATTAMENTO DARK/LIGHT MODE GLOBALE */
     @media (prefers-color-scheme: dark) {
       html, body, .phone-wrapper, #splash, .main-ui {
         background-color: #000000 !important;
@@ -449,11 +403,8 @@
       .logo-main, div[style*="font-weight:800"] { color: #ffffff !important; }
       .btn-start, .btn-download { background-color: #ffffff !important; color: #000000 !important; }
       .sticker img { filter: invert(1); }
-      
-      /* Se siamo in modalità scura e il bordo è nero o non specificato, aggiunge un'ombra bianca per farlo risaltare */
-      .profile-card {
-        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.8);
-      }
+      .color-dot { border-color: #ffffff; }
+      .color-dot.active { box-shadow: 0 0 0 3px #ffffff; }
     }
 
     @media (prefers-color-scheme: light) {
@@ -471,12 +422,6 @@
 <body class="light-mode-env">
 
   <div class="phone-wrapper">
-    <!-- MENU DI NAVIGAZIONE -->
-    <div style="text-align: center; padding: 10px; background: #000; color: #fff; width: 100%; z-index: 1000; display: none;" id="top-nav">
-        <a href="index.html" style="color: #fff; margin: 0 15px; text-decoration: none; font-weight: bold; font-size: 12px;">Cards</a>
-        <a href="profilo.html" style="color: #fff; margin: 0 15px; text-decoration: none; font-weight: bold; font-size: 12px; border-bottom: 2px solid white;">Profiles</a>
-    </div>
-
     <!-- SPLASH SCREEN -->
     <div id="splash">
       <div class="bg-scrolling">
@@ -487,7 +432,7 @@
       <div class="content-overlay">
         <div class="logo-main">
           <div>Pocket</div>
-          <div>Profile</div>
+          <div>Card</div>
         </div>
         <button class="btn-start" onclick="startApp()">Start Creating</button>
       </div>
@@ -495,75 +440,42 @@
 
     <!-- UI PRINCIPALE -->
     <div class="main-ui" id="main-ui">
+      <div style="font-weight:800; margin-top:10px; font-size: 1.2rem;">Create Card</div>
       
-      <div style="font-weight:800; margin-top:5px; font-size: 1.1rem;">Create Profile</div>
-      
-      <div class="profile-canvas-area">
-        <!-- SCHEDA PROFILO (Bianca con bordi neri all'avvio) -->
-        <div class="profile-card avatar-center" id="main-profile" style="background-color: #ffffff; border-color: #000000;">
-          <!-- 1. Header Rettangolare -->
-          <div class="profile-header-box" onclick="document.getElementById('header-file-input').click()" style="border-bottom-color: #000000;">
-            <div id="header-placeholder" class="header-placeholder">+ Header Photo</div>
-            <img id="header-img" alt="Header">
+      <div class="card-canvas-area">
+        <div class="card light-card" id="main-card">
+          <div class="card-photo-box" onclick="document.getElementById('file-input').click()">
+            <div id="placeholder" class="placeholder-box">+ Photo</div>
+            <img id="card-photo-img" style="display:none;" alt="Photo">
           </div>
-
-          <!-- 2. Avatar Circolare -->
-          <div class="profile-avatar-box" onclick="document.getElementById('avatar-file-input').click()" style="border-color: #000000;">
-            <div id="avatar-placeholder" class="avatar-placeholder">+ Avatar</div>
-            <img id="avatar-img" alt="Avatar">
-          </div>
-
-          <!-- 3. Testi e Galleria Immagini -->
-          <div class="profile-content">
-            <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Your Name / Nickname..." style="color: #000000;">Your Name / Nickname...</div>
-            <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="Write your bio, status or vibes here..." style="color: #000000;">Write your bio, status or vibes here...</div>
-            
-            <!-- GALLERIA IMMAGINI -->
-            <div class="profile-gallery">
-              <div class="gallery-item" onclick="document.getElementById('gallery-file-1').click()" style="border-color: #000000;">
-                <div class="gallery-placeholder" id="placeholder-gal-1" style="color: #000000;">+ Img</div>
-                <img id="gallery-img-1" alt="Gallery 1">
-              </div>
-              <div class="gallery-item" onclick="document.getElementById('gallery-file-2').click()" style="border-color: #000000;">
-                <div class="gallery-placeholder" id="placeholder-gal-2" style="color: #000000;">+ Img</div>
-                <img id="gallery-img-2" alt="Gallery 2">
-              </div>
-              <div class="gallery-item" onclick="document.getElementById('gallery-file-3').click()" style="border-color: #000000;">
-                <div class="gallery-placeholder" id="placeholder-gal-3" style="color: #000000;">+ Img</div>
-                <img id="gallery-img-3" alt="Gallery 3">
-              </div>
-            </div>
+          <div class="card-info-box">
+            <div class="card-title editable placeholder-active" contenteditable="true" data-placeholder="Title / Name...">Title / Name...</div>
+            <div class="card-voto editable placeholder-active" contenteditable="true" data-placeholder="Rating / Genre / Role...">Rating / Genre / Role...</div>
+            <div class="card-review editable placeholder-active" contenteditable="true" data-placeholder="Review / Plot / Notes...">Review / Plot / Notes...</div>
           </div>
         </div>
 
-        <!-- CONTROLLI RAPIDI (Solo Menu, senza palline) -->
-        <div class="controls-row">
-          <div class="color-sub-menu" id="color-sub-menu">
-            <button class="menu-btn" onclick="openCustomPicker('bg')">
-              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
-              BG Color
-            </button>
-            <button class="menu-btn" onclick="openCustomPicker('line')">
-              <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
-              Borders & Text
-            </button>
-            <button class="menu-btn" onclick="toggleAvatarPosition()">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"></circle></svg>
-              Pos: <span id="pos-label" style="margin-left:2px;">Center</span>
-            </button>
-          </div>
+        <!-- PALLINE BIANCO / NERO -->
+        <div class="color-picker">
+          <div class="color-dot dot-white active" onclick="setCardTheme('light')"></div>
+          <div class="color-dot dot-black" onclick="setCardTheme('dark')"></div>
+        </div>
+
+        <!-- MENU SUB-OPTIONS -->
+        <div class="color-sub-menu" id="color-sub-menu">
+          <button class="menu-btn" onclick="openCustomPicker('bg')">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
+            Card Color
+          </button>
+          <button class="menu-btn" onclick="openCustomPicker('line')">
+            <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
+            Borders & Text
+          </button>
         </div>
       </div>
 
-      <!-- INPUT FILE NASCOSTI -->
-      <input type="file" id="header-file-input" style="display:none;" accept="image/*" onchange="loadHeaderPhoto(event)">
-      <input type="file" id="avatar-file-input" style="display:none;" accept="image/*" onchange="loadAvatarPhoto(event)">
-      
-      <input type="file" id="gallery-file-1" style="display:none;" accept="image/*" onchange="loadGalleryPhoto(event, 1)">
-      <input type="file" id="gallery-file-2" style="display:none;" accept="image/*" onchange="loadGalleryPhoto(event, 2)">
-      <input type="file" id="gallery-file-3" style="display:none;" accept="image/*" onchange="loadGalleryPhoto(event, 3)">
-
-      <div class="btn-download" onclick="downloadProfile()">Download Profile</div>
+      <input type="file" id="file-input" style="display:none;" accept="image/*" onchange="loadPhoto(event)">
+      <div class="btn-download" onclick="downloadCard()">Download Card</div>
     </div>
 
     <!-- MODALE SELETTORE COLORE -->
@@ -671,81 +583,64 @@
 
     function startApp() { 
       document.getElementById('splash').style.display = 'none'; 
-      document.getElementById('main-ui').style.display = 'flex';
-      document.getElementById('top-nav').style.display = 'block';
+      document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    function loadHeaderPhoto(e) {
+    function loadPhoto(e) {
       const file = e.target.files[0];
       if(!file) return;
       const reader = new FileReader();
       reader.onload = function(event) {
-        const img = document.getElementById('header-img');
+        const img = document.getElementById('card-photo-img');
         img.src = event.target.result;
         img.style.display = 'block';
-        document.getElementById('header-placeholder').style.display = 'none';
+        document.getElementById('placeholder').style.display = 'none';
       }
       reader.readAsDataURL(file);
     }
 
-    function loadAvatarPhoto(e) {
-      const file = e.target.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const img = document.getElementById('avatar-img');
-        img.src = event.target.result;
-        img.style.display = 'block';
-        document.getElementById('avatar-placeholder').style.display = 'none';
-      }
-      reader.readAsDataURL(file);
-    }
+    function setCardTheme(theme) {
+      const card = document.getElementById('main-card');
+      const dots = document.querySelectorAll('.color-dot');
+      
+      card.style.backgroundColor = '';
+      card.style.borderColor = '';
+      document.querySelectorAll('.card-title, .card-voto, .card-review').forEach(el => el.style.color = '');
+      document.getElementById('placeholder').style.borderColor = '';
+      document.getElementById('placeholder').style.color = '';
+      const photoImg = document.getElementById('card-photo-img');
+      if (photoImg) photoImg.style.borderColor = '';
 
-    function loadGalleryPhoto(e, index) {
-      const file = e.target.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const img = document.getElementById('gallery-img-' + index);
-        img.src = event.target.result;
-        img.style.display = 'block';
-        document.getElementById('placeholder-gal-' + index).style.display = 'none';
-      }
-      reader.readAsDataURL(file);
-    }
-
-    function toggleAvatarPosition() {
-      const card = document.getElementById('main-profile');
-      const label = document.getElementById('pos-label');
-      if (card.classList.contains('avatar-center')) {
-        card.classList.remove('avatar-center');
-        card.classList.add('avatar-left');
-        label.innerText = 'Left';
+      if (theme === 'dark') {
+        card.className = 'card dark-card';
+        dots[0].classList.remove('active');
+        dots[1].classList.add('active');
       } else {
-        card.classList.remove('avatar-left');
-        card.classList.add('avatar-center');
-        label.innerText = 'Center';
+        card.className = 'card light-card';
+        dots[0].classList.add('active');
+        dots[1].classList.remove('active');
       }
     }
 
+    /* INIZIALIZZAZIONE GRIGLIA COLORI 13x13 CON BIANCO-NERO IN PRIMA E ULTIMA RIGA */
     function initGridColors() {
       const grid = document.getElementById('picker-grid');
       grid.innerHTML = '';
       
       const exactPalette13x13 = [
-        ["#FFFFFF", "#FFEAEA", "#FFF3EA", "#FFFFEA", "#F3FFEA", "#EAFFEA", "#EAFFFF", "#EAF3FF", "#EAEAFF", "#F3EAFF", "#FFEAEA", "#FFEAF3", "#FFFFFF"],
-        ["#EEEEEE", "#FFD5D5", "#FFE4D5", "#FFFFD5", "#E4FFD5", "#D5FFD5", "#D5FFFF", "#D5E8FF", "#D5D5FF", "#E8D5FF", "#FFD5FF", "#FFD5E8", "#EEEEEE"],
-        ["#DDDDDD", "#FFB5B5", "#FFD2B5", "#FFFFB5", "#D2FFB5", "#B5FFB5", "#B5FFFF", "#B5DCFF", "#B5B5FF", "#DCB5FF", "#FFB5FF", "#FFB5DC", "#DDDDDD"],
-        ["#CCCCCC", "#FF9292", "#FFC092", "#FFFF92", "#C0FF92", "#92FF92", "#92FFFF", "#92CEFF", "#9292FF", "#CE92FF", "#FF92FF", "#FF92CE", "#CCCCCC"],
-        ["#BBBBBB", "#FF7070", "#FFAE70", "#FFFF70", "#AEFF70", "#70FF70", "#70FFFF", "#70BFFF", "#7070FF", "#BF70FF", "#FF70FF", "#FF70BF", "#BBBBBB"],
-        ["#999999", "#FF4C4C", "#FF9B4C", "#FFFF4C", "#9BFF4C", "#4CFF4C", "#4CFFFF", "#4CAFFF", "#4C4CFF", "#AF4CFF", "#FF4CFF", "#FF4CAF", "#999999"],
-        ["#777777", "#FF0000", "#FF8000", "#FFFF00", "#80FF00", "#00FF00", "#00FFFF", "#0080FF", "#0000FF", "#8000FF", "#FF00FF", "#FF0080", "#777777"],
-        ["#666666", "#D80000", "#D86C00", "#D8D800", "#6CD800", "#00D800", "#00D8D8", "#006CD8", "#0000D8", "#6C00D8", "#D800D8", "#D8006C", "#666666"],
-        ["#555555", "#B00000", "#B05800", "#B0B000", "#58B000", "#00B000", "#00B0B0", "#0058B0", "#0000B0", "#5800B0", "#B000B0", "#B00058", "#555555"],
-        ["#444444", "#880000", "#884400", "#888800", "#448800", "#008800", "#008888", "#004488", "#000088", "#440088", "#880088", "#880044", "#444444"],
-        ["#333333", "#600000", "#603000", "#606000", "#306000", "#006000", "#006060", "#003060", "#000060", "#300060", "#600060", "#600030", "#333333"],
-        ["#222222", "#3A0000", "#3A1D00", "#3A3A00", "#1D3A00", "#003A00", "#003A3A", "#001D3A", "#00003A", "#1D003A", "#3A003A", "#3A001D", "#222222"],
-        ["#000000", "#180000", "#180C00", "#181800", "#0C1800", "#001800", "#001818", "#000C18", "#000018", "#0C0018", "#180018", "#18000C", "#000000"]
+        ["#FCFCFC", "#ECECEC", "#DCDCDC", "#CCCCCC", "#BCBCBC", "#ACACAC", "#9C9C9C", "#8C8C8C", "#7C7C7C", "#6C6C6C", "#5C5C5C", "#4C4C4C", "#3C3C3C"],
+        ["#FFE3E2", "#FFC9C9", "#FEA3A2", "#FE817D", "#FF5959", "#FE3636", "#FE1212", "#E81011", "#D31111", "#B70D0D", "#990B0A", "#6E0708", "#400404"],
+        ["#FFECDE", "#FFDEC3", "#FFCBA3", "#FFB882", "#FFA45E", "#FF913C", "#FF7D1B", "#EA7317", "#D96B16", "#B85A12", "#994200", "#6E3001", "#512301"],
+        ["#FFF5DA", "#FFEEC0", "#FFE699", "#FEDB73", "#FED557", "#FFCB31", "#F7BA00", "#ECB000", "#D9A400", "#B88A00", "#987300", "#6E4801", "#513600"],
+        ["#FFFDDC", "#FEFCBF", "#FEFA99", "#FFF873", "#FEF64D", "#FBF519", "#F7EB00", "#EBDF00", "#D9CE00", "#B8AE00", "#999100", "#6D6800", "#514E00"],
+        ["#F0FFE8", "#E6FFD8", "#D7FFC1", "#CAFFAC", "#BEFF99", "#9FFF67", "#9DF762", "#90EB5F", "#86D957", "#72B848", "#5E993D", "#426A2B", "#2D4A1C"],
+        ["#E4FCEE", "#CDF9DE", "#B1FACD", "#94F8BC", "#7DF5AD", "#4FF591", "#47ED87", "#38DE7A", "#34CF73", "#2CAF5F", "#249150", "#1A693A", "#124828"],
+        ["#E2FFFB", "#CCFFF8", "#ADFFF3", "#8FFFEF", "#78FFEE", "#33FFE4", "#31F7DC", "#2FEBD2", "#2BD9C2", "#23B8A4", "#1E9582", "#136358", "#0E4A42"],
+        ["#DBECFE", "#BFDDFF", "#98CAFF", "#73B7FE", "#4EA3FE", "#3396FE", "#0F87FF", "#0071EB", "#0069D9", "#0058B9", "#014A99", "#01356E", "#002752"],
+        ["#DBE2FF", "#BFCCFF", "#99B0FE", "#7391FF", "#4E73FF", "#335FFE", "#1547FE", "#0738EC", "#002ED9", "#0028B8", "#01219A", "#00186E", "#011053"],
+        ["#EFDBFF", "#E6C9FF", "#D4A6FF", "#C684FF", "#B56BFF", "#A74EFE", "#9933FF", "#8B17FE", "#7500EC", "#6600CD", "#5200A3", "#410080", "#2F0060"],
+        ["#FFE2FE", "#FFD0FE", "#FFB3FD", "#FF96FB", "#FF78F9", "#FF67FA", "#FE40F8", "#EB3BE4", "#DA36D3", "#B72EB2", "#A629A1", "#6E1B6B", "#4B1249"],
+        ["#FFE3EF", "#FECDE0", "#FEADCD", "#FF8EBA", "#FF70A6", "#FF5D99", "#FF458C", "#EC3B7F", "#DA2B6E", "#B8255C", "#9E2050", "#7D193F", "#5E1230"]
       ];
 
       exactPalette13x13.forEach(row => {
@@ -764,7 +659,7 @@
       initGridColors();
       document.getElementById('picker-modal').style.display = 'flex';
       
-      const card = document.getElementById('main-profile');
+      const card = document.getElementById('main-card');
       let currentHex = '#FFFFFF';
       
       if (target === 'bg') {
@@ -819,52 +714,44 @@
 
     function handleRgbInput() {
       let r = parseInt(document.getElementById('r-input').value) || 0;
-      let green = parseInt(document.getElementById('g-input').value) || 0; 
+      let g = parseInt(document.getElementById('g-input').value) || 0;
       let b = parseInt(document.getElementById('b-input').value) || 0;
 
       r = Math.min(255, Math.max(0, r));
-      green = Math.min(255, Math.max(0, green));
+      g = Math.min(255, Math.max(0, g));
       b = Math.min(255, Math.max(0, b));
 
-      let hex = '#' + ((1 << 24) + (r << 16) + (green << 8) + b).toString(16).slice(1);
+      let hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
       selectedColor = hex;
       document.getElementById('preview-box').style.backgroundColor = hex;
       document.getElementById('hex-input').value = hex.toUpperCase();
     }
 
     function applyPickerColor() {
-      const card = document.getElementById('main-profile');
+      const card = document.getElementById('main-card');
       if (currentTarget === 'bg') {
+        card.classList.remove('light-card', 'dark-card');
         card.style.backgroundColor = selectedColor;
       } else if (currentTarget === 'line') {
         card.style.setProperty('border-color', selectedColor, 'important');
-        card.querySelector('.profile-header-box').style.setProperty('border-bottom-color', selectedColor, 'important');
-        card.querySelector('.profile-avatar-box').style.setProperty('border-color', selectedColor, 'important');
-        
-        card.querySelectorAll('.profile-name, .profile-bio, .header-placeholder, .avatar-placeholder, .gallery-placeholder').forEach(el => el.style.color = selectedColor);
-        card.querySelectorAll('.gallery-item').forEach(el => {
-          el.style.setProperty('border-color', selectedColor, 'important');
-        });
+        card.querySelectorAll('.card-title, .card-voto, .card-review').forEach(el => el.style.color = selectedColor);
+        document.getElementById('placeholder').style.borderColor = selectedColor;
+        document.getElementById('placeholder').style.color = selectedColor;
+        const photoImg = document.getElementById('card-photo-img');
+        if (photoImg) photoImg.style.borderColor = selectedColor;
       }
       closePicker();
     }
 
-    function downloadProfile() {
-      const card = document.getElementById('main-profile');
+    function downloadCard() {
+      const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
-      const placeholders = card.querySelectorAll('.gallery-placeholder, .header-placeholder, .avatar-placeholder');
       
       editables.forEach(el => {
         if (el.classList.contains('placeholder-active')) {
           el.dataset.wasPlaceholder = "true";
           el.style.display = 'none';
           el.innerText = '';
-        }
-      });
-      placeholders.forEach(el => {
-        if(window.getComputedStyle(el).display !== 'none') {
-           el.dataset.tempHide = "true";
-           el.style.display = 'none';
         }
       });
 
@@ -876,15 +763,9 @@
             delete el.dataset.wasPlaceholder;
           }
         });
-        placeholders.forEach(el => {
-          if (el.dataset.tempHide) {
-             el.style.display = '';
-             delete el.dataset.tempHide;
-          }
-        });
 
         const link = document.createElement('a');
-        link.download = 'pocket_profile.png';
+        link.download = 'card.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
       });
