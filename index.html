@@ -155,11 +155,11 @@
       position: relative;
     }
 
-    /* BANNER SUPERIORE */
+    /* BANNER SUPERIORE CON LINEA CONTINUA */
     .banner-box {
       width: 100%;
       height: 100px;
-      border: 2px dashed #000000;
+      border: 2px solid #000000;
       border-radius: 16px;
       cursor: pointer;
       display: flex;
@@ -184,7 +184,7 @@
       color: #666666;
     }
 
-    /* AVATAR PROFILO */
+    /* AVATAR PROFILO CON SPOSTAMENTO DINAMICO */
     .avatar-wrapper {
       width: 100%;
       height: 35px;
@@ -203,13 +203,17 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: border-radius 0.2s ease;
+      transition: all 0.2s ease;
       position: absolute;
       top: -40px;
-      left: 10px;
       z-index: 5;
       overflow: hidden;
     }
+
+    /* POSIZIONI AVATAR */
+    .avatar-box.pos-left { left: 10px; transform: translateX(0); }
+    .avatar-box.pos-center { left: 50%; transform: translateX(-50%); }
+    .avatar-box.pos-right { right: 10px; left: auto; transform: translateX(0); }
 
     .avatar-box img {
       width: 100%;
@@ -252,29 +256,6 @@
     .profile-name { font-size: 18px; line-height: 22px; font-weight: 800; word-break: break-word; }
     .profile-tag { font-size: 13px; line-height: 16px; font-weight: 700; opacity: 0.8; }
     .profile-bio { font-size: 11px; line-height: 15px; font-weight: 600; word-break: break-word; }
-
-    /* CONTROLLI DI FORMA E MODO */
-    .shape-toggle-box {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      justify-content: center;
-      background: #f0f0f0;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .toggle-btn {
-      background: #ffffff;
-      border: 1.5px solid #000000;
-      padding: 4px 10px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 800;
-      font-size: 10px;
-    }
 
     /* TEMI DELLA CARD */
     .profile-card.light-card {
@@ -319,27 +300,31 @@
     .dot-black { background-color: #000000; border-color: #000000; }
     .color-dot.active { box-shadow: 0 0 0 3px #000000; }
 
-    /* MENU SUB-OPTIONS */
+    /* MENU SUB-OPTIONS GRIGLIA COMPATTA */
     .color-sub-menu {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 8px;
       background: #111111;
-      padding: 6px;
-      border-radius: 16px;
+      padding: 10px;
+      border-radius: 20px;
       box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 320px;
     }
 
     .menu-btn {
       background: #222222;
       color: #ffffff;
       border: 1px solid #333333;
-      padding: 8px 12px;
+      padding: 8px 10px;
       border-radius: 12px;
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
     }
 
@@ -479,8 +464,6 @@
       .sticker img { filter: invert(1); }
       .color-dot { border-color: #ffffff; }
       .color-dot.active { box-shadow: 0 0 0 3px #ffffff; }
-      .shape-toggle-box { background: #222222; color: #ffffff; }
-      .toggle-btn { background: #000000; color: #ffffff; border-color: #ffffff; }
     }
 
     @media (prefers-color-scheme: light) {
@@ -530,7 +513,7 @@
 
           <!-- CONTENITORE AVATAR STABILE -->
           <div class="avatar-wrapper">
-            <div class="avatar-box" id="avatar-box" onclick="document.getElementById('avatar-input').click()">
+            <div class="avatar-box pos-left" id="avatar-box" onclick="document.getElementById('avatar-input').click()">
               <img id="avatar-img" src="" alt="avatar">
               <div id="avatar-placeholder" class="avatar-placeholder">+ Photo</div>
             </div>
@@ -544,28 +527,33 @@
           </div>
         </div>
 
-        <!-- TASTO PER SPOSTARE LA FORMA DELL'AVATAR -->
-        <div class="shape-toggle-box">
-          <span>Avatar Shape:</span>
-          <button class="toggle-btn" onclick="toggleAvatarShape('circle')">Circle</button>
-          <button class="toggle-btn" onclick="toggleAvatarShape('square')">Square</button>
-        </div>
-
-        <!-- PALLINE BIANCO / NERO -->
+        <!-- PALLINE BIANCO / NERO PER TEMA RAPIDO -->
         <div class="color-picker">
           <div class="color-dot dot-white active" onclick="setCardTheme('light')"></div>
           <div class="color-dot dot-black" onclick="setCardTheme('dark')"></div>
         </div>
 
-        <!-- MENU SUB-OPTIONS COLORI -->
+        <!-- MENU SUB-OPTIONS GRIGLIA OPTION BUTTONS -->
         <div class="color-sub-menu" id="color-sub-menu">
           <button class="menu-btn" onclick="openCustomPicker('bg')">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
-            Card Background
+            Card BG
           </button>
           <button class="menu-btn" onclick="openCustomPicker('line')">
             <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
-            Borders & Text
+            Borders
+          </button>
+          <button class="menu-btn" onclick="openCustomPicker('text')">
+            <svg viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"></path></svg>
+            Text Color
+          </button>
+          <button class="menu-btn" onclick="cycleAvatarShape()">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle></svg>
+            Shape: <span id="shape-label">Circle</span>
+          </button>
+          <button class="menu-btn" style="grid-column: span 2;" onclick="cycleAvatarPosition()">
+            <svg viewBox="0 0 24 24"><path d="M17 10L12 15L7 10"></path></svg>
+            Avatar Position: <span id="pos-label">Left</span>
           </button>
         </div>
       </div>
@@ -618,6 +606,8 @@
 
     let currentTarget = 'bg';
     let selectedColor = '#FFFFFF';
+    let avatarPositions = ['left', 'center', 'right'];
+    let currentPosIndex = 0;
 
     // Gestione campi modificabili e segnaposto
     document.querySelectorAll('.editable').forEach(el => {
@@ -682,7 +672,7 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    // Funzione di ritaglio automatico istantaneo sulle dimensioni esatte del contenitore
+    // Auto Crop delle immagini senza distorsione
     function autoCropImageToContainer(imageFile, targetWidth, targetHeight, callback) {
       const reader = new FileReader();
       reader.onload = function(e) {
@@ -691,7 +681,6 @@
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
 
-          // Risoluzione ad alta definizione (HD 3x)
           const scale = 3;
           canvas.width = targetWidth * scale;
           canvas.height = targetHeight * scale;
@@ -717,7 +706,6 @@
       reader.readAsDataURL(imageFile);
     }
 
-    // Carica e ritaglia automaticamente la foto inserita
     function loadPhoto(e, type) {
       const file = e.target.files[0];
       if(!file) return;
@@ -743,14 +731,30 @@
       }
     }
 
-    // Toggle forma Avatar
-    function toggleAvatarShape(shape) {
+    // Alterna tra Cerchio e Quadrato
+    function cycleAvatarShape() {
       const box = document.getElementById('avatar-box');
-      if (shape === 'square') {
-        box.classList.add('square');
-      } else {
+      const label = document.getElementById('shape-label');
+      if (box.classList.contains('square')) {
         box.classList.remove('square');
+        label.innerText = 'Circle';
+      } else {
+        box.classList.add('square');
+        label.innerText = 'Square';
       }
+    }
+
+    // Alterna Posizione Avatar: Sinistra -> Centro -> Destra
+    function cycleAvatarPosition() {
+      const box = document.getElementById('avatar-box');
+      const label = document.getElementById('pos-label');
+      box.classList.remove('pos-left', 'pos-center', 'pos-right');
+
+      currentPosIndex = (currentPosIndex + 1) % avatarPositions.length;
+      const nextPos = avatarPositions[currentPosIndex];
+      
+      box.classList.add('pos-' + nextPos);
+      label.innerText = nextPos.charAt(0).toUpperCase() + nextPos.slice(1);
     }
 
     function setCardTheme(theme) {
@@ -820,6 +824,9 @@
       } else if (target === 'line') {
         let borderCol = window.getComputedStyle(card).borderColor;
         currentHex = rgbToHex(borderCol);
+      } else if (target === 'text') {
+        let textCol = window.getComputedStyle(document.querySelector('.profile-name')).color;
+        currentHex = rgbToHex(textCol);
       }
       
       selectColor(currentHex);
@@ -886,19 +893,19 @@
         card.style.backgroundColor = selectedColor;
       } else if (currentTarget === 'line') {
         card.style.setProperty('border-color', selectedColor, 'important');
-        card.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = selectedColor);
         document.querySelector('.banner-box').style.borderColor = selectedColor;
         document.getElementById('avatar-box').style.borderColor = selectedColor;
+      } else if (currentTarget === 'text') {
+        card.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = selectedColor);
       }
       closePicker();
     }
 
-    // DOWNLOAD CARD DEFINITIVO SENZA DISTORSIONE E CON CATTURA HD
+    // DOWNLOAD CARD
     function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
       
-      // Nasconde i testi vuoti o placeholder
       editables.forEach(el => {
         const ph = el.getAttribute('data-placeholder');
         const content = el.innerText.trim();
@@ -915,7 +922,6 @@
         allowTaint: true,
         logging: false
       }).then(canvas => {
-        // Ripristina la visibilità dei testi
         editables.forEach(el => {
           if (el.dataset.hiddenForDownload) {
             el.style.visibility = 'visible';
