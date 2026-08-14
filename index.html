@@ -151,12 +151,11 @@
       display: flex; 
       flex-direction: column;
       box-sizing: border-box;
-      transition: all 0.2s ease;
       position: relative;
       margin-top: 20px;
     }
 
-    /* BANNER SUPERIORE CON LINEA CONTINUA */
+    /* BANNER SUPERIORE */
     .banner-box {
       width: 100%;
       height: 100px;
@@ -185,7 +184,7 @@
       color: #666666;
     }
 
-    /* AVATAR PROFILO SENZA BORDO NERO */
+    /* AVATAR PROFILO */
     .avatar-wrapper {
       width: 100%;
       height: 40px;
@@ -196,7 +195,7 @@
     .avatar-box {
       width: 75px;
       height: 75px;
-      border: none; /* Rimosso completamente il bordo nero */
+      border: none;
       border-radius: 50%;
       cursor: pointer;
       background-color: #ffffff;
@@ -204,7 +203,6 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: all 0.2s ease;
       position: absolute;
       top: -38px;
       z-index: 5;
@@ -219,7 +217,7 @@
     .avatar-box img {
       width: 100%;
       height: 100%;
-      object-fit: contain; /* L'immagine si adatta interamente senza essere tagliata a metà */
+      object-fit: cover;
       object-position: center;
       display: none;
       border-radius: inherit;
@@ -454,7 +452,6 @@
     .btn-action.cancel { color: #8e8e93; }
     .btn-action.done { color: #ffffff; }
 
-    /* DARK/LIGHT MODE INTEGRATION */
     @media (prefers-color-scheme: dark) {
       html, body, .phone-wrapper, #splash, .main-ui {
         background-color: #000000 !important;
@@ -674,62 +671,26 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    // Auto Crop per il Banner (mantiene il riempimento orizzontale/verticale)
-    function autoCropBanner(imageFile, targetWidth, targetHeight, callback) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          const scale = 3;
-          canvas.width = targetWidth * scale;
-          canvas.height = targetHeight * scale;
-
-          const targetAspect = targetWidth / targetHeight;
-          const imgAspect = img.naturalWidth / img.naturalHeight;
-          let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
-
-          if (imgAspect > targetAspect) {
-            sw = img.naturalHeight * targetAspect;
-            sx = (img.naturalWidth - sw) / 2;
-          } else {
-            sh = img.naturalWidth / targetAspect;
-            sy = (img.naturalHeight - sh) / 2;
-          }
-
-          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
-          callback(canvas.toDataURL('image/png', 1.0));
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(imageFile);
-    }
-
+    // Caricamento foto diretto con object-fit: cover (mantiene il taglio centrato nativo CSS senza distorsioni)
     function loadPhoto(e, type) {
       const file = e.target.files[0];
       if(!file) return;
 
-      if(type === 'banner') {
-        const box = document.getElementById('banner-box');
-        const rect = box.getBoundingClientRect();
-        autoCropBanner(file, rect.width, rect.height, function(croppedDataUrl) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        if(type === 'banner') {
           const bannerImg = document.getElementById('banner-img');
-          bannerImg.src = croppedDataUrl;
+          bannerImg.src = event.target.result;
           bannerImg.style.display = 'block';
           document.getElementById('banner-placeholder').style.display = 'none';
-        });
-      } else if(type === 'avatar') {
-        // Per l'avatar carichiamo direttamente l'immagine originale in modo che non venga mai tagliata a metà
-        const reader = new FileReader();
-        reader.onload = function(evt) {
+        } else if(type === 'avatar') {
           const avatarImg = document.getElementById('avatar-img');
-          avatarImg.src = evt.target.result;
+          avatarImg.src = event.target.result;
           avatarImg.style.display = 'block';
           document.getElementById('avatar-placeholder').style.display = 'none';
-        };
-        reader.readAsDataURL(file);
-      }
+        }
+      };
+      reader.readAsDataURL(file);
     }
 
     // Alterna tra Cerchio e Quadrato
@@ -900,7 +861,7 @@
       closePicker();
     }
 
-    // DOWNLOAD CARD
+    // DOWNLOAD CARD CORRETTO
     function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
@@ -919,7 +880,8 @@
         backgroundColor: null, 
         useCORS: true,
         allowTaint: true,
-        logging: false
+        logging: false,
+        windowWidth: document.documentElement.offsetWidth
       }).then(canvas => {
         editables.forEach(el => {
           if (el.dataset.hiddenForDownload) {
