@@ -853,46 +853,41 @@
       closePicker();
     }
 
-    // Funzione helper per pre-ritagliare l'immagine in proporzione HD
-    function cropImageToTargetAspect(imgElement, targetWidth, targetHeight) {
-      return new Promise((resolve) => {
-        if (!imgElement || !imgElement.src || imgElement.style.display === 'none') {
-          resolve(null);
-          return;
-        }
+    // Ritaglio sincrono HD direttamente dall'elemento immagine presente in memoria
+    function getCroppedDataUrl(imgElement, containerElement) {
+      if (!imgElement || !imgElement.src || imgElement.style.display === 'none' || !imgElement.naturalWidth) {
+        return null;
+      }
 
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
 
-          // Usa la risoluzione nativa dell'immagine sorgente per la massima nitidezza
-          const targetAspect = targetWidth / targetHeight;
-          let sourceX = 0, sourceY = 0, sourceWidth = img.width, sourceHeight = img.height;
-          const imgAspect = img.width / img.height;
+      const containerRect = containerElement.getBoundingClientRect();
+      const targetAspect = containerRect.width / containerRect.height;
 
-          if (imgAspect > targetAspect) {
-            sourceWidth = img.height * targetAspect;
-            sourceX = (img.width - sourceWidth) / 2;
-          } else {
-            sourceHeight = img.width / targetAspect;
-            sourceY = (img.height - sourceHeight) / 2;
-          }
+      const imgW = imgElement.naturalWidth;
+      const imgH = imgElement.naturalHeight;
+      const imgAspect = imgW / imgH;
 
-          canvas.width = sourceWidth;
-          canvas.height = sourceHeight;
+      let sourceX = 0, sourceY = 0, sourceW = imgW, sourceH = imgH;
 
-          ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, sourceWidth, sourceHeight);
-          resolve(canvas.toDataURL('image/png', 1.0));
-        };
-        img.onerror = () => resolve(null);
-        img.src = imgElement.src;
-      });
+      if (imgAspect > targetAspect) {
+        sourceW = imgH * targetAspect;
+        sourceX = (imgW - sourceW) / 2;
+      } else {
+        sourceH = imgW / targetAspect;
+        sourceY = (imgH - sourceH) / 2;
+      }
+
+      canvas.width = sourceW;
+      canvas.height = sourceH;
+
+      ctx.drawImage(imgElement, sourceX, sourceY, sourceW, sourceH, 0, 0, sourceW, sourceH);
+      return canvas.toDataURL('image/png', 1.0);
     }
 
-    // DOWNLOAD CARD DEFINITIVO: NITIDO + NON SCHIACCIATO
-    async function downloadCard() {
+    // DOWNLOAD CARD DEFINITIVO: NITIDO + ZERO SCHIACCIAMENTO
+    function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
       
@@ -908,16 +903,16 @@
 
       const bannerImg = document.getElementById('banner-img');
       const avatarImg = document.getElementById('avatar-img');
+      const bannerBox = document.getElementById('banner-box');
+      const avatarBox = document.getElementById('avatar-box');
 
       // Salva le sorgenti originali
       const origBannerSrc = bannerImg.src;
       const origAvatarSrc = avatarImg.src;
 
-      // Pre-ritaglia le immagini per adattarsi perfettamente ai contenitori senza distorsioni
-      const [croppedBanner, croppedAvatar] = await Promise.all([
-        cropImageToTargetAspect(bannerImg, 296, 100),
-        cropImageToTargetAspect(avatarImg, 75, 75)
-      ]);
+      // Ritaglia istantaneamente e con massima precisione pixel HD
+      const croppedBanner = getCroppedDataUrl(bannerImg, bannerBox);
+      const croppedAvatar = getCroppedDataUrl(avatarImg, avatarBox);
 
       if (croppedBanner) bannerImg.src = croppedBanner;
       if (croppedAvatar) avatarImg.src = croppedAvatar;
@@ -950,3 +945,4 @@
   </script>
 </body>
 </html>
+
