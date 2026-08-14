@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
-  <title>Pocket Card</title>
+  <title>YouTube Profile Maker</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
@@ -41,8 +41,8 @@
     @media (min-width: 500px) { 
       .phone-wrapper { 
         width: 380px; 
-        height: 780px; 
-        max-height: 92vh; 
+        height: 820px; 
+        max-height: 94vh; 
         border-radius: 40px; 
         border: 8px solid #000000; 
         box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
@@ -96,13 +96,13 @@
     }
 
     .logo-main { 
-      font-size: 4.5rem; 
-      line-height: 0.88; 
+      font-size: 3.5rem; 
+      line-height: 0.95; 
       font-weight: 800; 
       color: #000000; 
-      margin-bottom: 50px; 
+      margin-bottom: 40px; 
       text-align: center;
-      letter-spacing: -3px;
+      letter-spacing: -2px;
       text-shadow: 0 4px 15px rgba(255, 255, 255, 0.9), 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
@@ -123,10 +123,11 @@
       width: 100%; 
       height: 100%; 
       flex-direction: column; 
-      padding: 20px; 
+      padding: 16px; 
       justify-content: space-between; 
       align-items: center; 
       background-color: #ffffff;
+      overflow-y: auto;
     }
 
     .card-canvas-area { 
@@ -140,115 +141,160 @@
       position: relative;
     }
 
-    /* CARD BASE */
-    .card { 
+    /* PROFILO CARD BASE (RETTANGOLO BASE) */
+    .profile-card { 
       width: 320px; 
-      height: 180px; 
       background-color: #ffffff; 
       border: 3px solid #000000; 
-      border-radius: 20px; 
+      border-radius: 24px; 
       padding: 12px; 
       display: flex; 
+      flex-direction: column;
       gap: 12px; 
-      align-items: center;
       box-sizing: border-box;
       transition: all 0.2s ease;
+      position: relative;
     }
 
-    /* CONTENITORE FOTO - CORRETTO PER EVITARE SCHIACCIAMENTI E SGRANATURE */
-    .card-photo-box { 
-      height: 100%; 
-      max-height: 156px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      cursor: pointer; 
-      flex-shrink: 0;
+    /* BANNER SUPERIORE */
+    .banner-box {
+      width: 100%;
+      height: 100px;
+      border: 2px dashed #000000;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0,0,0,0.03);
+      position: relative;
     }
-    
-    .placeholder-box { 
-      width: 100px; 
-      height: 156px; 
-      border: 2px dashed inherit; 
-      border-radius: 12px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      background-color: rgba(0,0,0,0.05); 
-      font-size: 12px; 
-      font-weight: 700; 
-    }
-    
-    /* GESTIONE FOTO OTTIMIZZATA */
-    .card-photo-box img { 
-      max-height: 156px; 
-      max-width: 140px;
-      width: auto;
+
+    .banner-box img {
+      width: 100%;
       height: 100%;
-      object-fit: contain; /* Impedisce che la foto venga schiacciata */
-      image-rendering: -webkit-optimize-contrast; /* Mantiene la nitidezza */
-      border: 2px dashed inherit; 
-      border-radius: 12px; 
-      display: block;
+      object-fit: cover;
+      display: none;
     }
-    
-    .card-info-box { 
-      flex: 1; 
-      height: 156px; 
+
+    .banner-placeholder {
+      font-size: 12px;
+      font-weight: 800;
+      color: #666666;
+    }
+
+    /* AVATAR PROFILO */
+    .avatar-container {
+      margin-top: -40px;
+      margin-left: 10px;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      z-index: 2;
+    }
+
+    .avatar-box {
+      width: 75px;
+      height: 75px;
+      border: 3px solid #000000;
+      border-radius: 50%; /* Default Cerchio */
+      overflow: hidden;
+      cursor: pointer;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: border-radius 0.2s ease;
+    }
+
+    .avatar-box.square {
+      border-radius: 18px; /* Quadrato con angoli arrotondati */
+    }
+
+    .avatar-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .avatar-placeholder {
+      font-size: 10px;
+      font-weight: 800;
+      text-align: center;
+      color: #666666;
+    }
+
+    /* INFORMAZIONI TESTO PROFILO */
+    .profile-info-box { 
       display: flex; 
       flex-direction: column; 
-      justify-content: center; 
-      overflow: hidden; 
-      gap: 4px; 
-      margin-left: 4px;
+      gap: 6px; 
+      margin-top: 4px;
     }
 
-    .editable { outline: none; -webkit-tap-highlight-color: transparent; }
+    .editable { 
+      outline: none; 
+      -webkit-tap-highlight-color: transparent; 
+      border-radius: 8px;
+      padding: 2px 4px;
+    }
 
     .editable.placeholder-active {
       opacity: 0.6;
     }
 
-    .card-title { font-size: 16px; line-height: 20px; font-weight: 800; word-break: break-word; }
-    .card-voto { font-size: 13px; line-height: 16px; font-weight: 800; }
-    .card-review { font-size: 11px; line-height: 14px; word-break: break-word; }
+    .profile-name { font-size: 18px; line-height: 22px; font-weight: 800; word-break: break-word; }
+    .profile-tag { font-size: 13px; line-height: 16px; font-weight: 700; opacity: 0.8; }
+    .profile-bio { font-size: 11px; line-height: 15px; font-weight: 600; word-break: break-word; }
 
-    /* TEMI CARTA */
-    .card.light-card {
+    /* CONTROLLI DI FORMA E MODO */
+    .shape-toggle-box {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      background: #f0f0f0;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .toggle-btn {
+      background: #ffffff;
+      border: 1.5px solid #000000;
+      padding: 4px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 10px;
+    }
+
+    /* TEMI DELLA CARD */
+    .profile-card.light-card {
       background-color: #ffffff;
-      border: 3px solid #000000;
+      border-color: #000000;
     }
-    .card.light-card .card-title { color: #000000; }
-    .card.light-card .card-voto { color: #555555; }
-    .card.light-card .card-review { color: #333333; }
-    .card.light-card .placeholder-box { border-color: #000000; color: #666666; background-color: #f0f0f0; }
-    .card.light-card img { border-color: #000000; }
+    .profile-card.light-card .profile-name,
+    .profile-card.light-card .profile-tag,
+    .profile-card.light-card .profile-bio { color: #000000; }
 
-    .dark-mode-env .card.light-card {
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5);
-    }
-    .light-mode-env .card.light-card {
-      box-shadow: none;
-    }
-
-    .card.dark-card {
+    .profile-card.dark-card {
       background-color: #000000;
-      border: 3px solid #ffffff;
+      border-color: #ffffff;
     }
-    .card.dark-card .card-title { color: #ffffff; }
-    .card.dark-card .card-voto { color: #aaaaaa; }
-    .card.dark-card .card-review { color: #dddddd; }
-    .card.dark-card .placeholder-box { border-color: #ffffff; color: #cccccc; background-color: #222222; }
-    .card.dark-card img { border-color: #ffffff; }
+    .profile-card.dark-card .profile-name,
+    .profile-card.dark-card .profile-tag,
+    .profile-card.dark-card .profile-bio { color: #ffffff; }
+    .profile-card.dark-card .banner-box { border-color: #ffffff; }
+    .profile-card.dark-card .avatar-box { border-color: #ffffff; background-color: #000000; }
+    .profile-card.dark-card .banner-placeholder, 
+    .profile-card.dark-card .avatar-placeholder { color: #cccccc; }
 
-    .light-mode-env .card.dark-card {
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    }
-    .dark-mode-env .card.dark-card {
-      box-shadow: none;
-    }
-
-    /* CONTROLLI BIANCO / NERO */
+    /* PALLINE SELEZIONE COLORE TEMA */
     .color-picker {
       display: flex;
       gap: 12px;
@@ -276,7 +322,7 @@
       gap: 8px;
       background: #111111;
       padding: 6px;
-      border-radius: 14px;
+      border-radius: 16px;
       box-shadow: 0 6px 16px rgba(0,0,0,0.15);
     }
 
@@ -285,7 +331,7 @@
       color: #ffffff;
       border: 1px solid #333333;
       padding: 8px 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
@@ -308,10 +354,11 @@
       background-color: #000000; 
       color: #ffffff; 
       padding: 14px; 
-      border-radius: 12px; 
+      border-radius: 16px; 
       font-weight: 800; 
       text-align: center; 
-      margin-bottom: 10px; 
+      margin-top: 10px;
+      margin-bottom: 5px; 
       cursor: pointer; 
     }
 
@@ -417,6 +464,7 @@
     .btn-action.cancel { color: #8e8e93; }
     .btn-action.done { color: #ffffff; }
 
+    /* DARK/LIGHT MODE INTEGRATION */
     @media (prefers-color-scheme: dark) {
       html, body, .phone-wrapper, #splash, .main-ui {
         background-color: #000000 !important;
@@ -428,6 +476,8 @@
       .sticker img { filter: invert(1); }
       .color-dot { border-color: #ffffff; }
       .color-dot.active { box-shadow: 0 0 0 3px #ffffff; }
+      .shape-toggle-box { background: #222222; color: #ffffff; }
+      .toggle-btn { background: #000000; color: #ffffff; border-color: #ffffff; }
     }
 
     @media (prefers-color-scheme: light) {
@@ -454,7 +504,7 @@
       </div>
       <div class="content-overlay">
         <div class="logo-main">
-          <div>Pocket</div>
+          <div>Profile</div>
           <div>Card</div>
         </div>
         <button class="btn-start" onclick="startApp()">Start Creating</button>
@@ -463,30 +513,52 @@
 
     <!-- UI PRINCIPALE -->
     <div class="main-ui" id="main-ui">
-      <div style="font-weight:800; margin-top:10px; font-size: 1.2rem;">Create Card</div>
+      <div style="font-weight:800; margin-top:10px; font-size: 1.2rem;">Create Profile</div>
       
       <div class="card-canvas-area">
-        <div class="card light-card" id="main-card">
-          <div class="card-photo-box" onclick="document.getElementById('file-input').click()">
-            <div id="placeholder" class="placeholder-box">+ Photo</div>
-            <img id="card-photo-img" style="display:none;" alt="Photo">
+        <!-- BASE CARD PROFILO YOUTUBE -->
+        <div class="profile-card light-card" id="main-card">
+          
+          <!-- BANNER IMMAGINE IN ALTO -->
+          <div class="banner-box" onclick="document.getElementById('banner-input').click()">
+            <div id="banner-placeholder" class="banner-placeholder">+ Add Banner Photo</div>
+            <img id="banner-img" alt="Banner">
           </div>
-          <div class="card-info-box">
-            <div class="card-title editable placeholder-active" contenteditable="true" data-placeholder="Title / Name...">Title / Name...</div>
-            <div class="card-voto editable placeholder-active" contenteditable="true" data-placeholder="Rating / Genre / Role...">Rating / Genre / Role...</div>
-            <div class="card-review editable placeholder-active" contenteditable="true" data-placeholder="Review / Plot / Notes...">Review / Plot / Notes...</div>
+
+          <!-- FOTO PROFILO (AVATAR) -->
+          <div class="avatar-container">
+            <div class="avatar-box" id="avatar-box" onclick="document.getElementById('avatar-input').click()">
+              <div id="avatar-placeholder" class="avatar-placeholder">+ Photo</div>
+              <img id="avatar-img" alt="Avatar">
+            </div>
+          </div>
+
+          <!-- BIO & TESTI PROFILO -->
+          <div class="profile-info-box">
+            <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Channel Name...">Channel Name...</div>
+            <div class="profile-tag editable placeholder-active" contenteditable="true" data-placeholder="@username • she/her">@username • she/her</div>
+            <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="☆°• write your bio here... •°☆">☆°• write your bio here... •°☆</div>
           </div>
         </div>
 
+        <!-- TASTO PER SPOSTARE LA FORMA DELL'AVATAR -->
+        <div class="shape-toggle-box">
+          <span>Avatar Shape:</span>
+          <button class="toggle-btn" onclick="toggleAvatarShape('circle')">Circle</button>
+          <button class="toggle-btn" onclick="toggleAvatarShape('square')">Square</button>
+        </div>
+
+        <!-- PALLINE BIANCO / NERO -->
         <div class="color-picker">
           <div class="color-dot dot-white active" onclick="setCardTheme('light')"></div>
           <div class="color-dot dot-black" onclick="setCardTheme('dark')"></div>
         </div>
 
+        <!-- MENU SUB-OPTIONS COLORI -->
         <div class="color-sub-menu" id="color-sub-menu">
           <button class="menu-btn" onclick="openCustomPicker('bg')">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
-            Card Color
+            Card Background
           </button>
           <button class="menu-btn" onclick="openCustomPicker('line')">
             <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
@@ -495,11 +567,14 @@
         </div>
       </div>
 
-      <input type="file" id="file-input" style="display:none;" accept="image/*" onchange="loadPhoto(event)">
-      <div class="btn-download" onclick="downloadCard()">Download Card</div>
+      <!-- INPUT NASCOSTI PER IL CARICAMENTO FOTO -->
+      <input type="file" id="banner-input" style="display:none;" accept="image/*" onchange="loadPhoto(event, 'banner')">
+      <input type="file" id="avatar-input" style="display:none;" accept="image/*" onchange="loadPhoto(event, 'avatar')">
+
+      <div class="btn-download" onclick="downloadCard()">Download Profile Card</div>
     </div>
 
-    <!-- MODALE SELETTORE COLORE -->
+    <!-- MODALE SELETTORE COLORE COLOUR-GRID -->
     <div class="picker-modal-overlay" id="picker-modal">
       <div class="picker-container">
         <div class="grid-view" id="picker-grid"></div>
@@ -535,16 +610,13 @@
       "1000072971-removebg-preview.png", "1000072972-removebg-preview.png",
       "1000072974-removebg-preview.png", "1000072977-removebg-preview.png",
       "1000072978-removebg-preview.png", "1000072979-removebg-preview.png",
-      "1000072980-removebg-preview.png", "1000072981-removebg-preview.png",
-      "1000072982-removebg-preview.png", "1000072983-removebg-preview.png",
-      "1000072985-removebg-preview.png", "1000072986-removebg-preview.png",
-      "1000072987-removebg-preview.png", "1000072988-removebg-preview.png",
-      "1000072989-removebg-preview.png", "1000072990-removebg-preview.png"
+      "1000072980-removebg-preview.png", "1000072981-removebg-preview.png"
     ];
 
     let currentTarget = 'bg';
     let selectedColor = '#FFFFFF';
 
+    // Gestione campi modificabili e segnaposto
     document.querySelectorAll('.editable').forEach(el => {
       el.addEventListener('focus', function() {
         const ph = this.getAttribute('data-placeholder');
@@ -607,17 +679,35 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    function loadPhoto(e) {
+    // Carica Immagini (Banner / Avatar)
+    function loadPhoto(e, type) {
       const file = e.target.files[0];
       if(!file) return;
       const reader = new FileReader();
       reader.onload = function(event) {
-        const img = document.getElementById('card-photo-img');
-        img.src = event.target.result;
-        img.style.display = 'block';
-        document.getElementById('placeholder').style.display = 'none';
+        if(type === 'banner') {
+          const img = document.getElementById('banner-img');
+          img.src = event.target.result;
+          img.style.display = 'block';
+          document.getElementById('banner-placeholder').style.display = 'none';
+        } else if(type === 'avatar') {
+          const img = document.getElementById('avatar-img');
+          img.src = event.target.result;
+          img.style.display = 'block';
+          document.getElementById('avatar-placeholder').style.display = 'none';
+        }
       }
       reader.readAsDataURL(file);
+    }
+
+    // Toggle forma Avatar (Cerchio vs Quadrato Arrotondato)
+    function toggleAvatarShape(shape) {
+      const box = document.getElementById('avatar-box');
+      if (shape === 'square') {
+        box.classList.add('square');
+      } else {
+        box.classList.remove('square');
+      }
     }
 
     function setCardTheme(theme) {
@@ -626,23 +716,22 @@
       
       card.style.backgroundColor = '';
       card.style.borderColor = '';
-      document.querySelectorAll('.card-title, .card-voto, .card-review').forEach(el => el.style.color = '');
-      document.getElementById('placeholder').style.borderColor = '';
-      document.getElementById('placeholder').style.color = '';
-      const photoImg = document.getElementById('card-photo-img');
-      if (photoImg) photoImg.style.borderColor = '';
+      document.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = '');
+      document.querySelector('.banner-box').style.borderColor = '';
+      document.getElementById('avatar-box').style.borderColor = '';
 
       if (theme === 'dark') {
-        card.className = 'card dark-card';
+        card.className = 'profile-card dark-card';
         dots[0].classList.remove('active');
         dots[1].classList.add('active');
       } else {
-        card.className = 'card light-card';
+        card.className = 'profile-card light-card';
         dots[0].classList.add('active');
         dots[1].classList.remove('active');
       }
     }
 
+    // Inizializzazione griglia selettore colore
     function initGridColors() {
       const grid = document.getElementById('picker-grid');
       grid.innerHTML = '';
@@ -754,20 +843,19 @@
         card.style.backgroundColor = selectedColor;
       } else if (currentTarget === 'line') {
         card.style.setProperty('border-color', selectedColor, 'important');
-        card.querySelectorAll('.card-title, .card-voto, .card-review').forEach(el => el.style.color = selectedColor);
-        document.getElementById('placeholder').style.borderColor = selectedColor;
-        document.getElementById('placeholder').style.color = selectedColor;
-        const photoImg = document.getElementById('card-photo-img');
-        if (photoImg) photoImg.style.borderColor = selectedColor;
+        card.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = selectedColor);
+        document.querySelector('.banner-box').style.borderColor = selectedColor;
+        document.getElementById('avatar-box').style.borderColor = selectedColor;
       }
       closePicker();
     }
 
-    /* ESPORTAZIONE FOTO AD ALTA RISOLUZIONE */
+    // SCARICA LA CARD PROFILO
     function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
       
+      // Se il testo è ancora il segnaposto di default, lo nasconde prima di generare la foto
       editables.forEach(el => {
         if (el.classList.contains('placeholder-active')) {
           el.dataset.wasPlaceholder = "true";
@@ -776,13 +864,8 @@
         }
       });
 
-      html2canvas(card, { 
-        scale: 3, 
-        backgroundColor: null, 
-        useCORS: true,
-        allowTaint: true,
-        imageTimeout: 0
-      }).then(canvas => {
+      html2canvas(card, { scale: 3, backgroundColor: null, useCORS: true }).then(canvas => {
+        // Ripristina i testi placeholder
         editables.forEach(el => {
           if (el.dataset.wasPlaceholder) {
             el.innerText = el.getAttribute('data-placeholder');
@@ -792,11 +875,12 @@
         });
 
         const link = document.createElement('a');
-        link.download = 'card.png';
-        link.href = canvas.toDataURL('image/png', 1.0);
+        link.download = 'youtube-profile.png';
+        link.href = canvas.toDataURL('image/png');
         link.click();
       });
     }
   </script>
 </body>
 </html>
+
