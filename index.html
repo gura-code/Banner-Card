@@ -141,7 +141,7 @@
       position: relative;
     }
 
-    /* PROFILO CARD BASE (RETTANGOLO BASE) */
+    /* PROFILO CARD BASE */
     .profile-card { 
       width: 320px; 
       background-color: #ffffff; 
@@ -155,7 +155,7 @@
       position: relative;
     }
 
-    /* BANNER SUPERIORE (BACKGROUND IMAGE PER COMPATIBILITÀ HTML2CANVAS) */
+    /* BANNER SUPERIORE HD */
     .banner-box {
       width: 100%;
       height: 100px;
@@ -166,10 +166,16 @@
       align-items: center;
       justify-content: center;
       background-color: rgba(0,0,0,0.03);
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
       position: relative;
+      overflow: hidden;
+    }
+
+    .banner-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      image-rendering: -webkit-optimize-contrast;
     }
 
     .banner-placeholder {
@@ -178,10 +184,10 @@
       color: #666666;
     }
 
-    /* AVATAR PROFILO (POSIZIONATO CON STRUTTURA STABILE) */
+    /* AVATAR PROFILO HD */
     .avatar-wrapper {
       width: 100%;
-      height: 40px;
+      height: 35px;
       position: relative;
       margin-bottom: 8px;
     }
@@ -190,7 +196,7 @@
       width: 75px;
       height: 75px;
       border: 3px solid #000000;
-      border-radius: 50%; /* Default Cerchio */
+      border-radius: 50%;
       cursor: pointer;
       background-color: #ffffff;
       display: flex;
@@ -198,17 +204,23 @@
       justify-content: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       transition: border-radius 0.2s ease;
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
       position: absolute;
-      top: -35px;
+      top: -40px;
       left: 10px;
       z-index: 5;
+      overflow: hidden;
+    }
+
+    .avatar-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      image-rendering: -webkit-optimize-contrast;
     }
 
     .avatar-box.square {
-      border-radius: 18px; /* Quadrato con angoli arrotondati */
+      border-radius: 18px;
     }
 
     .avatar-placeholder {
@@ -218,7 +230,7 @@
       color: #666666;
     }
 
-    /* INFORMAZIONI TESTO PROFILO */
+    /* TESTI PROFILO */
     .profile-info-box { 
       display: flex; 
       flex-direction: column; 
@@ -512,12 +524,14 @@
           
           <!-- BANNER IMMAGINE IN ALTO -->
           <div class="banner-box" id="banner-box" onclick="document.getElementById('banner-input').click()">
+            <img id="banner-img" src="" alt="banner">
             <div id="banner-placeholder" class="banner-placeholder">+ Add Banner Photo</div>
           </div>
 
           <!-- CONTENITORE AVATAR STABILE -->
           <div class="avatar-wrapper">
             <div class="avatar-box" id="avatar-box" onclick="document.getElementById('avatar-input').click()">
+              <img id="avatar-img" src="" alt="avatar">
               <div id="avatar-placeholder" class="avatar-placeholder">+ Photo</div>
             </div>
           </div>
@@ -605,7 +619,7 @@
     let currentTarget = 'bg';
     let selectedColor = '#FFFFFF';
 
-    // Gestione campi modificabili e segnaposto
+    // Gestione campi modificabili e segnaposto (LOGICA ORIGINALE)
     document.querySelectorAll('.editable').forEach(el => {
       el.addEventListener('focus', function() {
         const ph = this.getAttribute('data-placeholder');
@@ -668,19 +682,21 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    // Carica Immagini tramite background-image (ottimizzato per html2canvas)
+    // Carica Immagini tramite tag IMG
     function loadPhoto(e, type) {
       const file = e.target.files[0];
       if(!file) return;
       const reader = new FileReader();
       reader.onload = function(event) {
         if(type === 'banner') {
-          const banner = document.getElementById('banner-box');
-          banner.style.backgroundImage = `url('${event.target.result}')`;
+          const bannerImg = document.getElementById('banner-img');
+          bannerImg.src = event.target.result;
+          bannerImg.style.display = 'block';
           document.getElementById('banner-placeholder').style.display = 'none';
         } else if(type === 'avatar') {
-          const avatar = document.getElementById('avatar-box');
-          avatar.style.backgroundImage = `url('${event.target.result}')`;
+          const avatarImg = document.getElementById('avatar-img');
+          avatarImg.src = event.target.result;
+          avatarImg.style.display = 'block';
           document.getElementById('avatar-placeholder').style.display = 'none';
         }
       }
@@ -837,19 +853,50 @@
       closePicker();
     }
 
-    // SCARICA LA CARD PROFILO
+    // DOWNLOAD CARD CON RENDERING HD ULTRA-NITIDO
     function downloadCard() {
       const card = document.getElementById('main-card');
+      const editables = card.querySelectorAll('.editable');
+      
+      // LOGICA ORIGINALE DEL TESTO: Nasconde i testi se vuoti o non modificati dall'utente
+      editables.forEach(el => {
+        const ph = el.getAttribute('data-placeholder');
+        const content = el.innerText.trim();
+        if (content === '' || content === ph || el.classList.contains('placeholder-active')) {
+          el.dataset.hiddenForDownload = "true";
+          el.style.visibility = 'hidden';
+        }
+      });
 
+      // Bypassa la compressione di html2canvas applicando scaling nativo al canvas
+      const scaleFactor = 4; // Qualità Ultra HD
+      
       html2canvas(card, { 
-        scale: 3, 
+        scale: scaleFactor,
         backgroundColor: null, 
         useCORS: true,
-        logging: false
+        allowTaint: true,
+        logging: false,
+        imageTimeout: 0,
+        onclone: (clonedDoc) => {
+          // Forza la massima nitidezza visiva degli elementi immagine nel clone prima dello scatto
+          const clonedImages = clonedDoc.querySelectorAll('img');
+          clonedImages.forEach(img => {
+            img.style.imageRendering = 'crisp-edges';
+          });
+        }
       }).then(canvas => {
+        // Ripristina la visibilità dei testi dopo il download
+        editables.forEach(el => {
+          if (el.dataset.hiddenForDownload) {
+            el.style.visibility = 'visible';
+            delete el.dataset.hiddenForDownload;
+          }
+        });
+
         const link = document.createElement('a');
         link.download = 'youtube-profile.png';
-        link.href = canvas.toDataURL('image/png');
+        link.href = canvas.toDataURL('image/png', 1.0);
         link.click();
       });
     }
