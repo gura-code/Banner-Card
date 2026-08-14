@@ -153,14 +153,14 @@
       box-sizing: border-box;
       transition: all 0.2s ease;
       position: relative;
-      margin-top: 20px; /* Spazio extra per evitare che l'avatar spunti fuori sopra */
+      margin-top: 20px;
     }
 
-    /* BANNER SUPERIORE CON LINEA CONTINUA */
+    /* BANNER SUPERIORE CON FIX ANGOLI MOZZATI */
     .banner-box {
       width: 100%;
       height: 100px;
-      border: 2px solid #000000;
+      border: 3px solid #000000;
       border-radius: 16px;
       cursor: pointer;
       display: flex;
@@ -168,7 +168,7 @@
       justify-content: center;
       background-color: rgba(0,0,0,0.03);
       position: relative;
-      overflow: hidden;
+      overflow: hidden; /* Elimina qualsiasi sbavatura bianca agli angoli */
     }
 
     .banner-box img {
@@ -177,6 +177,7 @@
       object-fit: cover;
       object-position: center;
       display: none;
+      border-radius: inherit;
     }
 
     .banner-placeholder {
@@ -185,7 +186,7 @@
       color: #666666;
     }
 
-    /* AVATAR PROFILO CON SPOSTAMENTO DINAMICO */
+    /* AVATAR PROFILO CON FIX ANGOLI E BORDI */
     .avatar-wrapper {
       width: 100%;
       height: 40px;
@@ -208,6 +209,7 @@
       position: absolute;
       top: -38px;
       z-index: 5;
+      overflow: hidden; /* Garantisce che l'immagine segua esattamente la sagoma tonda/quadrata */
     }
 
     /* POSIZIONI AVATAR */
@@ -221,7 +223,7 @@
       object-fit: cover;
       object-position: center;
       display: none;
-      border-radius: inherit; /* Segue il bordo tondo o quadrato del padre */
+      border-radius: inherit;
     }
 
     .avatar-box.square {
@@ -673,7 +675,7 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    // Auto Crop delle immagini senza distorsione
+    // Auto Crop senza bordi bianchi agli angoli
     function autoCropImageToContainer(imageFile, targetWidth, targetHeight, callback) {
       const reader = new FileReader();
       reader.onload = function(e) {
