@@ -188,20 +188,21 @@
     /* AVATAR PROFILO CON SPOSTAMENTO DINAMICO */
     .avatar-wrapper {
       width: 100%;
-      min-height: 40px;
+      height: 40px;
       position: relative;
       margin-bottom: 8px;
     }
 
+    /* Il bordo adatta la sua larghezza all'immagine caricata */
     .avatar-box {
+      width: auto;
       min-width: 75px;
       height: 75px;
-      max-width: 120px;
       border: 3px solid #000000;
-      border-radius: 50%;
+      border-radius: 24px;
       cursor: pointer;
       background-color: #ffffff;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -218,10 +219,10 @@
     .avatar-box.pos-right { right: 10px; left: auto; transform: translateX(0); }
 
     .avatar-box img {
+      width: 100%;
       height: 100%;
-      width: auto;
-      max-width: 100%;
-      object-fit: contain;
+      object-fit: cover;
+      object-position: center;
       display: none;
     }
 
@@ -234,7 +235,7 @@
       font-weight: 800;
       text-align: center;
       color: #666666;
-      padding: 0 5px;
+      padding: 0 8px;
     }
 
     /* TESTI PROFILO */
@@ -674,37 +675,70 @@
       document.getElementById('splash').style.display = 'none'; 
       document.getElementById('main-ui').style.display = 'flex'; 
     }
+    
+    // Auto Crop delle immagini mantenendo la funzione di ritaglio originale
+    function autoCropImageToContainer(imageFile, targetWidth, targetHeight, callback) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          const scale = 3;
+          canvas.width = targetWidth * scale;
+          canvas.height = targetHeight * scale;
+
+          const targetAspect = targetWidth / targetHeight;
+          const imgAspect = img.naturalWidth / img.naturalHeight;
+
+          let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+
+          if (imgAspect > targetAspect) {
+            sw = img.naturalHeight * targetAspect;
+            sx = (img.naturalWidth - sw) / 2;
+          } else {
+            sh = img.naturalWidth / targetAspect;
+            sy = (img.naturalHeight - sh) / 2;
+          }
+
+          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+          callback(canvas.toDataURL('image/png', 1.0), img.naturalWidth, img.naturalHeight);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(imageFile);
+    }
 
     function loadPhoto(e, type) {
       const file = e.target.files[0];
       if(!file) return;
 
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        if(type === 'banner') {
+      if(type === 'banner') {
+        const box = document.getElementById('banner-box');
+        const rect = box.getBoundingClientRect();
+        autoCropImageToContainer(file, rect.width, rect.height, function(croppedDataUrl) {
           const bannerImg = document.getElementById('banner-img');
-          bannerImg.src = evt.target.result;
+          bannerImg.src = croppedDataUrl;
           bannerImg.style.display = 'block';
           document.getElementById('banner-placeholder').style.display = 'none';
-        } else if(type === 'avatar') {
+        });
+      } else if(type === 'avatar') {
+        const box = document.getElementById('avatar-box');
+        const rect = box.getBoundingClientRect();
+        
+        autoCropImageToContainer(file, rect.width, rect.height, function(croppedDataUrl, origWidth, origHeight) {
           const avatarImg = document.getElementById('avatar-img');
-          const avatarBox = document.getElementById('avatar-box');
-          
-          const tempImg = new Image();
-          tempImg.onload = function() {
-            const aspect = tempImg.naturalWidth / tempImg.naturalHeight;
-            const targetHeight = 75;
-            const calculatedWidth = targetHeight * aspect;
-            
-            avatarBox.style.width = calculatedWidth + 'px';
-            avatarImg.src = evt.target.result;
-            avatarImg.style.display = 'block';
-            document.getElementById('avatar-placeholder').style.display = 'none';
-          };
-          tempImg.src = evt.target.result;
-        }
-      };
-      reader.readAsDataURL(file);
+          avatarImg.src = croppedDataUrl;
+          avatarImg.style.display = 'block';
+          document.getElementById('avatar-placeholder').style.display = 'none';
+
+          // Il bordo esterno dell'avatar si ridimensiona per adattarsi alle proporzioni reali dell'immagine
+          const aspect = origWidth / origHeight;
+          const newWidth = Math.round(75 * aspect);
+          box.style.width = newWidth + 'px';
+        });
+      }
     }
 
     // Alterna tra Cerchio e Quadrato
