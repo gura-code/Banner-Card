@@ -499,7 +499,7 @@
       <div style="font-weight:800; margin-top:10px; font-size: 1.2rem;">Create Profile</div>
       
       <div class="card-canvas-area">
-        <!-- BASE CARD PROFILO YOUTUBE -->
+        <!-- BASE CARD PROFILO -->
         <div class="profile-card light-card" id="main-card">
           
           <!-- BANNER IMMAGINE IN ALTO -->
@@ -516,11 +516,11 @@
             </div>
           </div>
 
-          <!-- BIO & TESTI PROFILO -->
+          <!-- BIO & TESTI PROFILO AGGIORNATI -->
           <div class="profile-info-box">
-            <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Channel Name...">Channel Name...</div>
-            <div class="profile-tag editable placeholder-active" contenteditable="true" data-placeholder="@username • she/her">@username • she/her</div>
-            <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="☆°• write your bio here... •°☆">☆°• write your bio here... •°☆</div>
+            <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Nome / Titolo...">Nome / Titolo...</div>
+            <div class="profile-tag editable placeholder-active" contenteditable="true" data-placeholder="@username • info / status">@username • info / status</div>
+            <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="☆°• scrivi la tua bio o descrizione qui... •°☆">☆°• scrivi la tua bio o descrizione qui... •°☆</div>
           </div>
         </div>
 
@@ -910,7 +910,7 @@
         });
 
         const link = document.createElement('a');
-        link.download = 'youtube-profile.png';
+        link.download = 'profile-card.png';
         link.href = canvas.toDataURL('image/png', 1.0);
         link.click();
       });
