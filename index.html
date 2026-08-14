@@ -156,7 +156,7 @@
       margin-top: 20px;
     }
 
-    /* BANNER SUPERIORE CON LINEA CONTINUA */
+    /* BANNER SUPERIORE CON BG DINAMICO */
     .banner-box {
       width: 100%;
       height: 100px;
@@ -169,6 +169,7 @@
       background-color: rgba(0,0,0,0.03);
       position: relative;
       overflow: hidden;
+      transition: background-color 0.3s ease;
     }
 
     .banner-box img {
@@ -177,12 +178,15 @@
       object-fit: cover;
       object-position: center;
       display: none;
+      position: relative;
+      z-index: 2;
     }
 
     .banner-placeholder {
       font-size: 12px;
       font-weight: 800;
       color: #666666;
+      z-index: 1;
     }
 
     /* AVATAR PROFILO CON SPOSTAMENTO DINAMICO */
@@ -534,7 +538,7 @@
           <div class="color-dot dot-black" onclick="setCardTheme('dark')"></div>
         </div>
 
-        <!-- MENU SUB-OPTIONS GRIGLIA COMPATTA -->
+        <!-- MENU SUB-OPTIONS GRIGLIA COMPATTA CON BANNER BG -->
         <div class="color-sub-menu" id="color-sub-menu">
           <button class="menu-btn" onclick="openCustomPicker('bg')">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
@@ -544,6 +548,10 @@
             <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
             Borders
           </button>
+          <button class="menu-btn" onclick="openCustomPicker('banner')">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect></svg>
+            Banner BG
+          </button>
           <button class="menu-btn" onclick="openCustomPicker('text')">
             <svg viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"></path></svg>
             Text Color
@@ -552,9 +560,9 @@
             <svg viewBox="0 0 24 24"><path d="M17 10L12 15L7 10"></path></svg>
             Avatar: <span id="pos-label">Left</span>
           </button>
-          <button class="menu-btn" onclick="cycleTextAlign()" style="grid-column: span 2;">
+          <button class="menu-btn" onclick="cycleTextAlign()">
             <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="15" y2="12"></line><line x1="3" y1="18" x2="18" y2="18"></line></svg>
-            Text Align: <span id="align-label">Left</span>
+            Align: <span id="align-label">Left</span>
           </button>
         </div>
       </div>
@@ -763,12 +771,14 @@
 
     function setCardTheme(theme) {
       const card = document.getElementById('main-card');
+      const banner = document.getElementById('banner-box');
       const dots = document.querySelectorAll('.color-dot');
       
       card.style.backgroundColor = '';
       card.style.borderColor = '';
+      banner.style.backgroundColor = '';
+      banner.style.borderColor = '';
       document.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = '');
-      document.querySelector('.banner-box').style.borderColor = '';
       document.getElementById('avatar-box').style.borderColor = '';
 
       if (theme === 'dark') {
@@ -820,6 +830,7 @@
       document.getElementById('picker-modal').style.display = 'flex';
       
       const card = document.getElementById('main-card');
+      const banner = document.getElementById('banner-box');
       let currentHex = '#FFFFFF';
       
       if (target === 'bg') {
@@ -828,6 +839,9 @@
       } else if (target === 'line') {
         let borderCol = window.getComputedStyle(card).borderColor;
         currentHex = rgbToHex(borderCol);
+      } else if (target === 'banner') {
+        let bannerBg = window.getComputedStyle(banner).backgroundColor;
+        currentHex = rgbToHex(bannerBg);
       } else if (target === 'text') {
         let textCol = window.getComputedStyle(document.querySelector('.profile-name')).color;
         currentHex = rgbToHex(textCol);
@@ -892,13 +906,17 @@
 
     function applyPickerColor() {
       const card = document.getElementById('main-card');
+      const banner = document.getElementById('banner-box');
+
       if (currentTarget === 'bg') {
         card.classList.remove('light-card', 'dark-card');
         card.style.backgroundColor = selectedColor;
       } else if (currentTarget === 'line') {
         card.style.setProperty('border-color', selectedColor, 'important');
-        document.querySelector('.banner-box').style.borderColor = selectedColor;
+        banner.style.borderColor = selectedColor;
         document.getElementById('avatar-box').style.borderColor = selectedColor;
+      } else if (currentTarget === 'banner') {
+        banner.style.backgroundColor = selectedColor;
       } else if (currentTarget === 'text') {
         card.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = selectedColor);
       }
