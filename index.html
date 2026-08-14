@@ -140,7 +140,7 @@
       position: relative;
     }
 
-    /* PROFILO BASE */
+    /* PROFILO BASE (Inizializzato bianco con bordo nero) */
     .profile-card { 
       width: 330px; 
       height: 420px; 
@@ -157,7 +157,7 @@
     .profile-header-box {
       width: 100%;
       height: 150px;
-      background-color: #e0e0e0;
+      background-color: #f0f0f0;
       border-bottom: 3px solid #000000;
       cursor: pointer;
       position: relative;
@@ -184,7 +184,7 @@
       width: 90px;
       height: 90px;
       border-radius: 50%;
-      background-color: #f0f0f0;
+      background-color: #e5e5e5;
       border: 3px solid #000000;
       cursor: pointer;
       position: absolute;
@@ -196,7 +196,6 @@
       z-index: 2;
     }
 
-    /* Gestione posizioni avatar */
     .profile-card.avatar-center .profile-avatar-box {
       left: 50%;
       transform: translateX(-50%);
@@ -220,13 +219,13 @@
       display: none;
     }
 
-    /* 3. AREA TESTI E SEZIONI */
+    /* 3. AREA TESTI E GALLERIA */
     .profile-content {
       padding: 12px;
       margin-top: 35px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
     }
 
     .editable { outline: none; -webkit-tap-highlight-color: transparent; }
@@ -237,6 +236,7 @@
       font-weight: 800;
       line-height: 22px;
       word-break: break-word;
+      color: #000000;
     }
 
     .profile-bio {
@@ -244,48 +244,47 @@
       font-weight: 700;
       line-height: 16px;
       word-break: break-word;
+      color: #000000;
     }
 
-    .profile-tags {
+    /* GALLERIA IMMAGINI */
+    .profile-gallery {
       display: flex;
-      gap: 6px;
+      gap: 10px;
       margin-top: 4px;
-      flex-wrap: wrap;
     }
 
-    .tag-box {
+    .gallery-item {
+      width: 55px;
+      height: 55px;
+      border-radius: 8px;
+      border: 2px dashed #000000;
+      background: rgba(0,0,0,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-placeholder {
       font-size: 10px;
       font-weight: 800;
-      padding: 4px 8px;
-      border-radius: 8px;
-      border: 2px solid #000000;
-      background: rgba(0,0,0,0.04);
+      color: #555555;
     }
 
-    /* TEMI PREDEFINITI BIANCO / NERO */
-    .profile-card.light-theme {
-      background-color: #ffffff;
-      border-color: #000000;
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
-    .profile-card.light-theme .profile-header-box { border-bottom-color: #000000; background-color: #f0f0f0; }
-    .profile-card.light-theme .profile-avatar-box { border-color: #000000; background-color: #e5e5e5; }
-    .profile-card.light-theme .profile-name, 
-    .profile-card.light-theme .profile-bio { color: #000000; }
-    .profile-card.light-theme .tag-box { border-color: #000000; color: #000000; background: rgba(0,0,0,0.04); }
 
-    .profile-card.dark-theme {
-      background-color: #000000;
-      border-color: #ffffff;
-    }
-    .profile-card.dark-theme .profile-header-box { border-bottom-color: #ffffff; background-color: #222222; }
-    .profile-card.dark-theme .profile-avatar-box { border-color: #ffffff; background-color: #333333; }
-    .profile-card.dark-theme .header-placeholder,
-    .profile-card.dark-theme .avatar-placeholder { color: #aaaaaa; }
-    .profile-card.dark-theme .profile-name, 
-    .profile-card.dark-theme .profile-bio { color: #ffffff; }
-    .profile-card.dark-theme .tag-box { border-color: #ffffff; color: #ffffff; background: rgba(255,255,255,0.1); }
-
-    /* CONTROLLI E OPZIONI RAPIDE */
+    /* CONTROLLI E MENU OPZIONI */
     .controls-row {
       display: flex;
       gap: 8px;
@@ -294,34 +293,13 @@
       align-items: center;
     }
 
-    .color-picker {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .color-dot {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid #000000;
-      transition: transform 0.15s ease;
-    }
-
-    .color-dot:active { transform: scale(0.9); }
-    .dot-white { background-color: #ffffff; }
-    .dot-black { background-color: #000000; border-color: #000000; }
-    .color-dot.active { box-shadow: 0 0 0 3px #000000; }
-
-    /* MENU SUB-OPTIONS */
+    /* MENU SUB-OPTIONS (Senza palline, solo menu esteso e centrato) */
     .color-sub-menu {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       background: #111111;
-      padding: 5px;
-      border-radius: 12px;
+      padding: 6px;
+      border-radius: 14px;
       box-shadow: 0 6px 16px rgba(0,0,0,0.15);
     }
 
@@ -329,19 +307,19 @@
       background: #222222;
       color: #ffffff;
       border: 1px solid #333333;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 10px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
     }
 
     .menu-btn svg {
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       fill: none;
       stroke: #ffffff;
       stroke-width: 2.5;
@@ -359,7 +337,7 @@
       cursor: pointer; 
     }
 
-    /* MODALE SELETTORE COLORE (Esattamente quello originale) */
+    /* MODALE SELETTORE COLORE */
     .picker-modal-overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -471,8 +449,11 @@
       .logo-main, div[style*="font-weight:800"] { color: #ffffff !important; }
       .btn-start, .btn-download { background-color: #ffffff !important; color: #000000 !important; }
       .sticker img { filter: invert(1); }
-      .color-dot { border-color: #ffffff; }
-      .color-dot.active { box-shadow: 0 0 0 3px #ffffff; }
+      
+      /* Se siamo in modalità scura e il bordo è nero o non specificato, aggiunge un'ombra bianca per farlo risaltare */
+      .profile-card {
+        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.8);
+      }
     }
 
     @media (prefers-color-scheme: light) {
@@ -490,6 +471,12 @@
 <body class="light-mode-env">
 
   <div class="phone-wrapper">
+    <!-- MENU DI NAVIGAZIONE -->
+    <div style="text-align: center; padding: 10px; background: #000; color: #fff; width: 100%; z-index: 1000; display: none;" id="top-nav">
+        <a href="index.html" style="color: #fff; margin: 0 15px; text-decoration: none; font-weight: bold; font-size: 12px;">Cards</a>
+        <a href="profilo.html" style="color: #fff; margin: 0 15px; text-decoration: none; font-weight: bold; font-size: 12px; border-bottom: 2px solid white;">Profiles</a>
+    </div>
+
     <!-- SPLASH SCREEN -->
     <div id="splash">
       <div class="bg-scrolling">
@@ -508,45 +495,49 @@
 
     <!-- UI PRINCIPALE -->
     <div class="main-ui" id="main-ui">
+      
       <div style="font-weight:800; margin-top:5px; font-size: 1.1rem;">Create Profile</div>
       
       <div class="profile-canvas-area">
-        <!-- SCHEDA PROFILO -->
-        <div class="profile-card light-theme avatar-center" id="main-profile">
+        <!-- SCHEDA PROFILO (Bianca con bordi neri all'avvio) -->
+        <div class="profile-card avatar-center" id="main-profile" style="background-color: #ffffff; border-color: #000000;">
           <!-- 1. Header Rettangolare -->
-          <div class="profile-header-box" onclick="document.getElementById('header-file-input').click()">
+          <div class="profile-header-box" onclick="document.getElementById('header-file-input').click()" style="border-bottom-color: #000000;">
             <div id="header-placeholder" class="header-placeholder">+ Header Photo</div>
             <img id="header-img" alt="Header">
           </div>
 
           <!-- 2. Avatar Circolare -->
-          <div class="profile-avatar-box" onclick="document.getElementById('avatar-file-input').click()">
+          <div class="profile-avatar-box" onclick="document.getElementById('avatar-file-input').click()" style="border-color: #000000;">
             <div id="avatar-placeholder" class="avatar-placeholder">+ Avatar</div>
             <img id="avatar-img" alt="Avatar">
           </div>
 
-          <!-- 3. Testi e Tag -->
+          <!-- 3. Testi e Galleria Immagini -->
           <div class="profile-content">
-            <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Your Name / Nickname...">Your Name / Nickname...</div>
-            <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="Write your bio, status or vibes here...">Write your bio, status or vibes here...</div>
+            <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Your Name / Nickname..." style="color: #000000;">Your Name / Nickname...</div>
+            <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="Write your bio, status or vibes here..." style="color: #000000;">Write your bio, status or vibes here...</div>
             
-            <div class="profile-tags">
-              <div class="tag-box editable placeholder-active" contenteditable="true" data-placeholder="#tag1">#tag1</div>
-              <div class="tag-box editable placeholder-active" contenteditable="true" data-placeholder="#tag2">#tag2</div>
-              <div class="tag-box editable placeholder-active" contenteditable="true" data-placeholder="#tag3">#tag3</div>
+            <!-- GALLERIA IMMAGINI -->
+            <div class="profile-gallery">
+              <div class="gallery-item" onclick="document.getElementById('gallery-file-1').click()" style="border-color: #000000;">
+                <div class="gallery-placeholder" id="placeholder-gal-1" style="color: #000000;">+ Img</div>
+                <img id="gallery-img-1" alt="Gallery 1">
+              </div>
+              <div class="gallery-item" onclick="document.getElementById('gallery-file-2').click()" style="border-color: #000000;">
+                <div class="gallery-placeholder" id="placeholder-gal-2" style="color: #000000;">+ Img</div>
+                <img id="gallery-img-2" alt="Gallery 2">
+              </div>
+              <div class="gallery-item" onclick="document.getElementById('gallery-file-3').click()" style="border-color: #000000;">
+                <div class="gallery-placeholder" id="placeholder-gal-3" style="color: #000000;">+ Img</div>
+                <img id="gallery-img-3" alt="Gallery 3">
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- CONTROLLI RAPIDI (Temi, Posizione Avatar & Colori) -->
+        <!-- CONTROLLI RAPIDI (Solo Menu, senza palline) -->
         <div class="controls-row">
-          <!-- Temi Bianco/Nero -->
-          <div class="color-picker">
-            <div class="color-dot dot-white active" onclick="setProfileTheme('light')"></div>
-            <div class="color-dot dot-black" onclick="setProfileTheme('dark')"></div>
-          </div>
-
-          <!-- Menu Sub-Options per Cambiare Colori e Posizione -->
           <div class="color-sub-menu" id="color-sub-menu">
             <button class="menu-btn" onclick="openCustomPicker('bg')">
               <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
@@ -567,11 +558,15 @@
       <!-- INPUT FILE NASCOSTI -->
       <input type="file" id="header-file-input" style="display:none;" accept="image/*" onchange="loadHeaderPhoto(event)">
       <input type="file" id="avatar-file-input" style="display:none;" accept="image/*" onchange="loadAvatarPhoto(event)">
+      
+      <input type="file" id="gallery-file-1" style="display:none;" accept="image/*" onchange="loadGalleryPhoto(event, 1)">
+      <input type="file" id="gallery-file-2" style="display:none;" accept="image/*" onchange="loadGalleryPhoto(event, 2)">
+      <input type="file" id="gallery-file-3" style="display:none;" accept="image/*" onchange="loadGalleryPhoto(event, 3)">
 
       <div class="btn-download" onclick="downloadProfile()">Download Profile</div>
     </div>
 
-    <!-- MODALE SELETTORE COLORE (Esatto dell'originale) -->
+    <!-- MODALE SELETTORE COLORE -->
     <div class="picker-modal-overlay" id="picker-modal">
       <div class="picker-container">
         <div class="grid-view" id="picker-grid"></div>
@@ -617,7 +612,6 @@
     let currentTarget = 'bg';
     let selectedColor = '#FFFFFF';
 
-    // Gestione campi editabili e placeholder
     document.querySelectorAll('.editable').forEach(el => {
       el.addEventListener('focus', function() {
         const ph = this.getAttribute('data-placeholder');
@@ -677,7 +671,8 @@
 
     function startApp() { 
       document.getElementById('splash').style.display = 'none'; 
-      document.getElementById('main-ui').style.display = 'flex'; 
+      document.getElementById('main-ui').style.display = 'flex';
+      document.getElementById('top-nav').style.display = 'block';
     }
     
     function loadHeaderPhoto(e) {
@@ -706,35 +701,17 @@
       reader.readAsDataURL(file);
     }
 
-    function setProfileTheme(theme) {
-      const card = document.getElementById('main-profile');
-      const dots = document.querySelectorAll('.color-dot');
-      
-      card.style.backgroundColor = '';
-      card.style.borderColor = '';
-      card.querySelector('.profile-header-box').style.backgroundColor = '';
-      card.querySelector('.profile-header-box').style.borderColor = '';
-      card.querySelector('.profile-avatar-box').style.backgroundColor = '';
-      card.querySelector('.profile-avatar-box').style.borderColor = '';
-      
-      card.querySelectorAll('.profile-name, .profile-bio, .header-placeholder, .avatar-placeholder').forEach(el => el.style.color = '');
-      card.querySelectorAll('.tag-box').forEach(el => {
-        el.style.borderColor = '';
-        el.style.color = '';
-        el.style.backgroundColor = '';
-      });
-
-      if (theme === 'dark') {
-        card.className = card.className.replace('light-theme', 'dark-theme');
-        if(!card.classList.contains('dark-theme')) card.classList.add('dark-theme');
-        dots[0].classList.remove('active');
-        dots[1].classList.add('active');
-      } else {
-        card.className = card.className.replace('dark-theme', 'light-theme');
-        if(!card.classList.contains('light-theme')) card.classList.add('light-theme');
-        dots[0].classList.add('active');
-        dots[1].classList.remove('active');
+    function loadGalleryPhoto(e, index) {
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = document.getElementById('gallery-img-' + index);
+        img.src = event.target.result;
+        img.style.display = 'block';
+        document.getElementById('placeholder-gal-' + index).style.display = 'none';
       }
+      reader.readAsDataURL(file);
     }
 
     function toggleAvatarPosition() {
@@ -751,7 +728,6 @@
       }
     }
 
-    /* INIZIALIZZAZIONE GRIGLIA COLORI 13x13 */
     function initGridColors() {
       const grid = document.getElementById('picker-grid');
       grid.innerHTML = '';
@@ -843,9 +819,8 @@
 
     function handleRgbInput() {
       let r = parseInt(document.getElementById('r-input').value) || 0;
-      let g = parseInt(document.getElementById('r-input').value) || 0; // fallback
+      let green = parseInt(document.getElementById('g-input').value) || 0; 
       let b = parseInt(document.getElementById('b-input').value) || 0;
-      let green = parseInt(document.getElementById('g-input').value) || 0;
 
       r = Math.min(255, Math.max(0, r));
       green = Math.min(255, Math.max(0, green));
@@ -860,17 +835,15 @@
     function applyPickerColor() {
       const card = document.getElementById('main-profile');
       if (currentTarget === 'bg') {
-        card.classList.remove('light-theme', 'dark-theme');
         card.style.backgroundColor = selectedColor;
       } else if (currentTarget === 'line') {
         card.style.setProperty('border-color', selectedColor, 'important');
         card.querySelector('.profile-header-box').style.setProperty('border-bottom-color', selectedColor, 'important');
         card.querySelector('.profile-avatar-box').style.setProperty('border-color', selectedColor, 'important');
         
-        card.querySelectorAll('.profile-name, .profile-bio, .header-placeholder, .avatar-placeholder').forEach(el => el.style.color = selectedColor);
-        card.querySelectorAll('.tag-box').forEach(el => {
+        card.querySelectorAll('.profile-name, .profile-bio, .header-placeholder, .avatar-placeholder, .gallery-placeholder').forEach(el => el.style.color = selectedColor);
+        card.querySelectorAll('.gallery-item').forEach(el => {
           el.style.setProperty('border-color', selectedColor, 'important');
-          el.style.color = selectedColor;
         });
       }
       closePicker();
@@ -879,12 +852,19 @@
     function downloadProfile() {
       const card = document.getElementById('main-profile');
       const editables = card.querySelectorAll('.editable');
+      const placeholders = card.querySelectorAll('.gallery-placeholder, .header-placeholder, .avatar-placeholder');
       
       editables.forEach(el => {
         if (el.classList.contains('placeholder-active')) {
           el.dataset.wasPlaceholder = "true";
           el.style.display = 'none';
           el.innerText = '';
+        }
+      });
+      placeholders.forEach(el => {
+        if(window.getComputedStyle(el).display !== 'none') {
+           el.dataset.tempHide = "true";
+           el.style.display = 'none';
         }
       });
 
@@ -896,9 +876,15 @@
             delete el.dataset.wasPlaceholder;
           }
         });
+        placeholders.forEach(el => {
+          if (el.dataset.tempHide) {
+             el.style.display = '';
+             delete el.dataset.tempHide;
+          }
+        });
 
         const link = document.createElement('a');
-        link.download = 'profile.png';
+        link.download = 'pocket_profile.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
       });
