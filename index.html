@@ -153,10 +153,10 @@
       box-sizing: border-box;
       transition: all 0.2s ease;
       position: relative;
-      margin-top: 20px;
+      margin-top: 20px; /* Spazio extra per evitare che l'avatar spunti fuori sopra */
     }
 
-    /* BANNER SUPERIORE */
+    /* BANNER SUPERIORE CON LINEA CONTINUA */
     .banner-box {
       width: 100%;
       height: 100px;
@@ -185,7 +185,7 @@
       color: #666666;
     }
 
-    /* AVATAR PROFILO */
+    /* AVATAR PROFILO CON SPOSTAMENTO DINAMICO */
     .avatar-wrapper {
       width: 100%;
       height: 40px;
@@ -208,7 +208,6 @@
       position: absolute;
       top: -38px;
       z-index: 5;
-      overflow: hidden;
     }
 
     /* POSIZIONI AVATAR */
@@ -219,10 +218,10 @@
     .avatar-box img {
       width: 100%;
       height: 100%;
-      object-fit: cover; /* Riempie perfettamente il riquadro tagliando l'eccedenza proporzionalmente */
+      object-fit: cover;
       object-position: center;
       display: none;
-      border-radius: inherit;
+      border-radius: inherit; /* Segue il bordo tondo o quadrato del padre */
     }
 
     .avatar-box.square {
@@ -674,7 +673,7 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    // Auto Crop delle immagini per riempire perfettamente il box quadrato
+    // Auto Crop delle immagini senza distorsione
     function autoCropImageToContainer(imageFile, targetWidth, targetHeight, callback) {
       const reader = new FileReader();
       reader.onload = function(e) {
