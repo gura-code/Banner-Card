@@ -156,14 +156,14 @@
       flex-shrink: 0;
     }
 
-    /* BANNER SUPERIORE (Gestito via Background CSS per evitare deformazioni) */
+    /* BANNER SUPERIORE */
     .profile-banner {
       width: 100%;
       height: 120px;
       background-color: #f0f0f0;
       background-position: center;
       background-repeat: no-repeat;
-      background-size: cover; /* Cambia in 'contain' se preferisci che si veda intera senza tagli */
+      background-size: cover;
       position: relative;
       cursor: pointer;
       display: flex;
@@ -178,7 +178,7 @@
       color: #666666;
     }
 
-    /* FOTO PROFILO CIRCOLARE (Gestita via Background CSS) */
+    /* FOTO PROFILO CIRCOLARE */
     .profile-avatar-container {
       position: relative;
       margin-top: -40px;
@@ -200,7 +200,7 @@
       background-color: #ffffff;
       background-position: center;
       background-repeat: no-repeat;
-      background-size: cover; /* Mantiene le proporzioni perfette nel cerchio */
+      background-size: cover;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -553,28 +553,62 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
+    // Funzione di elaborazione immagini ad altissima definizione per eliminare la sgranatura
+    function processImage(file, targetWidth, targetHeight, callback) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const scale = 3; // Scala 3x per una nitidezza estrema sia sullo schermo che in download
+          canvas.width = targetWidth * scale;
+          canvas.height = targetHeight * scale;
+          
+          const ctx = canvas.getContext('2d');
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+
+          const imgRatio = img.width / img.height;
+          const targetRatio = canvas.width / canvas.height;
+          let w = canvas.width;
+          let h = canvas.height;
+          let x = 0;
+          let y = 0;
+
+          if (imgRatio > targetRatio) {
+            w = canvas.height * imgRatio;
+            x = (canvas.width - w) / 2;
+          } else {
+            h = canvas.width / imgRatio;
+            y = (canvas.height - h) / 2;
+          }
+
+          ctx.drawImage(img, x, y, w, h);
+          callback(canvas.toDataURL('image/png', 1.0));
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
     function loadBanner(e) {
       const file = e.target.files[0];
       if(!file) return;
-      const reader = new FileReader();
-      reader.onload = function(event) {
+      processImage(file, 320, 120, function(highResUrl) {
         const bannerBox = document.getElementById('banner-box');
-        bannerBox.style.backgroundImage = `url('${event.target.result}')`;
+        bannerBox.style.backgroundImage = `url('${highResUrl}')`;
         document.getElementById('banner-placeholder').style.display = 'none';
-      }
-      reader.readAsDataURL(file);
+      });
     }
 
     function loadAvatar(e) {
       const file = e.target.files[0];
       if(!file) return;
-      const reader = new FileReader();
-      reader.onload = function(event) {
+      processImage(file, 80, 80, function(highResUrl) {
         const avatarBox = document.getElementById('avatar-box');
-        avatarBox.style.backgroundImage = `url('${event.target.result}')`;
+        avatarBox.style.backgroundImage = `url('${highResUrl}')`;
         document.getElementById('avatar-placeholder').style.display = 'none';
-      }
-      reader.readAsDataURL(file);
+      });
     }
 
     function cycleAvatarAlignment() {
