@@ -682,25 +682,65 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    // Carica Immagini tramite tag IMG
+    // Funzione di ritaglio automatico istantaneo sulle dimensioni esatte del contenitore
+    function autoCropImageToContainer(imageFile, targetWidth, targetHeight, callback) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          // Risoluzione ad alta definizione (HD 3x)
+          const scale = 3;
+          canvas.width = targetWidth * scale;
+          canvas.height = targetHeight * scale;
+
+          const targetAspect = targetWidth / targetHeight;
+          const imgAspect = img.naturalWidth / img.naturalHeight;
+
+          let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+
+          if (imgAspect > targetAspect) {
+            sw = img.naturalHeight * targetAspect;
+            sx = (img.naturalWidth - sw) / 2;
+          } else {
+            sh = img.naturalWidth / targetAspect;
+            sy = (img.naturalHeight - sh) / 2;
+          }
+
+          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+          callback(canvas.toDataURL('image/png', 1.0));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(imageFile);
+    }
+
+    // Carica e ritaglia automaticamente la foto inserita
     function loadPhoto(e, type) {
       const file = e.target.files[0];
       if(!file) return;
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        if(type === 'banner') {
+
+      if(type === 'banner') {
+        const box = document.getElementById('banner-box');
+        const rect = box.getBoundingClientRect();
+        autoCropImageToContainer(file, rect.width, rect.height, function(croppedDataUrl) {
           const bannerImg = document.getElementById('banner-img');
-          bannerImg.src = event.target.result;
+          bannerImg.src = croppedDataUrl;
           bannerImg.style.display = 'block';
           document.getElementById('banner-placeholder').style.display = 'none';
-        } else if(type === 'avatar') {
+        });
+      } else if(type === 'avatar') {
+        const box = document.getElementById('avatar-box');
+        const rect = box.getBoundingClientRect();
+        autoCropImageToContainer(file, rect.width, rect.height, function(croppedDataUrl) {
           const avatarImg = document.getElementById('avatar-img');
-          avatarImg.src = event.target.result;
+          avatarImg.src = croppedDataUrl;
           avatarImg.style.display = 'block';
           document.getElementById('avatar-placeholder').style.display = 'none';
-        }
+        });
       }
-      reader.readAsDataURL(file);
     }
 
     // Toggle forma Avatar
@@ -853,40 +893,7 @@
       closePicker();
     }
 
-    // Ritaglio sincrono HD direttamente dall'elemento immagine presente in memoria
-    function getCroppedDataUrl(imgElement, containerElement) {
-      if (!imgElement || !imgElement.src || imgElement.style.display === 'none' || !imgElement.naturalWidth) {
-        return null;
-      }
-
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-
-      const containerRect = containerElement.getBoundingClientRect();
-      const targetAspect = containerRect.width / containerRect.height;
-
-      const imgW = imgElement.naturalWidth;
-      const imgH = imgElement.naturalHeight;
-      const imgAspect = imgW / imgH;
-
-      let sourceX = 0, sourceY = 0, sourceW = imgW, sourceH = imgH;
-
-      if (imgAspect > targetAspect) {
-        sourceW = imgH * targetAspect;
-        sourceX = (imgW - sourceW) / 2;
-      } else {
-        sourceH = imgW / targetAspect;
-        sourceY = (imgH - sourceH) / 2;
-      }
-
-      canvas.width = sourceW;
-      canvas.height = sourceH;
-
-      ctx.drawImage(imgElement, sourceX, sourceY, sourceW, sourceH, 0, 0, sourceW, sourceH);
-      return canvas.toDataURL('image/png', 1.0);
-    }
-
-    // DOWNLOAD CARD DEFINITIVO: NITIDO + ZERO SCHIACCIAMENTO
+    // DOWNLOAD CARD DEFINITIVO SENZA DISTORSIONE E CON CATTURA HD
     function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
@@ -901,22 +908,6 @@
         }
       });
 
-      const bannerImg = document.getElementById('banner-img');
-      const avatarImg = document.getElementById('avatar-img');
-      const bannerBox = document.getElementById('banner-box');
-      const avatarBox = document.getElementById('avatar-box');
-
-      // Salva le sorgenti originali
-      const origBannerSrc = bannerImg.src;
-      const origAvatarSrc = avatarImg.src;
-
-      // Ritaglia istantaneamente e con massima precisione pixel HD
-      const croppedBanner = getCroppedDataUrl(bannerImg, bannerBox);
-      const croppedAvatar = getCroppedDataUrl(avatarImg, avatarBox);
-
-      if (croppedBanner) bannerImg.src = croppedBanner;
-      if (croppedAvatar) avatarImg.src = croppedAvatar;
-
       html2canvas(card, { 
         scale: 4,
         backgroundColor: null, 
@@ -924,10 +915,6 @@
         allowTaint: true,
         logging: false
       }).then(canvas => {
-        // Ripristina sorgenti originali
-        if (origBannerSrc) bannerImg.src = origBannerSrc;
-        if (origAvatarSrc) avatarImg.src = origAvatarSrc;
-
         // Ripristina la visibilità dei testi
         editables.forEach(el => {
           if (el.dataset.hiddenForDownload) {
@@ -945,4 +932,3 @@
   </script>
 </body>
 </html>
-
