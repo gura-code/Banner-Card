@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
-  <title>Pocket Card</title>
+  <title>Pocket Profile</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
@@ -71,7 +71,6 @@
     }
 
     .col { flex: 1; display: flex; flex-direction: column; }
-    
     .up { animation: scrollUp 22s linear infinite; }
     .down { animation: scrollDown 22s linear infinite; }
     
@@ -103,7 +102,6 @@
       margin-bottom: 50px; 
       text-align: center;
       letter-spacing: -3px;
-      text-shadow: 0 4px 15px rgba(255, 255, 255, 0.9), 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .btn-start { 
@@ -129,7 +127,7 @@
       background-color: #ffffff;
     }
 
-    .card-canvas-area { 
+    .profile-canvas-area { 
       width: 100%; 
       flex: 1; 
       display: flex; 
@@ -140,135 +138,111 @@
       position: relative;
     }
 
-    /* CARD BASE */
-    .card { 
+    /* PROFILO CARD CONTAINER */
+    .profile-card { 
       width: 320px; 
-      height: 180px; 
+      height: 440px; 
       background-color: #ffffff; 
       border: 3px solid #000000; 
-      border-radius: 20px; 
-      padding: 12px; 
-      display: flex; 
-      gap: 12px; 
-      align-items: center;
-      box-sizing: border-box;
-      transition: all 0.2s ease;
-    }
-
-    .card-photo-box { 
-      height: 100%; 
-      max-height: 156px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      cursor: pointer; 
-      flex-shrink: 0;
-    }
-    
-    .placeholder-box { 
-      width: 100px; 
-      height: 156px; 
-      border: 2px dashed inherit; 
-      border-radius: 12px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      background-color: rgba(0,0,0,0.05); 
-      font-size: 12px; 
-      font-weight: 700; 
-    }
-    
-    .card-photo-box img { 
-      max-height: 156px; 
-      max-width: 140px;
-      width: auto;
-      height: auto;
-      border: 2px dashed inherit; 
-      border-radius: 12px; 
-      display: block;
-    }
-    
-    .card-info-box { 
-      flex: 1; 
-      height: 156px; 
+      border-radius: 24px; 
+      overflow: hidden;
       display: flex; 
       flex-direction: column; 
-      justify-content: center; 
-      overflow: hidden; 
-      gap: 4px; 
-      margin-left: 4px;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    /* RETTANGOLO SUPERIORE (BANNER) */
+    .profile-banner {
+      width: 100%;
+      height: 130px;
+      background-color: #f0f0f0;
+      border-bottom: 3px solid inherit;
+      position: relative;
+      cursor: pointer;
+    }
+
+    /* FOTO PROFILO CIRCOLARE */
+    .profile-avatar-container {
+      position: relative;
+      margin-top: -45px;
+      padding: 0 20px;
+      display: flex;
+      width: 100%;
+      z-index: 2;
+    }
+
+    .profile-avatar-container.align-left { justify-content: flex-start; }
+    .profile-avatar-container.align-center { justify-content: center; }
+    .profile-avatar-container.align-right { justify-content: flex-end; }
+
+    .avatar-circle {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid #000000;
+      background-color: rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .avatar-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .avatar-placeholder {
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    /* SEZIONE INFORMAZIONI TESTUALI */
+    .profile-info-box {
+      flex: 1;
+      padding: 12px 20px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
     }
 
     .editable { outline: none; -webkit-tap-highlight-color: transparent; }
     .editable.placeholder-active { opacity: 0.6; }
 
-    .card-title { font-size: 16px; line-height: 20px; font-weight: 800; word-break: break-word; }
-    .card-voto { font-size: 13px; line-height: 16px; font-weight: 800; }
-    .card-review { font-size: 11px; line-height: 14px; word-break: break-word; }
+    .profile-name { font-size: 20px; font-weight: 800; line-height: 24px; word-break: break-word; }
+    .profile-bio { font-size: 13px; font-weight: 600; line-height: 18px; word-break: break-word; }
 
-    /* TEMI */
-    .card.light-card {
-      background-color: #ffffff;
-      border: 3px solid #000000;
-    }
-    .card.light-card .card-title { color: #000000; }
-    .card.light-card .card-voto { color: #555555; }
-    .card.light-card .card-review { color: #333333; }
-    .card.light-card .placeholder-box { border-color: #000000; color: #666666; background-color: #f0f0f0; }
-    .card.light-card img { border-color: #000000; }
-
-    .card.dark-card {
-      background-color: #000000;
-      border: 3px solid #ffffff;
-    }
-    .card.dark-card .card-title { color: #ffffff; }
-    .card.dark-card .card-voto { color: #aaaaaa; }
-    .card.dark-card .card-review { color: #dddddd; }
-    .card.dark-card .placeholder-box { border-color: #ffffff; color: #cccccc; background-color: #222222; }
-    .card.dark-card img { border-color: #ffffff; }
-
-    .color-picker {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .color-dot {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid #000000;
-      transition: transform 0.15s ease;
-    }
-
-    .color-dot:active { transform: scale(0.9); }
-    .dot-white { background-color: #ffffff; }
-    .dot-black { background-color: #000000; border-color: #000000; }
-    .color-dot.active { box-shadow: 0 0 0 3px #000000; }
-
+    /* MENU SUB-OPTIONS */
     .color-sub-menu {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       background: #111111;
       padding: 6px;
       border-radius: 14px;
       box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .menu-btn {
       background: #222222;
       color: #ffffff;
       border: 1px solid #333333;
-      padding: 8px 12px;
+      padding: 8px 10px;
       border-radius: 10px;
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .menu-btn svg {
@@ -393,33 +367,9 @@
     .btn-action { cursor: pointer; padding: 4px 10px; }
     .btn-action.cancel { color: #8e8e93; }
     .btn-action.done { color: #ffffff; }
-
-    @media (prefers-color-scheme: dark) {
-      html, body, .phone-wrapper, #splash, .main-ui {
-        background-color: #000000 !important;
-        color: #ffffff !important;
-      }
-      .content-overlay { background: rgba(0, 0, 0, 0.75) !important; }
-      .logo-main, div[style*="font-weight:800"] { color: #ffffff !important; }
-      .btn-start, .btn-download { background-color: #ffffff !important; color: #000000 !important; }
-      .sticker img { filter: invert(1); }
-      .color-dot { border-color: #ffffff; }
-      .color-dot.active { box-shadow: 0 0 0 3px #ffffff; }
-    }
-
-    @media (prefers-color-scheme: light) {
-      html, body, .phone-wrapper, #splash, .main-ui {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-      }
-      .content-overlay { background: rgba(255, 255, 255, 0.75) !important; }
-      .logo-main { color: #000000 !important; }
-      .btn-start, .btn-download { background-color: #000000 !important; color: #ffffff !important; }
-      .sticker img { filter: none; }
-    }
   </style>
 </head>
-<body class="light-mode-env">
+<body>
 
   <div class="phone-wrapper">
     <!-- SPLASH SCREEN -->
@@ -432,7 +382,7 @@
       <div class="content-overlay">
         <div class="logo-main">
           <div>Pocket</div>
-          <div>Card</div>
+          <div>Profile</div>
         </div>
         <button class="btn-start" onclick="startApp()">Start Creating</button>
       </div>
@@ -440,29 +390,28 @@
 
     <!-- UI PRINCIPALE -->
     <div class="main-ui" id="main-ui">
-      <div style="font-weight:800; margin-top:10px; font-size: 1.2rem;">Create Card</div>
+      <div style="font-weight:800; margin-top:10px; font-size: 1.2rem;">Create Profile</div>
       
-      <div class="card-canvas-area">
-        <div class="card light-card" id="main-card">
-          <div class="card-photo-box" onclick="document.getElementById('file-input').click()">
-            <div id="placeholder" class="placeholder-box">+ Photo</div>
-            <img id="card-photo-img" style="display:none;" alt="Photo">
+      <div class="profile-canvas-area">
+        <!-- PAGINA PROFILO -->
+        <div class="profile-card" id="main-profile">
+          <div class="profile-banner" id="banner-box"></div>
+          
+          <div class="profile-avatar-container align-center" id="avatar-align-container">
+            <div class="avatar-circle" onclick="document.getElementById('avatar-file-input').click()">
+              <div id="avatar-placeholder" class="avatar-placeholder">+ Photo</div>
+              <img id="avatar-img" alt="Avatar">
+            </div>
           </div>
-          <div class="card-info-box">
-            <div class="card-title editable placeholder-active" contenteditable="true" data-placeholder="Title / Name...">Title / Name...</div>
-            <div class="card-voto editable placeholder-active" contenteditable="true" data-placeholder="Rating / Genre / Role...">Rating / Genre / Role...</div>
-            <div class="card-review editable placeholder-active" contenteditable="true" data-placeholder="Review / Plot / Notes...">Review / Plot / Notes...</div>
+
+          <div class="profile-info-box">
+            <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Your Name...">Your Name...</div>
+            <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="Write your bio, description, or status here...">Write your bio, description, or status here...</div>
           </div>
         </div>
 
-        <!-- PALLINE BIANCO / NERO -->
-        <div class="color-picker">
-          <div class="color-dot dot-white active" onclick="setCardTheme('light')"></div>
-          <div class="color-dot dot-black" onclick="setCardTheme('dark')"></div>
-        </div>
-
-        <!-- MENU SUB-OPTIONS -->
-        <div class="color-sub-menu" id="color-sub-menu">
+        <!-- MENU OPZIONI -->
+        <div class="color-sub-menu">
           <button class="menu-btn" onclick="openCustomPicker('bg')">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
             Card Color
@@ -471,11 +420,15 @@
             <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
             Borders & Text
           </button>
+          <button class="menu-btn" onclick="cycleAvatarAlignment()">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle></svg>
+            Align Photo
+          </button>
         </div>
       </div>
 
-      <input type="file" id="file-input" style="display:none;" accept="image/*" onchange="loadPhoto(event)">
-      <div class="btn-download" onclick="downloadCard()">Download Card</div>
+      <input type="file" id="avatar-file-input" style="display:none;" accept="image/*" onchange="loadAvatar(event)">
+      <div class="btn-download" onclick="downloadProfile()">Download Profile</div>
     </div>
 
     <!-- MODALE SELETTORE COLORE -->
@@ -503,13 +456,6 @@
   </div>
 
   <script>
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.body.className = 'dark-mode-env';
-    }
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-      document.body.className = event.matches ? 'dark-mode-env' : 'light-mode-env';
-    });
-
     const images = [
       "1000072971-removebg-preview.png", "1000072972-removebg-preview.png",
       "1000072974-removebg-preview.png", "1000072977-removebg-preview.png",
@@ -523,7 +469,10 @@
 
     let currentTarget = 'bg';
     let selectedColor = '#FFFFFF';
+    let avatarAlignments = ['align-left', 'align-center', 'align-right'];
+    let currentAlignIndex = 1; // Parte centrato
 
+    // Gestione dei campi modificabili (Placeholder)
     document.querySelectorAll('.editable').forEach(el => {
       el.addEventListener('focus', function() {
         const ph = this.getAttribute('data-placeholder');
@@ -586,61 +535,44 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    function loadPhoto(e) {
+    function loadAvatar(e) {
       const file = e.target.files[0];
       if(!file) return;
       const reader = new FileReader();
       reader.onload = function(event) {
-        const img = document.getElementById('card-photo-img');
+        const img = document.getElementById('avatar-img');
         img.src = event.target.result;
         img.style.display = 'block';
-        document.getElementById('placeholder').style.display = 'none';
+        document.getElementById('avatar-placeholder').style.display = 'none';
       }
       reader.readAsDataURL(file);
     }
 
-    function setCardTheme(theme) {
-      const card = document.getElementById('main-card');
-      const dots = document.querySelectorAll('.color-dot');
-      
-      card.style.backgroundColor = '';
-      card.style.borderColor = '';
-      document.querySelectorAll('.card-title, .card-voto, .card-review').forEach(el => el.style.color = '');
-      document.getElementById('placeholder').style.borderColor = '';
-      document.getElementById('placeholder').style.color = '';
-      const photoImg = document.getElementById('card-photo-img');
-      if (photoImg) photoImg.style.borderColor = '';
-
-      if (theme === 'dark') {
-        card.className = 'card dark-card';
-        dots[0].classList.remove('active');
-        dots[1].classList.add('active');
-      } else {
-        card.className = 'card light-card';
-        dots[0].classList.add('active');
-        dots[1].classList.remove('active');
-      }
+    function cycleAvatarAlignment() {
+      currentAlignIndex = (currentAlignIndex + 1) % avatarAlignments.length;
+      const container = document.getElementById('avatar-align-container');
+      container.className = 'profile-avatar-container ' + avatarAlignments[currentAlignIndex];
     }
 
-    /* INIZIALIZZAZIONE GRIGLIA COLORI 13x13 CON BIANCO-NERO IN PRIMA E ULTIMA RIGA */
+    // Griglia Colori 13x13
     function initGridColors() {
       const grid = document.getElementById('picker-grid');
       grid.innerHTML = '';
       
       const exactPalette13x13 = [
-        ["#FCFCFC", "#ECECEC", "#DCDCDC", "#CCCCCC", "#BCBCBC", "#ACACAC", "#9C9C9C", "#8C8C8C", "#7C7C7C", "#6C6C6C", "#5C5C5C", "#4C4C4C", "#3C3C3C"],
-        ["#FFE3E2", "#FFC9C9", "#FEA3A2", "#FE817D", "#FF5959", "#FE3636", "#FE1212", "#E81011", "#D31111", "#B70D0D", "#990B0A", "#6E0708", "#400404"],
-        ["#FFECDE", "#FFDEC3", "#FFCBA3", "#FFB882", "#FFA45E", "#FF913C", "#FF7D1B", "#EA7317", "#D96B16", "#B85A12", "#994200", "#6E3001", "#512301"],
-        ["#FFF5DA", "#FFEEC0", "#FFE699", "#FEDB73", "#FED557", "#FFCB31", "#F7BA00", "#ECB000", "#D9A400", "#B88A00", "#987300", "#6E4801", "#513600"],
-        ["#FFFDDC", "#FEFCBF", "#FEFA99", "#FFF873", "#FEF64D", "#FBF519", "#F7EB00", "#EBDF00", "#D9CE00", "#B8AE00", "#999100", "#6D6800", "#514E00"],
-        ["#F0FFE8", "#E6FFD8", "#D7FFC1", "#CAFFAC", "#BEFF99", "#9FFF67", "#9DF762", "#90EB5F", "#86D957", "#72B848", "#5E993D", "#426A2B", "#2D4A1C"],
-        ["#E4FCEE", "#CDF9DE", "#B1FACD", "#94F8BC", "#7DF5AD", "#4FF591", "#47ED87", "#38DE7A", "#34CF73", "#2CAF5F", "#249150", "#1A693A", "#124828"],
-        ["#E2FFFB", "#CCFFF8", "#ADFFF3", "#8FFFEF", "#78FFEE", "#33FFE4", "#31F7DC", "#2FEBD2", "#2BD9C2", "#23B8A4", "#1E9582", "#136358", "#0E4A42"],
-        ["#DBECFE", "#BFDDFF", "#98CAFF", "#73B7FE", "#4EA3FE", "#3396FE", "#0F87FF", "#0071EB", "#0069D9", "#0058B9", "#014A99", "#01356E", "#002752"],
-        ["#DBE2FF", "#BFCCFF", "#99B0FE", "#7391FF", "#4E73FF", "#335FFE", "#1547FE", "#0738EC", "#002ED9", "#0028B8", "#01219A", "#00186E", "#011053"],
-        ["#EFDBFF", "#E6C9FF", "#D4A6FF", "#C684FF", "#B56BFF", "#A74EFE", "#9933FF", "#8B17FE", "#7500EC", "#6600CD", "#5200A3", "#410080", "#2F0060"],
-        ["#FFE2FE", "#FFD0FE", "#FFB3FD", "#FF96FB", "#FF78F9", "#FF67FA", "#FE40F8", "#EB3BE4", "#DA36D3", "#B72EB2", "#A629A1", "#6E1B6B", "#4B1249"],
-        ["#FFE3EF", "#FECDE0", "#FEADCD", "#FF8EBA", "#FF70A6", "#FF5D99", "#FF458C", "#EC3B7F", "#DA2B6E", "#B8255C", "#9E2050", "#7D193F", "#5E1230"]
+        ["#FCFCFC", "#FFE3E2", "#FFECDE", "#FFF5DA", "#FFFDDC", "#F0FFE8", "#E4FCEE", "#E2FFFB", "#DBECFE", "#DBE2FF", "#EFDBFF", "#FFE2FE", "#FFE3EF"],
+        ["#E6E6E6", "#FFC9C9", "#FFDEC3", "#FFEEC0", "#FEFCBF", "#E6FFD8", "#CDF9DE", "#CCFFF8", "#BFDDFF", "#BFCCFF", "#E6C9FF", "#FFD0FE", "#FECDE0"],
+        ["#CCCCCC", "#FEA3A2", "#FFCBA3", "#FFE699", "#FEFA99", "#D7FFC1", "#B1FACD", "#ADFFF3", "#98CAFF", "#99B0FE", "#D4A6FF", "#FFB3FD", "#FEADCD"],
+        ["#B3B3B3", "#FE817D", "#FFB882", "#FEDB73", "#FFF873", "#CAFFAC", "#94F8BC", "#8FFFEF", "#73B7FE", "#7391FF", "#C684FF", "#FF96FB", "#FF8EBA"],
+        ["#999999", "#FF5959", "#FFA45E", "#FED557", "#FEF64D", "#BEFF99", "#7DF5AD", "#78FFEE", "#4EA3FE", "#4E73FF", "#B56BFF", "#FF78F9", "#FF70A6"],
+        ["#808080", "#FE3636", "#FF913C", "#FFCB31", "#FBF519", "#9FFF67", "#4FF591", "#33FFE4", "#3396FE", "#335FFE", "#A74EFE", "#FF67FA", "#FF5D99"],
+        ["#666666", "#FE1212", "#FF7D1B", "#F7BA00", "#F7EB00", "#9DF762", "#47ED87", "#31F7DC", "#0F87FF", "#1547FE", "#9933FF", "#FE40F8", "#FF458C"],
+        ["#4D4D4D", "#E81011", "#EA7317", "#ECB000", "#EBDF00", "#90EB5F", "#38DE7A", "#2FEBD2", "#0071EB", "#0738EC", "#8B17FE", "#EB3BE4", "#EC3B7F"],
+        ["#404040", "#D31111", "#D96B16", "#D9A400", "#D9CE00", "#86D957", "#34CF73", "#2BD9C2", "#0069D9", "#002ED9", "#7500EC", "#DA36D3", "#DA2B6E"],
+        ["#333333", "#B70D0D", "#B85A12", "#B88A00", "#B8AE00", "#72B848", "#2CAF5F", "#23B8A4", "#0058B9", "#0028B8", "#6600CD", "#B72EB2", "#B8255C"],
+        ["#252525", "#990B0A", "#994200", "#987300", "#999100", "#5E993D", "#249150", "#1E9582", "#014A99", "#01219A", "#5200A3", "#A629A1", "#9E2050"],
+        ["#1A1A1A", "#6E0708", "#6E3001", "#6E4801", "#6D6800", "#426A2B", "#1A693A", "#136358", "#01356E", "#00186E", "#410080", "#6E1B6B", "#7D193F"],
+        ["#000000", "#400404", "#512301", "#513600", "#514E00", "#2D4A1C", "#124828", "#0E4A42", "#002752", "#011053", "#2F0060", "#4B1249", "#5E1230"]
       ];
 
       exactPalette13x13.forEach(row => {
@@ -659,14 +591,14 @@
       initGridColors();
       document.getElementById('picker-modal').style.display = 'flex';
       
-      const card = document.getElementById('main-card');
+      const profileCard = document.getElementById('main-profile');
       let currentHex = '#FFFFFF';
       
       if (target === 'bg') {
-        let bg = window.getComputedStyle(card).backgroundColor;
+        let bg = window.getComputedStyle(profileCard).backgroundColor;
         currentHex = rgbToHex(bg);
       } else if (target === 'line') {
-        let borderCol = window.getComputedStyle(card).borderColor;
+        let borderCol = window.getComputedStyle(profileCard).borderColor;
         currentHex = rgbToHex(borderCol);
       }
       
@@ -728,24 +660,22 @@
     }
 
     function applyPickerColor() {
-      const card = document.getElementById('main-card');
+      const profileCard = document.getElementById('main-profile');
       if (currentTarget === 'bg') {
-        card.classList.remove('light-card', 'dark-card');
-        card.style.backgroundColor = selectedColor;
+        profileCard.style.backgroundColor = selectedColor;
       } else if (currentTarget === 'line') {
-        card.style.setProperty('border-color', selectedColor, 'important');
-        card.querySelectorAll('.card-title, .card-voto, .card-review').forEach(el => el.style.color = selectedColor);
-        document.getElementById('placeholder').style.borderColor = selectedColor;
-        document.getElementById('placeholder').style.color = selectedColor;
-        const photoImg = document.getElementById('card-photo-img');
-        if (photoImg) photoImg.style.borderColor = selectedColor;
+        profileCard.style.borderColor = selectedColor;
+        document.getElementById('banner-box').style.borderColor = selectedColor;
+        document.querySelectorAll('.profile-name, .profile-bio').forEach(el => el.style.color = selectedColor);
+        document.querySelector('.avatar-circle').style.borderColor = selectedColor;
+        document.getElementById('avatar-placeholder').style.color = selectedColor;
       }
       closePicker();
     }
 
-    function downloadCard() {
-      const card = document.getElementById('main-card');
-      const editables = card.querySelectorAll('.editable');
+    function downloadProfile() {
+      const profileCard = document.getElementById('main-profile');
+      const editables = profileCard.querySelectorAll('.editable');
       
       editables.forEach(el => {
         if (el.classList.contains('placeholder-active')) {
@@ -755,7 +685,7 @@
         }
       });
 
-      html2canvas(card, { scale: 3, backgroundColor: null, useCORS: true }).then(canvas => {
+      html2canvas(profileCard, { scale: 3, backgroundColor: null, useCORS: true }).then(canvas => {
         editables.forEach(el => {
           if (el.dataset.wasPlaceholder) {
             el.innerText = el.getAttribute('data-placeholder');
@@ -765,7 +695,7 @@
         });
 
         const link = document.createElement('a');
-        link.download = 'card.png';
+        link.download = 'profile.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
       });
