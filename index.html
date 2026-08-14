@@ -151,11 +151,12 @@
       display: flex; 
       flex-direction: column;
       box-sizing: border-box;
+      transition: all 0.2s ease;
       position: relative;
-      margin-top: 20px;
+      margin-top: 20px; /* Spazio extra per evitare che l'avatar spunti fuori sopra */
     }
 
-    /* BANNER SUPERIORE */
+    /* BANNER SUPERIORE CON LINEA CONTINUA */
     .banner-box {
       width: 100%;
       height: 100px;
@@ -184,7 +185,7 @@
       color: #666666;
     }
 
-    /* AVATAR PROFILO */
+    /* AVATAR PROFILO CON SPOSTAMENTO DINAMICO */
     .avatar-wrapper {
       width: 100%;
       height: 40px;
@@ -195,7 +196,7 @@
     .avatar-box {
       width: 75px;
       height: 75px;
-      border: none;
+      border: 3px solid #000000;
       border-radius: 50%;
       cursor: pointer;
       background-color: #ffffff;
@@ -203,10 +204,10 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
       position: absolute;
       top: -38px;
       z-index: 5;
-      overflow: hidden;
     }
 
     /* POSIZIONI AVATAR */
@@ -220,7 +221,7 @@
       object-fit: cover;
       object-position: center;
       display: none;
-      border-radius: inherit;
+      border-radius: inherit; /* Segue il bordo tondo o quadrato del padre */
     }
 
     .avatar-box.square {
@@ -274,7 +275,7 @@
     .profile-card.dark-card .profile-tag,
     .profile-card.dark-card .profile-bio { color: #ffffff; }
     .profile-card.dark-card .banner-box { border-color: #ffffff; }
-    .profile-card.dark-card .avatar-box { background-color: #000000; }
+    .profile-card.dark-card .avatar-box { border-color: #ffffff; background-color: #000000; }
     .profile-card.dark-card .banner-placeholder, 
     .profile-card.dark-card .avatar-placeholder { color: #cccccc; }
 
@@ -452,6 +453,7 @@
     .btn-action.cancel { color: #8e8e93; }
     .btn-action.done { color: #ffffff; }
 
+    /* DARK/LIGHT MODE INTEGRATION */
     @media (prefers-color-scheme: dark) {
       html, body, .phone-wrapper, #splash, .main-ui {
         background-color: #000000 !important;
@@ -671,26 +673,63 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    // Caricamento foto diretto con object-fit: cover (mantiene il taglio centrato nativo CSS senza distorsioni)
+    // Auto Crop delle immagini senza distorsione
+    function autoCropImageToContainer(imageFile, targetWidth, targetHeight, callback) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          const scale = 3;
+          canvas.width = targetWidth * scale;
+          canvas.height = targetHeight * scale;
+
+          const targetAspect = targetWidth / targetHeight;
+          const imgAspect = img.naturalWidth / img.naturalHeight;
+
+          let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+
+          if (imgAspect > targetAspect) {
+            sw = img.naturalHeight * targetAspect;
+            sx = (img.naturalWidth - sw) / 2;
+          } else {
+            sh = img.naturalWidth / targetAspect;
+            sy = (img.naturalHeight - sh) / 2;
+          }
+
+          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+          callback(canvas.toDataURL('image/png', 1.0));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(imageFile);
+    }
+
     function loadPhoto(e, type) {
       const file = e.target.files[0];
       if(!file) return;
 
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        if(type === 'banner') {
+      if(type === 'banner') {
+        const box = document.getElementById('banner-box');
+        const rect = box.getBoundingClientRect();
+        autoCropImageToContainer(file, rect.width, rect.height, function(croppedDataUrl) {
           const bannerImg = document.getElementById('banner-img');
-          bannerImg.src = event.target.result;
+          bannerImg.src = croppedDataUrl;
           bannerImg.style.display = 'block';
           document.getElementById('banner-placeholder').style.display = 'none';
-        } else if(type === 'avatar') {
+        });
+      } else if(type === 'avatar') {
+        const box = document.getElementById('avatar-box');
+        const rect = box.getBoundingClientRect();
+        autoCropImageToContainer(file, rect.width, rect.height, function(croppedDataUrl) {
           const avatarImg = document.getElementById('avatar-img');
-          avatarImg.src = event.target.result;
+          avatarImg.src = croppedDataUrl;
           avatarImg.style.display = 'block';
           document.getElementById('avatar-placeholder').style.display = 'none';
-        }
-      };
-      reader.readAsDataURL(file);
+        });
+      }
     }
 
     // Alterna tra Cerchio e Quadrato
@@ -727,6 +766,7 @@
       card.style.borderColor = '';
       document.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = '');
       document.querySelector('.banner-box').style.borderColor = '';
+      document.getElementById('avatar-box').style.borderColor = '';
 
       if (theme === 'dark') {
         card.className = 'profile-card dark-card';
@@ -855,13 +895,14 @@
       } else if (currentTarget === 'line') {
         card.style.setProperty('border-color', selectedColor, 'important');
         document.querySelector('.banner-box').style.borderColor = selectedColor;
+        document.getElementById('avatar-box').style.borderColor = selectedColor;
       } else if (currentTarget === 'text') {
         card.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = selectedColor);
       }
       closePicker();
     }
 
-    // DOWNLOAD CARD CORRETTO
+    // DOWNLOAD CARD
     function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
@@ -880,8 +921,7 @@
         backgroundColor: null, 
         useCORS: true,
         allowTaint: true,
-        logging: false,
-        windowWidth: document.documentElement.offsetWidth
+        logging: false
       }).then(canvas => {
         editables.forEach(el => {
           if (el.dataset.hiddenForDownload) {
