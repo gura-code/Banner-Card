@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <title>Pocket Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
+  <style>
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      -webkit-text-size-adjust: 100%;
+    }
+
+    html, body { 
+      width: 100vw; 
+      height: 100dvh; 
+      overflow: hidden; 
+      background-color: #ffffff; 
+      color: #000000;
+      font-family: 'Quicksand', sans-serif; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+    }
+
+    .phone-wrapper { 
+      width: 100vw; 
+      height: 100dvh; 
+      background-color: #ffffff; 
+      position: relative; 
+      overflow: hidden; 
+      display: flex; 
+      flex-direction: column; 
+    }
+
+    @media (min-width: 500px) { 
+      .phone-wrapper { 
+        width: 380px; 
+        height: 780px; 
+        max-height: 92vh; 
+        border-radius: 40px; 
+        border: 8px solid #000000; 
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
+      } 
+    }
+
+    /* SPLASH SCREEN */
+    #splash { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background-color: #ffffff; 
+      z-index: 100; 
+      display: flex; 
+      overflow: hidden;
+    }
+    
+    .bg-scrolling { 
+      display: flex; 
+      width: 100%; 
+      height: 100%; 
+      opacity: 0.85; 
+      pointer-events: none; 
+    }
+
+    .col { flex: 1; display: flex; flex-direction: column; }
+    
+    .up { animation: scrollUp 22s linear infinite; }
+    .down { animation: scrollDown 22s linear infinite; }
+    
+    @keyframes scrollUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+    @keyframes scrollDown { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+
+    .sticker { width: 75px; height: 75px; margin: 15px auto; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .sticker img { width: 100%; height: 100%; object-fit: contain; }
+
+    .content-overlay { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
+      z-index: 10; 
+      background: rgba(255, 255, 255, 0.75); 
+    }
+
+    .logo-main { 
+      font-size: 4.2rem; 
+      line-height: 0.88; 
+      font-weight: 800; 
+      color: #000000; 
+      margin-bottom: 50px; 
+      text-align: center;
+      letter-spacing: -3px;
+      text-shadow: 0 4px 15px rgba(255, 255, 255, 0.9), 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-start { 
+      background-color: #000000; 
+      color: #ffffff; 
+      border: none; 
+      padding: 15px 40px; 
+      border-radius: 30px; 
+      font-weight: 800; 
+      font-size: 1.2rem; 
+      cursor: pointer;
+    }
+
+    /* UI PRINCIPALE */
+    .main-ui { 
+      display: none; 
+      width: 100%; 
+      height: 100%; 
+      flex-direction: column; 
+      padding: 15px; 
+      justify-content: space-between; 
+      align-items: center; 
+      background-color: #ffffff;
+    }
+
+    .profile-canvas-area { 
+      width: 100%; 
+      flex: 1; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 12px; 
+      position: relative;
+    }
+
+    /* PROFILO BASE */
+    .profile-card { 
+      width: 330px; 
+      height: 420px; 
+      background-color: #ffffff; 
+      border: 3px solid #000000; 
+      border-radius: 20px; 
+      position: relative; 
+      overflow: hidden;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+
+    /* 1. HEADER RETTANGOLARE */
+    .profile-header-box {
+      width: 100%;
+      height: 150px;
+      background-color: #e0e0e0;
+      border-bottom: 3px solid #000000;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header-placeholder {
+      font-size: 13px;
+      font-weight: 700;
+      color: #555555;
+    }
+
+    .profile-header-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    /* 2. AVATAR CIRCOLARE */
+    .profile-avatar-box {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background-color: #f0f0f0;
+      border: 3px solid #000000;
+      cursor: pointer;
+      position: absolute;
+      top: 105px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    /* Gestione posizioni avatar */
+    .profile-card.avatar-center .profile-avatar-box {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .profile-card.avatar-left .profile-avatar-box {
+      left: 15px;
+    }
+
+    .avatar-placeholder {
+      font-size: 11px;
+      font-weight: 700;
+      color: #555555;
+      text-align: center;
+    }
+
+    .profile-avatar-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    /* 3. AREA TESTI E SEZIONI */
+    .profile-content {
+      padding: 12px;
+      margin-top: 35px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .editable { outline: none; -webkit-tap-highlight-color: transparent; }
+    .editable.placeholder-active { opacity: 0.5; }
+
+    .profile-name {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 22px;
+      word-break: break-word;
+    }
+
+    .profile-bio {
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 16px;
+      word-break: break-word;
+    }
+
+    .profile-tags {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .tag-box {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 8px;
+      border: 2px solid #000000;
+      background: rgba(0,0,0,0.04);
+    }
+
+    /* TEMI PREDEFINITI BIANCO / NERO */
+    .profile-card.light-theme {
+      background-color: #ffffff;
+      border-color: #000000;
+    }
+    .profile-card.light-theme .profile-header-box { border-bottom-color: #000000; background-color: #f0f0f0; }
+    .profile-card.light-theme .profile-avatar-box { border-color: #000000; background-color: #e5e5e5; }
+    .profile-card.light-theme .profile-name, 
+    .profile-card.light-theme .profile-bio { color: #000000; }
+    .profile-card.light-theme .tag-box { border-color: #000000; color: #000000; background: rgba(0,0,0,0.04); }
+
+    .profile-card.dark-theme {
+      background-color: #000000;
+      border-color: #ffffff;
+    }
+    .profile-card.dark-theme .profile-header-box { border-bottom-color: #ffffff; background-color: #222222; }
+    .profile-card.dark-theme .profile-avatar-box { border-color: #ffffff; background-color: #333333; }
+    .profile-card.dark-theme .header-placeholder,
+    .profile-card.dark-theme .avatar-placeholder { color: #aaaaaa; }
+    .profile-card.dark-theme .profile-name, 
+    .profile-card.dark-theme .profile-bio { color: #ffffff; }
+    .profile-card.dark-theme .tag-box { border-color: #ffffff; color: #ffffff; background: rgba(255,255,255,0.1); }
+
+    /* CONTROLLI E OPZIONI RAPIDE */
+    .controls-row {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .color-picker {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .color-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #000000;
+      transition: transform 0.15s ease;
+    }
+
+    .color-dot:active { transform: scale(0.9); }
+    .dot-white { background-color: #ffffff; }
+    .dot-black { background-color: #000000; border-color: #000000; }
+    .color-dot.active { box-shadow: 0 0 0 3px #000000; }
+
+    /* MENU SUB-OPTIONS */
+    .color-sub-menu {
+      display: flex;
+      gap: 6px;
+      background: #111111;
+      padding: 5px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .menu-btn {
+      background: #222222;
+      color: #ffffff;
+      border: 1px solid #333333;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .menu-btn svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+    }
+    
+    .btn-download { 
+      width: 100%; 
+      background-color: #000000; 
+      color: #ffffff; 
+      padding: 13px; 
+      border-radius: 12px; 
+      font-weight: 800; 
+      text-align: center; 
+      cursor: pointer; 
+    }
+
+    /* MODALE SELETTORE COLORE (Esattamente quello originale) */
+    .picker-modal-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 200;
+      display: none;
+      justify-content: center;
+      align-items: flex-end;
+      padding-bottom: 20px;
+    }
+
+    .picker-container {
+      width: 340px;
+      background: #1c1c1e;
+      border-radius: 28px;
+      padding: 16px;
+      color: #ffffff;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .grid-view {
+      display: grid;
+      grid-template-columns: repeat(13, 1fr);
+      gap: 2px;
+      width: 100%;
+      height: 220px;
+    }
+
+    .grid-cell {
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    .picker-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #2c2c2e;
+      padding: 8px 12px;
+      border-radius: 14px;
+      font-size: 11px;
+    }
+
+    .color-preview-box {
+      width: 40px; height: 26px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .info-inputs {
+      display: flex;
+      flex: 1;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      color: #aaaaaa;
+      font-weight: 700;
+      font-size: 10px;
+    }
+
+    .input-group input {
+      background: #1c1c1e;
+      border: 1px solid #3a3a3c;
+      border-radius: 6px;
+      color: #ffffff;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 3px 4px;
+      text-align: center;
+      margin-top: 2px;
+    }
+
+    .input-group input:focus {
+      border-color: #0a84ff;
+      outline: none;
+    }
+
+    .hex-input { width: 68px; }
+    .rgb-input { width: 36px; }
+
+    .picker-actions {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #2c2c2e;
+      padding-top: 10px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .btn-action { cursor: pointer; padding: 4px 10px; }
+    .btn-action.cancel { color: #8e8e93; }
+    .btn-action.done { color: #ffffff; }
+
+    /* ADATTAMENTO DARK/LIGHT MODE GLOBALE */
+    @media (prefers-color-scheme: dark) {
+      html, body, .phone-wrapper, #splash, .main-ui {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+      }
+      .content-overlay { background: rgba(0, 0, 0, 0.75) !important; }
+      .logo-main, div[style*="font-weight:800"] { color: #ffffff !important; }
+      .btn-start, .btn-download { background-color: #ffffff !important; color: #000000 !important; }
+      .sticker img { filter: invert(1); }
+      .color-dot { border-color: #ffffff; }
+      .color-dot.active { box-shadow: 0 0 0 3px #ffffff; }
+    }
+
+    @media (prefers-color-scheme: light) {
+      html, body, .phone-wrapper, #splash, .main-ui {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+      }
+      .content-overlay { background: rgba(255, 255, 255, 0.75) !important; }
+      .logo-main { color: #000000 !important; }
+      .btn-start, .btn-download { background-color: #000000 !important; color: #ffffff !important; }
+      .sticker img { filter: none; }
+    }
+  </style>
+</head>
+<body class="light-mode-env">
+
+  <div class="phone-wrapper">
+    <!-- SPLASH SCREEN -->
+    <div id="splash">
+      <div class="bg-scrolling">
+        <div class="col up" id="col1"></div>
+        <div class="col down" id="col2"></div>
+        <div class="col up" id="col3"></div>
+      </div>
+      <div class="content-overlay">
+        <div class="logo-main">
+          <div>Pocket</div>
+          <div>Profile</div>
+        </div>
+        <button class="btn-start" onclick="startApp()">Start Creating</button>
+      </div>
+    </div>
+
+    <!-- UI PRINCIPALE -->
+    <div class="main-ui" id="main-ui">
+      <div style="font-weight:800; margin-top:5px; font-size: 1.1rem;">Create Profile</div>
+      
+      <div class="profile-canvas-area">
+        <!-- SCHEDA PROFILO -->
+        <div class="profile-card light-theme avatar-center" id="main-profile">
+          <!-- 1. Header Rettangolare -->
+          <div class="profile-header-box" onclick="document.getElementById('header-file-input').click()">
+            <div id="header-placeholder" class="header-placeholder">+ Header Photo</div>
+            <img id="header-img" alt="Header">
+          </div>
+
+          <!-- 2. Avatar Circolare -->
+          <div class="profile-avatar-box" onclick="document.getElementById('avatar-file-input').click()">
+            <div id="avatar-placeholder" class="avatar-placeholder">+ Avatar</div>
+            <img id="avatar-img" alt="Avatar">
+          </div>
+
+          <!-- 3. Testi e Tag -->
+          <div class="profile-content">
+            <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Your Name / Nickname...">Your Name / Nickname...</div>
+            <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="Write your bio, status or vibes here...">Write your bio, status or vibes here...</div>
+            
+            <div class="profile-tags">
+              <div class="tag-box editable placeholder-active" contenteditable="true" data-placeholder="#tag1">#tag1</div>
+              <div class="tag-box editable placeholder-active" contenteditable="true" data-placeholder="#tag2">#tag2</div>
+              <div class="tag-box editable placeholder-active" contenteditable="true" data-placeholder="#tag3">#tag3</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTROLLI RAPIDI (Temi, Posizione Avatar & Colori) -->
+        <div class="controls-row">
+          <!-- Temi Bianco/Nero -->
+          <div class="color-picker">
+            <div class="color-dot dot-white active" onclick="setProfileTheme('light')"></div>
+            <div class="color-dot dot-black" onclick="setProfileTheme('dark')"></div>
+          </div>
+
+          <!-- Menu Sub-Options per Cambiare Colori e Posizione -->
+          <div class="color-sub-menu" id="color-sub-menu">
+            <button class="menu-btn" onclick="openCustomPicker('bg')">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
+              BG Color
+            </button>
+            <button class="menu-btn" onclick="openCustomPicker('line')">
+              <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
+              Borders & Text
+            </button>
+            <button class="menu-btn" onclick="toggleAvatarPosition()">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"></circle></svg>
+              Pos: <span id="pos-label" style="margin-left:2px;">Center</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- INPUT FILE NASCOSTI -->
+      <input type="file" id="header-file-input" style="display:none;" accept="image/*" onchange="loadHeaderPhoto(event)">
+      <input type="file" id="avatar-file-input" style="display:none;" accept="image/*" onchange="loadAvatarPhoto(event)">
+
+      <div class="btn-download" onclick="downloadProfile()">Download Profile</div>
+    </div>
+
+    <!-- MODALE SELETTORE COLORE (Esatto dell'originale) -->
+    <div class="picker-modal-overlay" id="picker-modal">
+      <div class="picker-container">
+        <div class="grid-view" id="picker-grid"></div>
+
+        <div class="picker-info">
+          <div class="color-preview-box" id="preview-box"></div>
+          <div class="info-inputs">
+            <div class="input-group">Hex <input type="text" id="hex-input" class="hex-input" oninput="handleHexInput(this.value)"></div>
+            <div class="input-group">R <input type="number" id="r-input" class="rgb-input" min="0" max="255" oninput="handleRgbInput()"></div>
+            <div class="input-group">G <input type="number" id="g-input" class="rgb-input" min="0" max="255" oninput="handleRgbInput()"></div>
+            <div class="input-group">B <input type="number" id="b-input" class="rgb-input" min="0" max="255" oninput="handleRgbInput()"></div>
+          </div>
+        </div>
+
+        <div class="picker-actions">
+          <div class="btn-action cancel" onclick="closePicker()">Cancel</div>
+          <div class="btn-action done" onclick="applyPickerColor()">Done</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.className = 'dark-mode-env';
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      document.body.className = event.matches ? 'dark-mode-env' : 'light-mode-env';
+    });
+
+    const images = [
+      "1000072971-removebg-preview.png", "1000072972-removebg-preview.png",
+      "1000072974-removebg-preview.png", "1000072977-removebg-preview.png",
+      "1000072978-removebg-preview.png", "1000072979-removebg-preview.png",
+      "1000072980-removebg-preview.png", "1000072981-removebg-preview.png",
+      "1000072982-removebg-preview.png", "1000072983-removebg-preview.png",
+      "1000072985-removebg-preview.png", "1000072986-removebg-preview.png",
+      "1000072987-removebg-preview.png", "1000072988-removebg-preview.png",
+      "1000072989-removebg-preview.png", "1000072990-removebg-preview.png"
+    ];
+
+    let currentTarget = 'bg';
+    let selectedColor = '#FFFFFF';
+
+    // Gestione campi editabili e placeholder
+    document.querySelectorAll('.editable').forEach(el => {
+      el.addEventListener('focus', function() {
+        const ph = this.getAttribute('data-placeholder');
+        if (this.innerText.trim() === ph) {
+          setTimeout(() => {
+            const range = document.createRange();
+            range.selectNodeContents(this);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+          }, 0);
+        }
+      });
+
+      el.addEventListener('input', function() {
+        const ph = this.getAttribute('data-placeholder');
+        const text = this.innerText.trim();
+        if (text !== '' && text !== ph) {
+          this.classList.remove('placeholder-active');
+        } else {
+          this.classList.add('placeholder-active');
+        }
+      });
+
+      el.addEventListener('blur', function() {
+        const ph = this.getAttribute('data-placeholder');
+        const text = this.innerText.trim();
+        if (text === '' || text === ph) {
+          this.innerText = ph;
+          this.classList.add('placeholder-active');
+        } else {
+          this.classList.remove('placeholder-active');
+        }
+      });
+    });
+
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function renderColumn(colId) {
+      const colEl = document.getElementById(colId);
+      if(!colEl) return;
+      const shuffled = shuffleArray(images);
+      let htmlContent = '';
+      shuffled.forEach(imgName => { htmlContent += `<div class="sticker"><img src="${imgName}" alt="sticker"></div>`; });
+      shuffled.forEach(imgName => { htmlContent += `<div class="sticker"><img src="${imgName}" alt="sticker"></div>`; });
+      colEl.innerHTML = htmlContent;
+    }
+
+    renderColumn('col1'); renderColumn('col2'); renderColumn('col3');
+
+    function startApp() { 
+      document.getElementById('splash').style.display = 'none'; 
+      document.getElementById('main-ui').style.display = 'flex'; 
+    }
+    
+    function loadHeaderPhoto(e) {
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = document.getElementById('header-img');
+        img.src = event.target.result;
+        img.style.display = 'block';
+        document.getElementById('header-placeholder').style.display = 'none';
+      }
+      reader.readAsDataURL(file);
+    }
+
+    function loadAvatarPhoto(e) {
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = document.getElementById('avatar-img');
+        img.src = event.target.result;
+        img.style.display = 'block';
+        document.getElementById('avatar-placeholder').style.display = 'none';
+      }
+      reader.readAsDataURL(file);
+    }
+
+    function setProfileTheme(theme) {
+      const card = document.getElementById('main-profile');
+      const dots = document.querySelectorAll('.color-dot');
+      
+      card.style.backgroundColor = '';
+      card.style.borderColor = '';
+      card.querySelector('.profile-header-box').style.backgroundColor = '';
+      card.querySelector('.profile-header-box').style.borderColor = '';
+      card.querySelector('.profile-avatar-box').style.backgroundColor = '';
+      card.querySelector('.profile-avatar-box').style.borderColor = '';
+      
+      card.querySelectorAll('.profile-name, .profile-bio, .header-placeholder, .avatar-placeholder').forEach(el => el.style.color = '');
+      card.querySelectorAll('.tag-box').forEach(el => {
+        el.style.borderColor = '';
+        el.style.color = '';
+        el.style.backgroundColor = '';
+      });
+
+      if (theme === 'dark') {
+        card.className = card.className.replace('light-theme', 'dark-theme');
+        if(!card.classList.contains('dark-theme')) card.classList.add('dark-theme');
+        dots[0].classList.remove('active');
+        dots[1].classList.add('active');
+      } else {
+        card.className = card.className.replace('dark-theme', 'light-theme');
+        if(!card.classList.contains('light-theme')) card.classList.add('light-theme');
+        dots[0].classList.add('active');
+        dots[1].classList.remove('active');
+      }
+    }
+
+    function toggleAvatarPosition() {
+      const card = document.getElementById('main-profile');
+      const label = document.getElementById('pos-label');
+      if (card.classList.contains('avatar-center')) {
+        card.classList.remove('avatar-center');
+        card.classList.add('avatar-left');
+        label.innerText = 'Left';
+      } else {
+        card.classList.remove('avatar-left');
+        card.classList.add('avatar-center');
+        label.innerText = 'Center';
+      }
+    }
+
+    /* INIZIALIZZAZIONE GRIGLIA COLORI 13x13 */
+    function initGridColors() {
+      const grid = document.getElementById('picker-grid');
+      grid.innerHTML = '';
+      
+      const exactPalette13x13 = [
+        ["#FFFFFF", "#FFEAEA", "#FFF3EA", "#FFFFEA", "#F3FFEA", "#EAFFEA", "#EAFFFF", "#EAF3FF", "#EAEAFF", "#F3EAFF", "#FFEAEA", "#FFEAF3", "#FFFFFF"],
+        ["#EEEEEE", "#FFD5D5", "#FFE4D5", "#FFFFD5", "#E4FFD5", "#D5FFD5", "#D5FFFF", "#D5E8FF", "#D5D5FF", "#E8D5FF", "#FFD5FF", "#FFD5E8", "#EEEEEE"],
+        ["#DDDDDD", "#FFB5B5", "#FFD2B5", "#FFFFB5", "#D2FFB5", "#B5FFB5", "#B5FFFF", "#B5DCFF", "#B5B5FF", "#DCB5FF", "#FFB5FF", "#FFB5DC", "#DDDDDD"],
+        ["#CCCCCC", "#FF9292", "#FFC092", "#FFFF92", "#C0FF92", "#92FF92", "#92FFFF", "#92CEFF", "#9292FF", "#CE92FF", "#FF92FF", "#FF92CE", "#CCCCCC"],
+        ["#BBBBBB", "#FF7070", "#FFAE70", "#FFFF70", "#AEFF70", "#70FF70", "#70FFFF", "#70BFFF", "#7070FF", "#BF70FF", "#FF70FF", "#FF70BF", "#BBBBBB"],
+        ["#999999", "#FF4C4C", "#FF9B4C", "#FFFF4C", "#9BFF4C", "#4CFF4C", "#4CFFFF", "#4CAFFF", "#4C4CFF", "#AF4CFF", "#FF4CFF", "#FF4CAF", "#999999"],
+        ["#777777", "#FF0000", "#FF8000", "#FFFF00", "#80FF00", "#00FF00", "#00FFFF", "#0080FF", "#0000FF", "#8000FF", "#FF00FF", "#FF0080", "#777777"],
+        ["#666666", "#D80000", "#D86C00", "#D8D800", "#6CD800", "#00D800", "#00D8D8", "#006CD8", "#0000D8", "#6C00D8", "#D800D8", "#D8006C", "#666666"],
+        ["#555555", "#B00000", "#B05800", "#B0B000", "#58B000", "#00B000", "#00B0B0", "#0058B0", "#0000B0", "#5800B0", "#B000B0", "#B00058", "#555555"],
+        ["#444444", "#880000", "#884400", "#888800", "#448800", "#008800", "#008888", "#004488", "#000088", "#440088", "#880088", "#880044", "#444444"],
+        ["#333333", "#600000", "#603000", "#606000", "#306000", "#006000", "#006060", "#003060", "#000060", "#300060", "#600060", "#600030", "#333333"],
+        ["#222222", "#3A0000", "#3A1D00", "#3A3A00", "#1D3A00", "#003A00", "#003A3A", "#001D3A", "#00003A", "#1D003A", "#3A003A", "#3A001D", "#222222"],
+        ["#000000", "#180000", "#180C00", "#181800", "#0C1800", "#001800", "#001818", "#000C18", "#000018", "#0C0018", "#180018", "#18000C", "#000000"]
+      ];
+
+      exactPalette13x13.forEach(row => {
+        row.forEach(hexColor => {
+          let cell = document.createElement('div');
+          cell.className = 'grid-cell';
+          cell.style.backgroundColor = hexColor;
+          cell.onclick = () => selectColor(hexColor);
+          grid.appendChild(cell);
+        });
+      });
+    }
+
+    function openCustomPicker(target) {
+      currentTarget = target;
+      initGridColors();
+      document.getElementById('picker-modal').style.display = 'flex';
+      
+      const card = document.getElementById('main-profile');
+      let currentHex = '#FFFFFF';
+      
+      if (target === 'bg') {
+        let bg = window.getComputedStyle(card).backgroundColor;
+        currentHex = rgbToHex(bg);
+      } else if (target === 'line') {
+        let borderCol = window.getComputedStyle(card).borderColor;
+        currentHex = rgbToHex(borderCol);
+      }
+      
+      selectColor(currentHex);
+    }
+
+    function rgbToHex(rgb) {
+      if (rgb.startsWith('#')) return rgb;
+      const match = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+      if (!match) return '#FFFFFF';
+      return '#' + match.slice(1, 4).map(x => parseInt(x).toString(16).padStart(2, '0')).join('').toUpperCase();
+    }
+
+    function closePicker() {
+      document.getElementById('picker-modal').style.display = 'none';
+    }
+
+    function selectColor(hex) {
+      selectedColor = hex;
+      document.getElementById('preview-box').style.backgroundColor = hex;
+      document.getElementById('hex-input').value = hex.toUpperCase();
+
+      let r = parseInt(hex.slice(1,3), 16) || 0;
+      let g = parseInt(hex.slice(3,5), 16) || 0;
+      let b = parseInt(hex.slice(5,7), 16) || 0;
+
+      document.getElementById('r-input').value = r;
+      document.getElementById('g-input').value = g;
+      document.getElementById('b-input').value = b;
+    }
+
+    function handleHexInput(val) {
+      if (!val.startsWith('#')) val = '#' + val;
+      if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+        selectedColor = val;
+        document.getElementById('preview-box').style.backgroundColor = val;
+        let r = parseInt(val.slice(1,3), 16);
+        let g = parseInt(val.slice(3,5), 16);
+        let b = parseInt(val.slice(5,7), 16);
+        document.getElementById('r-input').value = r;
+        document.getElementById('g-input').value = g;
+        document.getElementById('b-input').value = b;
+      }
+    }
+
+    function handleRgbInput() {
+      let r = parseInt(document.getElementById('r-input').value) || 0;
+      let g = parseInt(document.getElementById('r-input').value) || 0; // fallback
+      let b = parseInt(document.getElementById('b-input').value) || 0;
+      let green = parseInt(document.getElementById('g-input').value) || 0;
+
+      r = Math.min(255, Math.max(0, r));
+      green = Math.min(255, Math.max(0, green));
+      b = Math.min(255, Math.max(0, b));
+
+      let hex = '#' + ((1 << 24) + (r << 16) + (green << 8) + b).toString(16).slice(1);
+      selectedColor = hex;
+      document.getElementById('preview-box').style.backgroundColor = hex;
+      document.getElementById('hex-input').value = hex.toUpperCase();
+    }
+
+    function applyPickerColor() {
+      const card = document.getElementById('main-profile');
+      if (currentTarget === 'bg') {
+        card.classList.remove('light-theme', 'dark-theme');
+        card.style.backgroundColor = selectedColor;
+      } else if (currentTarget === 'line') {
+        card.style.setProperty('border-color', selectedColor, 'important');
+        card.querySelector('.profile-header-box').style.setProperty('border-bottom-color', selectedColor, 'important');
+        card.querySelector('.profile-avatar-box').style.setProperty('border-color', selectedColor, 'important');
+        
+        card.querySelectorAll('.profile-name, .profile-bio, .header-placeholder, .avatar-placeholder').forEach(el => el.style.color = selectedColor);
+        card.querySelectorAll('.tag-box').forEach(el => {
+          el.style.setProperty('border-color', selectedColor, 'important');
+          el.style.color = selectedColor;
+        });
+      }
+      closePicker();
+    }
+
+    function downloadProfile() {
+      const card = document.getElementById('main-profile');
+      const editables = card.querySelectorAll('.editable');
+      
+      editables.forEach(el => {
+        if (el.classList.contains('placeholder-active')) {
+          el.dataset.wasPlaceholder = "true";
+          el.style.display = 'none';
+          el.innerText = '';
+        }
+      });
+
+      html2canvas(card, { scale: 3, backgroundColor: null, useCORS: true }).then(canvas => {
+        editables.forEach(el => {
+          if (el.dataset.wasPlaceholder) {
+            el.innerText = el.getAttribute('data-placeholder');
+            el.style.display = '';
+            delete el.dataset.wasPlaceholder;
+          }
+        });
+
+        const link = document.createElement('a');
+        link.download = 'profile.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
