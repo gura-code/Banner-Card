@@ -175,7 +175,7 @@
     .banner-box img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
       display: none;
       position: relative;
@@ -218,6 +218,7 @@
       position: absolute;
       top: -38px;
       z-index: 5;
+      overflow: hidden;
     }
 
     .avatar-box.pos-left { left: 10px; transform: translateX(0); }
@@ -227,7 +228,7 @@
     .avatar-box img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
       display: none;
       border-radius: 50%;
@@ -604,7 +605,7 @@
 
         <!-- AGGIUNTA OPZIONE RAPIDA PER AZZERARE IL BORDO -->
         <div id="remove-border-action" style="display: none; text-align: center;">
-          <button type="button" onclick="removeActiveBorder()" style="background: #ff3b30; color: #ffffff; border: none; border-radius: 8px; padding: 6px 12px; font-weight: 800; font-size: 11px; cursor: pointer; width: 100%;">Rimuovi completamente il bordo (0px)</button>
+          <button type="button" onclick="removeActiveBorder()" style="background: #ff3b30; color: #ffffff; border: none; border-radius: 8px; padding: 6px 12px; font-weight: 800; font-size: 11px; cursor: pointer; width: 100%;">Remove Border Completely (0px)</button>
         </div>
 
         <div class="picker-actions">
@@ -701,62 +702,25 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    function autoCropImageToContainer(imageFile, targetWidth, targetHeight, callback) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-
-          const scale = 3;
-          canvas.width = targetWidth * scale;
-          canvas.height = targetHeight * scale;
-
-          const targetAspect = targetWidth / targetHeight;
-          const imgAspect = img.naturalWidth / img.naturalHeight;
-
-          let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
-
-          if (imgAspect > targetAspect) {
-            sw = img.naturalHeight * targetAspect;
-            sx = (img.naturalWidth - sw) / 2;
-          } else {
-            sh = img.naturalWidth / targetAspect;
-            sy = (img.naturalHeight - sh) / 2;
-          }
-
-          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
-          callback(canvas.toDataURL('image/png', 1.0));
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(imageFile);
-    }
-
     function loadPhoto(e, type) {
       const file = e.target.files[0];
       if(!file) return;
 
-      if(type === 'banner') {
-        const box = document.getElementById('banner-box');
-        const rect = box.getBoundingClientRect();
-        autoCropImageToContainer(file, rect.width, rect.height, function(croppedDataUrl) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        if(type === 'banner') {
           const bannerImg = document.getElementById('banner-img');
-          bannerImg.src = croppedDataUrl;
+          bannerImg.src = e.target.result;
           bannerImg.style.display = 'block';
           document.getElementById('banner-placeholder').style.display = 'none';
-        });
-      } else if(type === 'avatar') {
-        const box = document.getElementById('avatar-box');
-        const rect = box.getBoundingClientRect();
-        autoCropImageToContainer(file, rect.width, rect.height, function(croppedDataUrl) {
+        } else if(type === 'avatar') {
           const avatarImg = document.getElementById('avatar-img');
-          avatarImg.src = croppedDataUrl;
+          avatarImg.src = e.target.result;
           avatarImg.style.display = 'block';
           document.getElementById('avatar-placeholder').style.display = 'none';
-        });
-      }
+        }
+      };
+      reader.readAsDataURL(file);
     }
 
     function cycleAvatarPosition() {
@@ -869,7 +833,6 @@
       
       let currentHex = '#FFFFFF';
       
-      // Mostra il pulsante di rimozione bordo solo se stiamo modificando un bordo
       if (target === 'card-border' || target === 'banner-border' || target === 'avatar-border') {
         removeBtnDiv.style.display = 'block';
       } else {
@@ -1040,3 +1003,4 @@
   </script>
 </body>
 </html>
+
