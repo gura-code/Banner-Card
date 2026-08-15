@@ -123,7 +123,7 @@
       width: 100%; 
       height: 100%; 
       flex-direction: column; 
-      padding: 16px; 
+      padding: 12px 16px; 
       justify-content: space-between; 
       align-items: center; 
       background-color: #ffffff;
@@ -137,7 +137,7 @@
       flex-direction: column; 
       align-items: center; 
       justify-content: center; 
-      gap: 12px; 
+      gap: 10px; 
       position: relative;
     }
 
@@ -153,10 +153,10 @@
       box-sizing: border-box;
       transition: all 0.2s ease;
       position: relative;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
-    /* BANNER SUPERIORE CON BG DINAMICO */
+    /* BANNER SUPERIORE */
     .banner-box {
       width: 100%;
       height: 100px;
@@ -169,7 +169,7 @@
       background-color: rgba(0,0,0,0.03);
       position: relative;
       overflow: hidden;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .banner-box img {
@@ -189,7 +189,7 @@
       z-index: 1;
     }
 
-    /* AVATAR PROFILO CON SPOSTAMENTO DINAMICO */
+    /* AVATAR PROFILO */
     .avatar-wrapper {
       width: 100%;
       height: 40px;
@@ -214,13 +214,12 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: all 0.2s ease;
+      transition: all 0.2s ease, border-color 0.3s ease;
       position: absolute;
       top: -38px;
       z-index: 5;
     }
 
-    /* POSIZIONI AVATAR */
     .avatar-box.pos-left { left: 10px; transform: translateX(0); }
     .avatar-box.pos-center { left: 50%; transform: translateX(-50%); }
     .avatar-box.pos-right { right: 10px; left: auto; transform: translateX(0); }
@@ -241,11 +240,17 @@
       color: #666666;
     }
 
-    /* TESTI PROFILO & ALLINEAMENTO DINAMICO */
+    /* TESTI PROFILO & SPAZIATURA */
     .profile-info-box { 
       display: flex; 
       flex-direction: column; 
       gap: 6px; 
+      transition: margin-top 0.3s ease;
+    }
+
+    /* Spazio pulito quando l'avatar è nascosto */
+    .profile-card:has(.hidden-avatar) .profile-info-box {
+      margin-top: 14px;
     }
 
     .profile-info-box.align-left { text-align: left; }
@@ -260,27 +265,19 @@
       min-height: 18px;
     }
 
-    .editable.placeholder-active {
-      opacity: 0.6;
-    }
+    .editable.placeholder-active { opacity: 0.6; }
 
     .profile-name { font-size: 18px; line-height: 22px; font-weight: 800; word-break: break-word; }
     .profile-tag { font-size: 13px; line-height: 16px; font-weight: 700; opacity: 0.8; }
     .profile-bio { font-size: 11px; line-height: 15px; font-weight: 600; word-break: break-word; }
 
-    /* TEMI DELLA CARD */
-    .profile-card.light-card {
-      background-color: #ffffff;
-      border-color: #000000;
-    }
+    /* TEMI RAPIDI */
+    .profile-card.light-card { background-color: #ffffff; border-color: #000000; }
     .profile-card.light-card .profile-name,
     .profile-card.light-card .profile-tag,
     .profile-card.light-card .profile-bio { color: #000000; }
 
-    .profile-card.dark-card {
-      background-color: #000000;
-      border-color: #ffffff;
-    }
+    .profile-card.dark-card { background-color: #000000; border-color: #ffffff; }
     .profile-card.dark-card .profile-name,
     .profile-card.dark-card .profile-tag,
     .profile-card.dark-card .profile-bio { color: #ffffff; }
@@ -289,7 +286,6 @@
     .profile-card.dark-card .banner-placeholder, 
     .profile-card.dark-card .avatar-placeholder { color: #cccccc; }
 
-    /* PALLINE SELEZIONE COLORE TEMA */
     .color-picker {
       display: flex;
       gap: 12px;
@@ -298,8 +294,8 @@
     }
 
     .color-dot {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid #000000;
@@ -311,14 +307,14 @@
     .dot-black { background-color: #000000; border-color: #000000; }
     .color-dot.active { box-shadow: 0 0 0 3px #000000; }
 
-    /* MENU SUB-OPTIONS GRIGLIA COMPATTA */
+    /* MENU SUB-OPTIONS GRIGLIA COMPATTA OTTIMIZZATA */
     .color-sub-menu {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
       background: #111111;
-      padding: 10px;
-      border-radius: 20px;
+      padding: 8px;
+      border-radius: 18px;
       box-shadow: 0 6px 16px rgba(0,0,0,0.15);
       width: 100%;
       max-width: 320px;
@@ -328,20 +324,20 @@
       background: #222222;
       color: #ffffff;
       border: 1px solid #333333;
-      padding: 8px 10px;
+      padding: 7px 8px;
       border-radius: 12px;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .menu-btn svg {
-      width: 14px;
-      height: 14px;
+      width: 13px;
+      height: 13px;
       fill: none;
       stroke: #ffffff;
       stroke-width: 2.5;
@@ -352,12 +348,12 @@
       width: 100%; 
       background-color: #000000; 
       color: #ffffff; 
-      padding: 14px; 
+      padding: 12px; 
       border-radius: 16px; 
       font-weight: 800; 
       text-align: center; 
-      margin-top: 6px;
-      margin-bottom: 5px; 
+      margin-top: 4px;
+      margin-bottom: 2px; 
       cursor: pointer; 
     }
 
@@ -510,7 +506,7 @@
 
     <!-- UI PRINCIPALE -->
     <div class="main-ui" id="main-ui">
-      <div style="font-weight:800; margin-top:8px; font-size: 1.1rem;">Create Card</div>
+      <div style="font-weight:800; margin-top:2px; font-size: 1.05rem;">Create Card</div>
       
       <div class="card-canvas-area">
         <!-- BASE CARD PROFILO -->
@@ -544,19 +540,27 @@
           <div class="color-dot dot-black" onclick="setCardTheme('dark')"></div>
         </div>
 
-        <!-- MENU SUB-OPTIONS GRIGLIA COMPATTA CON BANNER BG -->
+        <!-- MENU SUB-OPTIONS CON BORDI SEPARATI -->
         <div class="color-sub-menu" id="color-sub-menu">
           <button class="menu-btn" onclick="openCustomPicker('bg')">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
             Card BG
           </button>
-          <button class="menu-btn" onclick="openCustomPicker('line')">
-            <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
-            Borders
-          </button>
           <button class="menu-btn" onclick="openCustomPicker('banner')">
             <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect></svg>
             Banner BG
+          </button>
+          <button class="menu-btn" onclick="openCustomPicker('card-border')">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
+            Card Border
+          </button>
+          <button class="menu-btn" onclick="openCustomPicker('banner-border')">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect></svg>
+            Banner Border
+          </button>
+          <button class="menu-btn" onclick="openCustomPicker('avatar-border')">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle></svg>
+            Avatar Border
           </button>
           <button class="menu-btn" onclick="openCustomPicker('text')">
             <svg viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"></path></svg>
@@ -753,7 +757,6 @@
       }
     }
 
-    // Alterna Posizione Avatar: Sinistra -> Centro -> Destra
     function cycleAvatarPosition() {
       const box = document.getElementById('avatar-box');
       const label = document.getElementById('pos-label');
@@ -766,7 +769,6 @@
       label.innerText = nextPos.charAt(0).toUpperCase() + nextPos.slice(1);
     }
 
-    // Mostra/Nascondi Avatar
     function toggleAvatarVisibility() {
       const wrapper = document.getElementById('avatar-wrapper');
       const avatarBox = document.getElementById('avatar-box');
@@ -783,7 +785,6 @@
       }
     }
 
-    // Alterna Allineamento Testo: Sinistra -> Centro -> Destra
     function cycleTextAlign() {
       const infoBox = document.getElementById('profile-info-box');
       const label = document.getElementById('align-label');
@@ -799,14 +800,15 @@
     function setCardTheme(theme) {
       const card = document.getElementById('main-card');
       const banner = document.getElementById('banner-box');
+      const avatar = document.getElementById('avatar-box');
       const dots = document.querySelectorAll('.color-dot');
       
       card.style.backgroundColor = '';
       card.style.borderColor = '';
       banner.style.backgroundColor = '';
       banner.style.borderColor = '';
+      avatar.style.borderColor = '';
       document.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = '');
-      document.getElementById('avatar-box').style.borderColor = '';
 
       if (theme === 'dark') {
         card.className = 'profile-card dark-card';
@@ -819,7 +821,6 @@
       }
     }
 
-    // Inizializzazione griglia selettore colore (con Bianco Puro #FFFFFF in prima posizione)
     function initGridColors() {
       const grid = document.getElementById('picker-grid');
       grid.innerHTML = '';
@@ -858,20 +859,21 @@
       
       const card = document.getElementById('main-card');
       const banner = document.getElementById('banner-box');
+      const avatar = document.getElementById('avatar-box');
       let currentHex = '#FFFFFF';
       
       if (target === 'bg') {
-        let bg = window.getComputedStyle(card).backgroundColor;
-        currentHex = rgbToHex(bg);
-      } else if (target === 'line') {
-        let borderCol = window.getComputedStyle(card).borderColor;
-        currentHex = rgbToHex(borderCol);
+        currentHex = rgbToHex(window.getComputedStyle(card).backgroundColor);
       } else if (target === 'banner') {
-        let bannerBg = window.getComputedStyle(banner).backgroundColor;
-        currentHex = rgbToHex(bannerBg);
+        currentHex = rgbToHex(window.getComputedStyle(banner).backgroundColor);
+      } else if (target === 'card-border') {
+        currentHex = rgbToHex(window.getComputedStyle(card).borderColor);
+      } else if (target === 'banner-border') {
+        currentHex = rgbToHex(window.getComputedStyle(banner).borderColor);
+      } else if (target === 'avatar-border') {
+        currentHex = rgbToHex(window.getComputedStyle(avatar).borderColor);
       } else if (target === 'text') {
-        let textCol = window.getComputedStyle(document.querySelector('.profile-name')).color;
-        currentHex = rgbToHex(textCol);
+        currentHex = rgbToHex(window.getComputedStyle(document.querySelector('.profile-name')).color);
       }
       
       selectColor(currentHex);
@@ -934,29 +936,30 @@
     function applyPickerColor() {
       const card = document.getElementById('main-card');
       const banner = document.getElementById('banner-box');
+      const avatar = document.getElementById('avatar-box');
 
       if (currentTarget === 'bg') {
         card.classList.remove('light-card', 'dark-card');
         card.style.backgroundColor = selectedColor;
-      } else if (currentTarget === 'line') {
-        card.style.setProperty('border-color', selectedColor, 'important');
-        banner.style.borderColor = selectedColor;
-        document.getElementById('avatar-box').style.borderColor = selectedColor;
       } else if (currentTarget === 'banner') {
         const bannerImg = document.getElementById('banner-img');
         const bannerPlaceholder = document.getElementById('banner-placeholder');
         bannerImg.src = '';
         bannerImg.style.display = 'none';
         bannerPlaceholder.style.display = 'block';
-
         banner.style.backgroundColor = selectedColor;
+      } else if (currentTarget === 'card-border') {
+        card.style.setProperty('border-color', selectedColor, 'important');
+      } else if (currentTarget === 'banner-border') {
+        banner.style.setProperty('border-color', selectedColor, 'important');
+      } else if (currentTarget === 'avatar-border') {
+        avatar.style.setProperty('border-color', selectedColor, 'important');
       } else if (currentTarget === 'text') {
         card.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = selectedColor);
       }
       closePicker();
     }
 
-    // DOWNLOAD CARD
     function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
