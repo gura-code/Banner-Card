@@ -195,6 +195,12 @@
       height: 40px;
       position: relative;
       margin-bottom: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .avatar-wrapper.hidden-avatar {
+      height: 0px;
+      margin-bottom: 0px;
     }
 
     .avatar-box {
@@ -517,7 +523,7 @@
           </div>
 
           <!-- CONTENITORE AVATAR STABILE -->
-          <div class="avatar-wrapper">
+          <div class="avatar-wrapper" id="avatar-wrapper">
             <div class="avatar-box pos-left" id="avatar-box" onclick="document.getElementById('avatar-input').click()">
               <img id="avatar-img" src="" alt="avatar">
               <div id="avatar-placeholder" class="avatar-placeholder">+ Photo</div>
@@ -560,7 +566,11 @@
             <svg viewBox="0 0 24 24"><path d="M17 10L12 15L7 10"></path></svg>
             Avatar: <span id="pos-label">Left</span>
           </button>
-          <button class="menu-btn" onclick="cycleTextAlign()">
+          <button class="menu-btn" onclick="toggleAvatarVisibility()">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+            Avatar: <span id="avatar-status-label">Show</span>
+          </button>
+          <button class="menu-btn" onclick="cycleTextAlign()" style="grid-column: span 2;">
             <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="15" y2="12"></line><line x1="3" y1="18" x2="18" y2="18"></line></svg>
             Align: <span id="align-label">Left</span>
           </button>
@@ -756,6 +766,23 @@
       label.innerText = nextPos.charAt(0).toUpperCase() + nextPos.slice(1);
     }
 
+    // Mostra/Nascondi Avatar
+    function toggleAvatarVisibility() {
+      const wrapper = document.getElementById('avatar-wrapper');
+      const avatarBox = document.getElementById('avatar-box');
+      const label = document.getElementById('avatar-status-label');
+
+      if (wrapper.classList.contains('hidden-avatar')) {
+        wrapper.classList.remove('hidden-avatar');
+        avatarBox.style.display = 'flex';
+        label.innerText = 'Show';
+      } else {
+        wrapper.classList.add('hidden-avatar');
+        avatarBox.style.display = 'none';
+        label.innerText = 'Hide';
+      }
+    }
+
     // Alterna Allineamento Testo: Sinistra -> Centro -> Destra
     function cycleTextAlign() {
       const infoBox = document.getElementById('profile-info-box');
@@ -792,13 +819,13 @@
       }
     }
 
-    // Inizializzazione griglia selettore colore
+    // Inizializzazione griglia selettore colore (con Bianco Puro #FFFFFF in prima posizione)
     function initGridColors() {
       const grid = document.getElementById('picker-grid');
       grid.innerHTML = '';
       
       const exactPalette13x13 = [
-        ["#FCFCFC", "#FFE3E2", "#FFECDE", "#FFF5DA", "#FFFDDC", "#F0FFE8", "#E4FCEE", "#E2FFFB", "#DBECFE", "#DBE2FF", "#EFDBFF", "#FFE2FE", "#FFE3EF"],
+        ["#FFFFFF", "#FFE3E2", "#FFECDE", "#FFF5DA", "#FFFDDC", "#F0FFE8", "#E4FCEE", "#E2FFFB", "#DBECFE", "#DBE2FF", "#EFDBFF", "#FFE2FE", "#FFE3EF"],
         ["#E6E6E6", "#FFC9C9", "#FFDEC3", "#FFEEC0", "#FEFCBF", "#E6FFD8", "#CDF9DE", "#CCFFF8", "#BFDDFF", "#BFCCFF", "#E6C9FF", "#FFD0FE", "#FECDE0"],
         ["#CCCCCC", "#FEA3A2", "#FFCBA3", "#FFE699", "#FEFA99", "#D7FFC1", "#B1FACD", "#ADFFF3", "#98CAFF", "#99B0FE", "#D4A6FF", "#FFB3FD", "#FEADCD"],
         ["#B3B3B3", "#FE817D", "#FFB882", "#FEDB73", "#FFF873", "#CAFFAC", "#94F8BC", "#8FFFEF", "#73B7FE", "#7391FF", "#C684FF", "#FF96FB", "#FF8EBA"],
@@ -916,7 +943,6 @@
         banner.style.borderColor = selectedColor;
         document.getElementById('avatar-box').style.borderColor = selectedColor;
       } else if (currentTarget === 'banner') {
-        // Rimuove l'immagine del banner e mostra il placeholder se si sceglie un colore di sfondo
         const bannerImg = document.getElementById('banner-img');
         const bannerPlaceholder = document.getElementById('banner-placeholder');
         bannerImg.src = '';
