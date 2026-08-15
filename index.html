@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -117,7 +117,7 @@
       cursor: pointer;
     }
 
-    /* UI PRINCIPALE */
+    /* MAIN UI */
     .main-ui { 
       display: none; 
       width: 100%; 
@@ -141,7 +141,7 @@
       position: relative;
     }
 
-    /* PROFILO CARD BASE */
+    /* PROFILE CARD BASE */
     .profile-card { 
       width: 320px; 
       background-color: #ffffff; 
@@ -156,7 +156,7 @@
       margin-top: 10px;
     }
 
-    /* BANNER SUPERIORE */
+    /* TOP BANNER */
     .banner-box {
       width: 100%;
       height: 100px;
@@ -175,7 +175,7 @@
     .banner-box img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       object-position: center;
       display: none;
       position: relative;
@@ -189,7 +189,7 @@
       z-index: 1;
     }
 
-    /* AVATAR PROFILO */
+    /* PROFILE AVATAR */
     .avatar-wrapper {
       width: 100%;
       height: 40px;
@@ -218,7 +218,6 @@
       position: absolute;
       top: -38px;
       z-index: 5;
-      overflow: hidden;
     }
 
     .avatar-box.pos-left { left: 10px; transform: translateX(0); }
@@ -228,7 +227,7 @@
     .avatar-box img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       object-position: center;
       display: none;
       border-radius: 50%;
@@ -241,7 +240,7 @@
       color: #666666;
     }
 
-    /* TESTI PROFILO & SPAZIATURA */
+    /* PROFILE TEXTS & SPACING */
     .profile-info-box { 
       display: flex; 
       flex-direction: column; 
@@ -271,7 +270,7 @@
     .profile-tag { font-size: 13px; line-height: 16px; font-weight: 700; opacity: 0.8; }
     .profile-bio { font-size: 11px; line-height: 15px; font-weight: 600; word-break: break-word; }
 
-    /* TEMI RAPIDI */
+    /* QUICK THEMES */
     .profile-card.light-card { background-color: #ffffff; border-color: #000000; }
     .profile-card.light-card .profile-name,
     .profile-card.light-card .profile-tag,
@@ -307,7 +306,7 @@
     .dot-black { background-color: #000000; border-color: #000000; }
     .color-dot.active { box-shadow: 0 0 0 3px #000000; }
 
-    /* MENU SUB-OPTIONS */
+    /* SUB-OPTIONS MENU */
     .color-sub-menu {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -357,7 +356,7 @@
       cursor: pointer; 
     }
 
-    /* MODALE SELETTORE COLORE */
+    /* COLOR PICKER MODAL */
     .picker-modal-overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -504,21 +503,21 @@
       </div>
     </div>
 
-    <!-- UI PRINCIPALE -->
+    <!-- MAIN UI -->
     <div class="main-ui" id="main-ui">
       <div style="font-weight:800; margin-top:2px; font-size: 1.05rem;">Create Card</div>
       
       <div class="card-canvas-area">
-        <!-- BASE CARD PROFILO -->
+        <!-- BASE PROFILE CARD -->
         <div class="profile-card light-card" id="main-card">
           
-          <!-- BANNER IMMAGINE IN ALTO -->
+          <!-- TOP BANNER IMAGE -->
           <div class="banner-box" id="banner-box" onclick="document.getElementById('banner-input').click()">
             <img id="banner-img" src="" alt="banner">
             <div id="banner-placeholder" class="banner-placeholder">+ Add Banner Photo</div>
           </div>
 
-          <!-- CONTENITORE AVATAR STABILE -->
+          <!-- STABLE AVATAR CONTAINER -->
           <div class="avatar-wrapper" id="avatar-wrapper">
             <div class="avatar-box pos-left" id="avatar-box" onclick="document.getElementById('avatar-input').click()">
               <img id="avatar-img" src="" alt="avatar">
@@ -526,7 +525,7 @@
             </div>
           </div>
 
-          <!-- BIO & TESTI PROFILO CON ALLINEAMENTO -->
+          <!-- BIO & PROFILE TEXTS WITH ALIGNMENT -->
           <div class="profile-info-box align-left" id="profile-info-box">
             <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Title / Name...">Title / Name...</div>
             <div class="profile-tag editable placeholder-active" contenteditable="true" data-placeholder="Rating / Genre / Role...">Rating / Genre / Role...</div>
@@ -534,13 +533,13 @@
           </div>
         </div>
 
-        <!-- PALLINE BIANCO / NERO PER TEMA RAPIDO -->
+        <!-- WHITE / BLACK QUICK THEME DOTS -->
         <div class="color-picker">
           <div class="color-dot dot-white active" onclick="setCardTheme('light')"></div>
           <div class="color-dot dot-black" onclick="setCardTheme('dark')"></div>
         </div>
 
-        <!-- MENU SUB-OPTIONS CON PULSANTE "NESSUN BORDO" (0px) -->
+        <!-- SUB-OPTIONS MENU WITH "REMOVE BORDER" BUTTON (0px) -->
         <div class="color-sub-menu" id="color-sub-menu">
           <button class="menu-btn" onclick="openCustomPicker('bg')">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
@@ -581,14 +580,14 @@
         </div>
       </div>
 
-      <!-- INPUT NASCOSTI PER IL CARICAMENTO FOTO -->
+      <!-- HIDDEN FILE INPUTS FOR PHOTO UPLOADS -->
       <input type="file" id="banner-input" style="display:none;" accept="image/*" onchange="loadPhoto(event, 'banner')">
       <input type="file" id="avatar-input" style="display:none;" accept="image/*" onchange="loadPhoto(event, 'avatar')">
 
       <div class="btn-download" onclick="downloadCard()">Download Card</div>
     </div>
 
-    <!-- MODALE SELETTORE COLORE COLOUR-GRID + OPZIONE "RIMUOVI BORDO" -->
+    <!-- COLOUR-GRID COLOR PICKER MODAL + "REMOVE BORDER" OPTION -->
     <div class="picker-modal-overlay" id="picker-modal">
       <div class="picker-container">
         <div class="grid-view" id="picker-grid"></div>
@@ -603,7 +602,7 @@
           </div>
         </div>
 
-        <!-- AGGIUNTA OPZIONE RAPIDA PER AZZERARE IL BORDO -->
+        <!-- QUICK OPTION TO CLEAR BORDER -->
         <div id="remove-border-action" style="display: none; text-align: center;">
           <button type="button" onclick="removeActiveBorder()" style="background: #ff3b30; color: #ffffff; border: none; border-radius: 8px; padding: 6px 12px; font-weight: 800; font-size: 11px; cursor: pointer; width: 100%;">Remove Border Completely (0px)</button>
         </div>
@@ -702,25 +701,62 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
+    function autoCropImageToContainer(imageFile, targetWidth, targetHeight, callback) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          const scale = 3;
+          canvas.width = targetWidth * scale;
+          canvas.height = targetHeight * scale;
+
+          const targetAspect = targetWidth / targetHeight;
+          const imgAspect = img.naturalWidth / img.naturalHeight;
+
+          let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+
+          if (imgAspect > targetAspect) {
+            sw = img.naturalHeight * targetAspect;
+            sx = (img.naturalWidth - sw) / 2;
+          } else {
+            sh = img.naturalWidth / targetAspect;
+            sy = (img.naturalHeight - sh) / 2;
+          }
+
+          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+          callback(canvas.toDataURL('image/png', 1.0));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(imageFile);
+    }
+
     function loadPhoto(e, type) {
       const file = e.target.files[0];
       if(!file) return;
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        if(type === 'banner') {
+      if(type === 'banner') {
+        const box = document.getElementById('banner-box');
+        const rect = box.getBoundingClientRect();
+        autoCropImageToContainer(file, rect.width, rect.height, function(croppedDataUrl) {
           const bannerImg = document.getElementById('banner-img');
-          bannerImg.src = e.target.result;
+          bannerImg.src = croppedDataUrl;
           bannerImg.style.display = 'block';
           document.getElementById('banner-placeholder').style.display = 'none';
-        } else if(type === 'avatar') {
+        });
+      } else if(type === 'avatar') {
+        const box = document.getElementById('avatar-box');
+        const rect = box.getBoundingClientRect();
+        autoCropImageToContainer(file, rect.width, rect.height, function(croppedDataUrl) {
           const avatarImg = document.getElementById('avatar-img');
-          avatarImg.src = e.target.result;
+          avatarImg.src = croppedDataUrl;
           avatarImg.style.display = 'block';
           document.getElementById('avatar-placeholder').style.display = 'none';
-        }
-      };
-      reader.readAsDataURL(file);
+        });
+      }
     }
 
     function cycleAvatarPosition() {
@@ -1003,4 +1039,3 @@
   </script>
 </body>
 </html>
-
