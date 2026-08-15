@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
-  <title>Banner Card</title>
+  <title>Pocket Card</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
@@ -41,8 +41,8 @@
     @media (min-width: 500px) { 
       .phone-wrapper { 
         width: 380px; 
-        height: 820px; 
-        max-height: 94vh; 
+        height: 780px; 
+        max-height: 92vh; 
         border-radius: 40px; 
         border: 8px solid #000000; 
         box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
@@ -60,7 +60,7 @@
       z-index: 100; 
       display: flex; 
       overflow: hidden;
-    } 
+    }
     
     .bg-scrolling { 
       display: flex; 
@@ -96,11 +96,11 @@
     }
 
     .logo-main { 
-      font-size: 4.2rem; 
-      line-height: 0.9; 
+      font-size: 4.5rem; 
+      line-height: 0.88; 
       font-weight: 800; 
       color: #000000; 
-      margin-bottom: 40px; 
+      margin-bottom: 50px; 
       text-align: center;
       letter-spacing: -3px;
       text-shadow: 0 4px 15px rgba(255, 255, 255, 0.9), 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -117,17 +117,17 @@
       cursor: pointer;
     }
 
-    /* MAIN UI */
+    /* UI PRINCIPALE */
     .main-ui { 
       display: none; 
       width: 100%; 
       height: 100%; 
       flex-direction: column; 
-      padding: 12px 16px; 
+      padding: 20px; 
       justify-content: space-between; 
       align-items: center; 
       background-color: #ffffff;
-      overflow-y: auto;
+      overflow-y: auto; 
     }
 
     .card-canvas-area { 
@@ -137,147 +137,97 @@
       flex-direction: column; 
       align-items: center; 
       justify-content: center; 
-      gap: 10px; 
+      gap: 15px; 
       position: relative;
     }
 
-    /* PROFILE CARD BASE */
-    .profile-card { 
+    /* CARD BASE */
+    .card { 
       width: 320px; 
+      height: 180px; 
       background-color: #ffffff; 
       border: 3px solid #000000; 
-      border-radius: 24px; 
+      border-radius: 20px; 
       padding: 12px; 
       display: flex; 
-      flex-direction: column;
+      gap: 12px; 
+      align-items: center;
       box-sizing: border-box;
       transition: all 0.2s ease;
-      position: relative;
-      margin-top: 10px;
     }
 
-    /* TOP BANNER */
-    .banner-box {
-      width: 100%;
-      height: 100px;
-      border: 2px solid #000000;
-      border-radius: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: transparent;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      position: relative;
-      overflow: hidden;
-      transition: background-color 0.3s ease, border-color 0.3s ease;
+    /* FOTO A SINISTRA (DEFAULT) / DESTRA */
+    .card.photo-right {
+      flex-direction: row-reverse;
     }
 
-    .banner-placeholder {
-      font-size: 12px;
-      font-weight: 800;
-      color: #666666;
-      z-index: 1;
+    /* CONTENITORE FOTO */
+    .card-photo-box { 
+      height: 100%; 
+      max-height: 156px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      cursor: pointer; 
+      flex-shrink: 0;
     }
-
-    /* PROFILE AVATAR */
-    .avatar-wrapper {
-      width: 100%;
-      height: 40px;
-      position: relative;
-      margin-bottom: 8px;
-      transition: all 0.3s ease;
+    
+    .placeholder-box { 
+      width: 100px; 
+      height: 156px; 
+      border: 2px dashed inherit; 
+      border-radius: 12px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      background-color: rgba(0,0,0,0.05); 
+      font-size: 12px; 
+      font-weight: 700; 
     }
-
-    .avatar-wrapper.hidden-avatar {
-      height: 0px;
-      margin-bottom: 0px;
+    
+    .card-photo-box img { 
+      max-height: 156px; 
+      max-width: 140px;
+      width: auto;
+      height: auto;
+      border: 2px dashed inherit; 
+      border-radius: 12px; 
+      display: block;
+      background-color: transparent !important;
     }
-
-    .avatar-box {
-      width: 75px;
-      height: 75px;
-      border: 3px solid #000000;
-      border-radius: 50%;
-      cursor: pointer;
-      background-color: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: none;
-      transition: all 0.2s ease, border-color 0.3s ease;
-      position: absolute;
-      top: -38px;
-      z-index: 5;
-    }
-
-    .avatar-box.pos-left { left: 10px; transform: translateX(0); }
-    .avatar-box.pos-center { left: 50%; transform: translateX(-50%); }
-    .avatar-box.pos-right { right: 10px; left: auto; transform: translateX(0); }
-
-    .avatar-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: none;
-      border-radius: 50%;
-    }
-
-    .avatar-placeholder {
-      font-size: 10px;
-      font-weight: 800;
-      text-align: center;
-      color: #666666;
-    }
-
-    /* PROFILE TEXTS & SPACING */
-    .profile-info-box { 
+    
+    .card-info-box { 
+      flex: 1; 
+      height: 156px; 
       display: flex; 
       flex-direction: column; 
-      gap: 6px; 
-      transition: margin-top 0.3s ease;
+      justify-content: center; 
+      overflow: hidden; 
+      gap: 4px; 
+      margin-left: 4px;
     }
 
-    .profile-card:has(.hidden-avatar) .profile-info-box {
-      margin-top: 14px;
+    .card.photo-right .card-info-box {
+      margin-left: 0;
+      margin-right: 4px;
     }
 
-    .profile-info-box.align-left { text-align: left; }
-    .profile-info-box.align-center { text-align: center; }
-    .profile-info-box.align-right { text-align: right; }
-
-    .editable { 
-      outline: none; 
-      -webkit-tap-highlight-color: transparent; 
-      border-radius: 8px;
-      padding: 2px 4px;
-      min-height: 18px;
-    }
-
+    .editable { outline: none; -webkit-tap-highlight-color: transparent; }
     .editable.placeholder-active { opacity: 0.6; }
 
-    .profile-name { font-size: 18px; line-height: 22px; font-weight: 800; word-break: break-word; }
-    .profile-tag { font-size: 13px; line-height: 16px; font-weight: 700; opacity: 0.8; }
-    .profile-bio { font-size: 11px; line-height: 15px; font-weight: 600; word-break: break-word; }
+    .card-title { font-size: 16px; line-height: 20px; font-weight: 800; word-break: break-word; color: #000000; }
+    .card-voto { font-size: 13px; line-height: 16px; font-weight: 800; color: #555555; }
+    .card-review { font-size: 11px; line-height: 14px; word-break: break-word; color: #333333; }
 
-    /* QUICK THEMES */
-    .profile-card.light-card { background-color: #ffffff; border-color: #000000; }
-    .profile-card.light-card .profile-name,
-    .profile-card.light-card .profile-tag,
-    .profile-card.light-card .profile-bio { color: #000000; }
+    /* TEMI CARTA */
+    .card.light-card { background-color: #ffffff; border: 3px solid #000000; }
+    .card.dark-card { background-color: #000000; border: 3px solid #ffffff; }
+    .card.dark-card .card-title { color: #ffffff; }
+    .card.dark-card .card-voto { color: #aaaaaa; }
+    .card.dark-card .card-review { color: #dddddd; }
+    .card.dark-card .placeholder-box { border-color: #ffffff; color: #cccccc; background-color: #222222; }
 
-    .profile-card.dark-card { background-color: #000000; border-color: #ffffff; }
-    .profile-card.dark-card .profile-name,
-    .profile-card.dark-card .profile-tag,
-    .profile-card.dark-card .profile-bio { color: #ffffff; }
-    .profile-card.dark-card .banner-box { border-color: #ffffff; }
-    .profile-card.dark-card .avatar-box { border-color: #ffffff; background-color: transparent; }
-    .profile-card.dark-card .banner-placeholder, 
-    .profile-card.dark-card .avatar-placeholder { color: #cccccc; }
-
+    /* PALLINE BIANCO / NERO */
     .color-picker {
       display: flex;
       gap: 12px;
@@ -286,27 +236,26 @@
     }
 
     .color-dot {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid #000000;
       transition: transform 0.15s ease;
     }
-
     .color-dot:active { transform: scale(0.9); }
     .dot-white { background-color: #ffffff; }
-    .dot-black { background-color: #000000; border-color: #000000; }
+    .dot-black { background-color: #000000; }
     .color-dot.active { box-shadow: 0 0 0 3px #000000; }
 
-    /* SUB-OPTIONS MENU */
+    /* MENU SUB-OPTIONS GRIGLIA */
     .color-sub-menu {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
+      gap: 8px;
       background: #111111;
-      padding: 8px;
-      border-radius: 18px;
+      padding: 10px;
+      border-radius: 16px;
       box-shadow: 0 6px 16px rgba(0,0,0,0.15);
       width: 100%;
       max-width: 320px;
@@ -316,20 +265,20 @@
       background: #222222;
       color: #ffffff;
       border: 1px solid #333333;
-      padding: 7px 8px;
-      border-radius: 12px;
-      font-size: 10.5px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 6px;
     }
 
     .menu-btn svg {
-      width: 13px;
-      height: 13px;
+      width: 14px;
+      height: 14px;
       fill: none;
       stroke: #ffffff;
       stroke-width: 2.5;
@@ -340,16 +289,16 @@
       width: 100%; 
       background-color: #000000; 
       color: #ffffff; 
-      padding: 12px; 
-      border-radius: 16px; 
+      padding: 14px; 
+      border-radius: 12px; 
       font-weight: 800; 
       text-align: center; 
-      margin-top: 4px;
-      margin-bottom: 2px; 
+      margin-top: 10px;
+      margin-bottom: 10px; 
       cursor: pointer; 
     }
 
-    /* COLOR PICKER MODAL */
+    /* MODALE SELETTORE COLORE */
     .picker-modal-overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -381,10 +330,7 @@
       height: 220px;
     }
 
-    .grid-cell {
-      border-radius: 2px;
-      cursor: pointer;
-    }
+    .grid-cell { border-radius: 2px; cursor: pointer; }
 
     .picker-info {
       display: flex;
@@ -396,84 +342,35 @@
       font-size: 11px;
     }
 
-    .color-preview-box {
-      width: 40px; height: 26px;
-      border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-
-    .info-inputs {
-      display: flex;
-      flex: 1;
-      justify-content: space-between;
-      gap: 6px;
-    }
-
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      color: #aaaaaa;
-      font-weight: 700;
-      font-size: 10px;
-    }
-
+    .color-preview-box { width: 40px; height: 26px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); }
+    .info-inputs { display: flex; flex: 1; justify-content: space-between; gap: 6px; }
+    .input-group { display: flex; flex-direction: column; color: #aaaaaa; font-weight: 700; font-size: 10px; }
     .input-group input {
-      background: #1c1c1e;
-      border: 1px solid #3a3a3c;
-      border-radius: 6px;
-      color: #ffffff;
-      font-family: 'Quicksand', sans-serif;
-      font-weight: 800;
-      font-size: 11px;
-      padding: 3px 4px;
-      text-align: center;
-      margin-top: 2px;
+      background: #1c1c1e; border: 1px solid #3a3a3c; border-radius: 6px;
+      color: #ffffff; font-family: 'Quicksand', sans-serif; font-weight: 800;
+      font-size: 11px; padding: 3px 4px; text-align: center; margin-top: 2px;
     }
-
-    .input-group input:focus {
-      border-color: #0a84ff;
-      outline: none;
-    }
-
+    .input-group input:focus { border-color: #0a84ff; outline: none; }
     .hex-input { width: 68px; }
     .rgb-input { width: 36px; }
 
     .picker-actions {
-      display: flex;
-      justify-content: space-between;
-      border-top: 1px solid #2c2c2e;
-      padding-top: 10px;
-      font-weight: 800;
-      font-size: 14px;
+      display: flex; justify-content: space-between; border-top: 1px solid #2c2c2e;
+      padding-top: 10px; font-weight: 800; font-size: 14px;
     }
-
     .btn-action { cursor: pointer; padding: 4px 10px; }
     .btn-action.cancel { color: #8e8e93; }
     .btn-action.done { color: #ffffff; }
 
-    /* DARK/LIGHT MODE INTEGRATION */
+    /* DARK/LIGHT MODE */
     @media (prefers-color-scheme: dark) {
-      html, body, .phone-wrapper, #splash, .main-ui {
-        background-color: #000000 !important;
-        color: #ffffff !important;
-      }
+      html, body, .phone-wrapper, #splash, .main-ui { background-color: #000000 !important; color: #ffffff !important; }
       .content-overlay { background: rgba(0, 0, 0, 0.75) !important; }
-      .logo-main, div[style*="font-weight:800"] { color: #ffffff !important; }
+      .logo-main { color: #ffffff !important; }
       .btn-start, .btn-download { background-color: #ffffff !important; color: #000000 !important; }
       .sticker img { filter: invert(1); }
       .color-dot { border-color: #ffffff; }
       .color-dot.active { box-shadow: 0 0 0 3px #ffffff; }
-    }
-
-    @media (prefers-color-scheme: light) {
-      html, body, .phone-wrapper, #splash, .main-ui {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-      }
-      .content-overlay { background: rgba(255, 255, 255, 0.75) !important; }
-      .logo-main { color: #000000 !important; }
-      .btn-start, .btn-download { background-color: #000000 !important; color: #ffffff !important; }
-      .sticker img { filter: none; }
     }
   </style>
 </head>
@@ -489,97 +386,62 @@
       </div>
       <div class="content-overlay">
         <div class="logo-main">
-          <div>Banner</div>
+          <div>Pocket</div>
           <div>Card</div>
         </div>
         <button class="btn-start" onclick="startApp()">Start Creating</button>
       </div>
     </div>
 
-    <!-- MAIN UI -->
+    <!-- UI PRINCIPALE -->
     <div class="main-ui" id="main-ui">
-      <div style="font-weight:800; margin-top:2px; font-size: 1.05rem;">Create Card</div>
+      <div style="font-weight:800; margin-top:10px; font-size: 1.2rem;">Create Card</div>
       
       <div class="card-canvas-area">
-        <!-- BASE PROFILE CARD -->
-        <div class="profile-card light-card" id="main-card">
-          
-          <!-- TOP BANNER IMAGE -->
-          <div class="banner-box" id="banner-box" onclick="document.getElementById('banner-input').click()">
-            <div id="banner-placeholder" class="banner-placeholder">+ Add Banner Photo</div>
+        <div class="card light-card" id="main-card">
+          <div class="card-photo-box" onclick="document.getElementById('file-input').click()">
+            <div id="placeholder" class="placeholder-box">+ Photo</div>
+            <img id="card-photo-img" style="display:none;" alt="Photo">
           </div>
-
-          <!-- STABLE AVATAR CONTAINER -->
-          <div class="avatar-wrapper" id="avatar-wrapper">
-            <div class="avatar-box pos-left" id="avatar-box" onclick="document.getElementById('avatar-input').click()">
-              <img id="avatar-img" src="" alt="avatar">
-              <div id="avatar-placeholder" class="avatar-placeholder">+ Photo</div>
-            </div>
-          </div>
-
-          <!-- BIO & PROFILE TEXTS WITH ALIGNMENT -->
-          <div class="profile-info-box align-left" id="profile-info-box">
-            <div class="profile-name editable placeholder-active" contenteditable="true" data-placeholder="Title / Name...">Title / Name...</div>
-            <div class="profile-tag editable placeholder-active" contenteditable="true" data-placeholder="Rating / Genre / Role...">Rating / Genre / Role...</div>
-            <div class="profile-bio editable placeholder-active" contenteditable="true" data-placeholder="Review / Plot / Notes...">Review / Plot / Notes...</div>
+          <div class="card-info-box">
+            <div class="card-title editable placeholder-active" contenteditable="true" data-placeholder="Title / Name...">Title / Name...</div>
+            <div class="card-voto editable placeholder-active" contenteditable="true" data-placeholder="Rating / Genre / Role...">Rating / Genre / Role...</div>
+            <div class="card-review editable placeholder-active" contenteditable="true" data-placeholder="Review / Plot / Notes...">Review / Plot / Notes...</div>
           </div>
         </div>
 
-        <!-- WHITE / BLACK QUICK THEME DOTS -->
+        <!-- PALLINE BIANCO / NERO -->
         <div class="color-picker">
           <div class="color-dot dot-white active" onclick="setCardTheme('light')"></div>
           <div class="color-dot dot-black" onclick="setCardTheme('dark')"></div>
         </div>
 
-        <!-- SUB-OPTIONS MENU WITH "REMOVE BORDER" BUTTON (0px) -->
+        <!-- MENU SUB-OPTIONS -->
         <div class="color-sub-menu" id="color-sub-menu">
           <button class="menu-btn" onclick="openCustomPicker('bg')">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
-            Card BG
+            Card Color
           </button>
-          <button class="menu-btn" onclick="openCustomPicker('banner')">
-            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect></svg>
-            Banner BG
-          </button>
-          <button class="menu-btn" onclick="openCustomPicker('card-border')">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>
-            Card Border
-          </button>
-          <button class="menu-btn" onclick="openCustomPicker('banner-border')">
-            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect></svg>
-            Banner Border
-          </button>
-          <button class="menu-btn" onclick="openCustomPicker('avatar-border')">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle></svg>
-            Avatar Border
+          <button class="menu-btn" onclick="openCustomPicker('line')">
+            <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
+            Borders
           </button>
           <button class="menu-btn" onclick="openCustomPicker('text')">
             <svg viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"></path></svg>
             Text Color
           </button>
-          <button class="menu-btn" onclick="cycleAvatarPosition()">
-            <svg viewBox="0 0 24 24"><path d="M17 10L12 15L7 10"></path></svg>
-            Avatar: <span id="pos-label">Left</span>
-          </button>
-          <button class="menu-btn" onclick="toggleAvatarVisibility()">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
-            Avatar: <span id="avatar-status-label">Show</span>
-          </button>
-          <button class="menu-btn" onclick="cycleTextAlign()" style="grid-column: span 2;">
-            <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="15" y2="12"></line><line x1="3" y1="18" x2="18" y2="18"></line></svg>
-            Align: <span id="align-label">Left</span>
+          <button class="menu-btn" onclick="toggleAvatarPos()" id="pos-btn">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            Photo: Left
           </button>
         </div>
       </div>
 
-      <!-- HIDDEN FILE INPUTS FOR PHOTO UPLOADS -->
-      <input type="file" id="banner-input" style="display:none;" accept="image/*" onchange="loadPhoto(event, 'banner')">
-      <input type="file" id="avatar-input" style="display:none;" accept="image/*" onchange="loadPhoto(event, 'avatar')">
-
+      <input type="file" id="file-input" style="display:none;" accept="image/*" onchange="loadPhoto(event)">
       <div class="btn-download" onclick="downloadCard()">Download Card</div>
     </div>
 
-    <!-- COLOUR-GRID COLOR PICKER MODAL + "REMOVE BORDER" OPTION -->
+    <!-- MODALE SELETTORE COLORE -->
     <div class="picker-modal-overlay" id="picker-modal">
       <div class="picker-container">
         <div class="grid-view" id="picker-grid"></div>
@@ -594,11 +456,6 @@
           </div>
         </div>
 
-        <!-- QUICK OPTION TO CLEAR BORDER -->
-        <div id="remove-border-action" style="display: none; text-align: center;">
-          <button type="button" onclick="removeActiveBorder()" style="background: #ff3b30; color: #ffffff; border: none; border-radius: 8px; padding: 6px 12px; font-weight: 800; font-size: 11px; cursor: pointer; width: 100%;">Remove Border Completely (0px)</button>
-        </div>
-
         <div class="picker-actions">
           <div class="btn-action cancel" onclick="closePicker()">Cancel</div>
           <div class="btn-action done" onclick="applyPickerColor()">Done</div>
@@ -609,27 +466,20 @@
   </div>
 
   <script>
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.body.className = 'dark-mode-env';
-    }
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-      document.body.className = event.matches ? 'dark-mode-env' : 'light-mode-env';
-    });
-
     const images = [
       "1000072971-removebg-preview.png", "1000072972-removebg-preview.png",
       "1000072974-removebg-preview.png", "1000072977-removebg-preview.png",
       "1000072978-removebg-preview.png", "1000072979-removebg-preview.png",
-      "1000072980-removebg-preview.png", "1000072981-removebg-preview.png"
+      "1000072980-removebg-preview.png", "1000072981-removebg-preview.png",
+      "1000072982-removebg-preview.png", "1000072983-removebg-preview.png",
+      "1000072985-removebg-preview.png", "1000072986-removebg-preview.png",
+      "1000072987-removebg-preview.png", "1000072988-removebg-preview.png",
+      "1000072989-removebg-preview.png", "1000072990-removebg-preview.png"
     ];
 
     let currentTarget = 'bg';
     let selectedColor = '#FFFFFF';
-    let avatarPositions = ['left', 'center', 'right'];
-    let currentPosIndex = 0;
-    
-    let textAlignments = ['left', 'center', 'right'];
-    let currentAlignIndex = 0;
+    let isPhotoRight = false;
 
     document.querySelectorAll('.editable').forEach(el => {
       el.addEventListener('focus', function() {
@@ -693,90 +543,54 @@
       document.getElementById('main-ui').style.display = 'flex'; 
     }
     
-    function loadPhoto(e, type) {
+    function loadPhoto(e) {
       const file = e.target.files[0];
       if(!file) return;
-
       const reader = new FileReader();
-      reader.onload = function(evt) {
-        if(type === 'banner') {
-          const banner = document.getElementById('banner-box');
-          banner.style.backgroundImage = `url('${evt.target.result}')`;
-          document.getElementById('banner-placeholder').style.display = 'none';
-        } else if(type === 'avatar') {
-          const avatarImg = document.getElementById('avatar-img');
-          avatarImg.src = evt.target.result;
-          avatarImg.style.display = 'block';
-          document.getElementById('avatar-placeholder').style.display = 'none';
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function cycleAvatarPosition() {
-      const box = document.getElementById('avatar-box');
-      const label = document.getElementById('pos-label');
-      box.classList.remove('pos-left', 'pos-center', 'pos-right');
-
-      currentPosIndex = (currentPosIndex + 1) % avatarPositions.length;
-      const nextPos = avatarPositions[currentPosIndex];
-      
-      box.classList.add('pos-' + nextPos);
-      label.innerText = nextPos.charAt(0).toUpperCase() + nextPos.slice(1);
-    }
-
-    function toggleAvatarVisibility() {
-      const wrapper = document.getElementById('avatar-wrapper');
-      const avatarBox = document.getElementById('avatar-box');
-      const label = document.getElementById('avatar-status-label');
-
-      if (wrapper.classList.contains('hidden-avatar')) {
-        wrapper.classList.remove('hidden-avatar');
-        avatarBox.style.display = 'flex';
-        label.innerText = 'Show';
-      } else {
-        wrapper.classList.add('hidden-avatar');
-        avatarBox.style.display = 'none';
-        label.innerText = 'Hide';
+      reader.onload = function(event) {
+        const img = document.getElementById('card-photo-img');
+        img.src = event.target.result;
+        img.style.display = 'block';
+        document.getElementById('placeholder').style.display = 'none';
       }
-    }
-
-    function cycleTextAlign() {
-      const infoBox = document.getElementById('profile-info-box');
-      const label = document.getElementById('align-label');
-      infoBox.classList.remove('align-left', 'align-center', 'align-right');
-
-      currentAlignIndex = (currentAlignIndex + 1) % textAlignments.length;
-      const nextAlign = textAlignments[currentAlignIndex];
-
-      infoBox.classList.add('align-' + nextAlign);
-      label.innerText = nextAlign.charAt(0).toUpperCase() + nextAlign.slice(1);
+      reader.readAsDataURL(file);
     }
 
     function setCardTheme(theme) {
       const card = document.getElementById('main-card');
-      const banner = document.getElementById('banner-box');
-      const avatar = document.getElementById('avatar-box');
       const dots = document.querySelectorAll('.color-dot');
       
       card.style.backgroundColor = '';
-      card.style.borderWidth = '';
       card.style.borderColor = '';
-      banner.style.backgroundColor = '';
-      banner.style.borderWidth = '';
-      banner.style.borderColor = '';
-      avatar.style.borderWidth = '';
-      avatar.style.borderColor = '';
-      document.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = '');
+      document.querySelectorAll('.card-title, .card-voto, .card-review').forEach(el => {
+        el.style.color = '';
+      });
+      document.getElementById('placeholder').style.borderColor = '';
+      document.getElementById('placeholder').style.color = '';
+      const photoImg = document.getElementById('card-photo-img');
+      if (photoImg) photoImg.style.borderColor = '';
 
       if (theme === 'dark') {
-        card.className = 'profile-card dark-card';
+        card.className = isPhotoRight ? 'card dark-card photo-right' : 'card dark-card';
         dots[0].classList.remove('active');
         dots[1].classList.add('active');
       } else {
-        card.className = 'profile-card light-card';
+        card.className = isPhotoRight ? 'card light-card photo-right' : 'card light-card';
         dots[0].classList.add('active');
         dots[1].classList.remove('active');
+      }
+    }
+
+    function toggleAvatarPos() {
+      isPhotoRight = !isPhotoRight;
+      const card = document.getElementById('main-card');
+      const btn = document.getElementById('pos-btn');
+      if (isPhotoRight) {
+        card.classList.add('photo-right');
+        btn.innerHTML = `<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg> Photo: Right`;
+      } else {
+        card.classList.remove('photo-right');
+        btn.innerHTML = `<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg> Photo: Left`;
       }
     }
 
@@ -817,48 +631,20 @@
       document.getElementById('picker-modal').style.display = 'flex';
       
       const card = document.getElementById('main-card');
-      const banner = document.getElementById('banner-box');
-      const avatar = document.getElementById('avatar-box');
-      const removeBtnDiv = document.getElementById('remove-border-action');
-      
       let currentHex = '#FFFFFF';
       
-      if (target === 'card-border' || target === 'banner-border' || target === 'avatar-border') {
-        removeBtnDiv.style.display = 'block';
-      } else {
-        removeBtnDiv.style.display = 'none';
-      }
-
       if (target === 'bg') {
-        currentHex = rgbToHex(window.getComputedStyle(card).backgroundColor);
-      } else if (target === 'banner') {
-        currentHex = rgbToHex(window.getComputedStyle(banner).backgroundColor);
-      } else if (target === 'card-border') {
-        currentHex = rgbToHex(window.getComputedStyle(card).borderColor);
-      } else if (target === 'banner-border') {
-        currentHex = rgbToHex(window.getComputedStyle(banner).borderColor);
-      } else if (target === 'avatar-border') {
-        currentHex = rgbToHex(window.getComputedStyle(avatar).borderColor);
+        let bg = window.getComputedStyle(card).backgroundColor;
+        currentHex = rgbToHex(bg);
+      } else if (target === 'line') {
+        let borderCol = window.getComputedStyle(card).borderColor;
+        currentHex = rgbToHex(borderCol);
       } else if (target === 'text') {
-        currentHex = rgbToHex(window.getComputedStyle(document.querySelector('.profile-name')).color);
+        let textCol = window.getComputedStyle(card.querySelector('.card-title')).color;
+        currentHex = rgbToHex(textCol);
       }
       
       selectColor(currentHex);
-    }
-
-    function removeActiveBorder() {
-      const card = document.getElementById('main-card');
-      const banner = document.getElementById('banner-box');
-      const avatar = document.getElementById('avatar-box');
-
-      if (currentTarget === 'card-border') {
-        card.style.setProperty('border-width', '0px', 'important');
-      } else if (currentTarget === 'banner-border') {
-        banner.style.setProperty('border-width', '0px', 'important');
-      } else if (currentTarget === 'avatar-border') {
-        avatar.style.setProperty('border-width', '0px', 'important');
-      }
-      closePicker();
     }
 
     function rgbToHex(rgb) {
@@ -907,7 +693,7 @@
 
       r = Math.min(255, Math.max(0, r));
       g = Math.min(255, Math.max(0, g));
-      b = Math.min(255, Math.max(0, g));
+      b = Math.min(255, Math.max(0, b));
 
       let hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
       selectedColor = hex;
@@ -917,27 +703,19 @@
 
     function applyPickerColor() {
       const card = document.getElementById('main-card');
-      const banner = document.getElementById('banner-box');
-      const avatar = document.getElementById('avatar-box');
-
       if (currentTarget === 'bg') {
         card.classList.remove('light-card', 'dark-card');
         card.style.backgroundColor = selectedColor;
-      } else if (currentTarget === 'banner') {
-        banner.style.backgroundImage = 'none';
-        banner.style.backgroundColor = selectedColor;
-        document.getElementById('banner-placeholder').style.display = 'block';
-      } else if (currentTarget === 'card-border') {
-        card.style.removeProperty('border-width');
+      } else if (currentTarget === 'line') {
         card.style.setProperty('border-color', selectedColor, 'important');
-      } else if (currentTarget === 'banner-border') {
-        banner.style.removeProperty('border-width');
-        banner.style.setProperty('border-color', selectedColor, 'important');
-      } else if (currentTarget === 'avatar-border') {
-        avatar.style.removeProperty('border-width');
-        avatar.style.setProperty('border-color', selectedColor, 'important');
+        document.getElementById('placeholder').style.borderColor = selectedColor;
+        const photoImg = document.getElementById('card-photo-img');
+        if (photoImg) photoImg.style.borderColor = selectedColor;
       } else if (currentTarget === 'text') {
-        card.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = selectedColor);
+        card.querySelectorAll('.card-title, .card-voto, .card-review').forEach(el => {
+          el.style.color = selectedColor;
+        });
+        document.getElementById('placeholder').style.color = selectedColor;
       }
       closePicker();
     }
@@ -945,45 +723,27 @@
     function downloadCard() {
       const card = document.getElementById('main-card');
       const editables = card.querySelectorAll('.editable');
-      const bannerPlaceholder = document.getElementById('banner-placeholder');
-      const avatarPlaceholder = document.getElementById('avatar-placeholder');
       
-      if (bannerPlaceholder && bannerPlaceholder.style.display !== 'none') {
-        bannerPlaceholder.style.visibility = 'hidden';
-      }
-      if (avatarPlaceholder && avatarPlaceholder.style.display !== 'none') {
-        avatarPlaceholder.style.visibility = 'hidden';
-      }
-
       editables.forEach(el => {
-        const ph = el.getAttribute('data-placeholder');
-        const content = el.innerText.trim();
-        if (content === '' || content === ph || el.classList.contains('placeholder-active')) {
-          el.dataset.hiddenForDownload = "true";
-          el.style.visibility = 'hidden';
+        if (el.classList.contains('placeholder-active')) {
+          el.dataset.wasPlaceholder = "true";
+          el.style.display = 'none';
+          el.innerText = '';
         }
       });
 
-      html2canvas(card, { 
-        scale: 4,
-        backgroundColor: null, 
-        useCORS: true,
-        allowTaint: true,
-        logging: false
-      }).then(canvas => {
-        if (bannerPlaceholder) bannerPlaceholder.style.visibility = 'visible';
-        if (avatarPlaceholder) avatarPlaceholder.style.visibility = 'visible';
-
+      html2canvas(card, { scale: 3, backgroundColor: null, useCORS: true }).then(canvas => {
         editables.forEach(el => {
-          if (el.dataset.hiddenForDownload) {
-            el.style.visibility = 'visible';
-            delete el.dataset.hiddenForDownload;
+          if (el.dataset.wasPlaceholder) {
+            el.innerText = el.getAttribute('data-placeholder');
+            el.style.display = '';
+            delete el.dataset.wasPlaceholder;
           }
         });
 
         const link = document.createElement('a');
-        link.download = 'banner-card.png';
-        link.href = canvas.toDataURL('image/png', 1.0);
+        link.download = 'card.png';
+        link.href = canvas.toDataURL('image/png');
         link.click();
       });
     }
