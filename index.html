@@ -916,6 +916,13 @@
         banner.style.borderColor = selectedColor;
         document.getElementById('avatar-box').style.borderColor = selectedColor;
       } else if (currentTarget === 'banner') {
+        // Rimuove l'immagine del banner e mostra il placeholder se si sceglie un colore di sfondo
+        const bannerImg = document.getElementById('banner-img');
+        const bannerPlaceholder = document.getElementById('banner-placeholder');
+        bannerImg.src = '';
+        bannerImg.style.display = 'none';
+        bannerPlaceholder.style.display = 'block';
+
         banner.style.backgroundColor = selectedColor;
       } else if (currentTarget === 'text') {
         card.querySelectorAll('.profile-name, .profile-tag, .profile-bio').forEach(el => el.style.color = selectedColor);
@@ -930,7 +937,6 @@
       const bannerPlaceholder = document.getElementById('banner-placeholder');
       const avatarPlaceholder = document.getElementById('avatar-placeholder');
       
-      // Nascondi i testi segnaposto non compilati dei box se presenti
       if (bannerPlaceholder && bannerPlaceholder.style.display !== 'none') {
         bannerPlaceholder.style.visibility = 'hidden';
       }
@@ -954,7 +960,6 @@
         allowTaint: true,
         logging: false
       }).then(canvas => {
-        // Ripristina la visibilità dei placeholder del banner e dell'avatar
         if (bannerPlaceholder) bannerPlaceholder.style.visibility = 'visible';
         if (avatarPlaceholder) avatarPlaceholder.style.visibility = 'visible';
 
