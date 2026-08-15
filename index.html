@@ -167,19 +167,12 @@
       align-items: center;
       justify-content: center;
       background-color: transparent;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       position: relative;
       overflow: hidden;
       transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
-
-    .banner-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: none;
-      position: relative;
-      z-index: 2;
     }
 
     .banner-placeholder {
@@ -513,7 +506,6 @@
           
           <!-- TOP BANNER IMAGE -->
           <div class="banner-box" id="banner-box" onclick="document.getElementById('banner-input').click()">
-            <img id="banner-img" src="" alt="banner">
             <div id="banner-placeholder" class="banner-placeholder">+ Add Banner Photo</div>
           </div>
 
@@ -708,9 +700,8 @@
       const reader = new FileReader();
       reader.onload = function(evt) {
         if(type === 'banner') {
-          const bannerImg = document.getElementById('banner-img');
-          bannerImg.src = evt.target.result;
-          bannerImg.style.display = 'block';
+          const banner = document.getElementById('banner-box');
+          banner.style.backgroundImage = `url('${evt.target.result}')`;
           document.getElementById('banner-placeholder').style.display = 'none';
         } else if(type === 'avatar') {
           const avatarImg = document.getElementById('avatar-img');
@@ -933,12 +924,9 @@
         card.classList.remove('light-card', 'dark-card');
         card.style.backgroundColor = selectedColor;
       } else if (currentTarget === 'banner') {
-        const bannerImg = document.getElementById('banner-img');
-        const bannerPlaceholder = document.getElementById('banner-placeholder');
-        bannerImg.src = '';
-        bannerImg.style.display = 'none';
-        bannerPlaceholder.style.display = 'block';
+        banner.style.backgroundImage = 'none';
         banner.style.backgroundColor = selectedColor;
+        document.getElementById('banner-placeholder').style.display = 'block';
       } else if (currentTarget === 'card-border') {
         card.style.removeProperty('border-width');
         card.style.setProperty('border-color', selectedColor, 'important');
@@ -1002,4 +990,3 @@
   </script>
 </body>
 </html>
-
